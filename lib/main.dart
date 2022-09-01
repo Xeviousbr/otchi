@@ -41,9 +41,6 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'Este é um projeto inicial em Flutter:',
-            ),
             Text(
               'Ainda não tem nada!',
               style: Theme.of(context).textTheme.headline4,
