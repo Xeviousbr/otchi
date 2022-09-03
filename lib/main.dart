@@ -36,15 +36,20 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text('OT - Organizador de Tarefas'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Ainda não tem nada!',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+      body: SafeArea(
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: ListView(
+            padding: EdgeInsets.zero,
+            scrollDirection: Axis.vertical,
+            children: [
+              Column(mainAxisSize: MainAxisSize.max, children: []),
+              Container(
+                  width: 100,
+                  height: MediaQuery.of(context).size.height * 1,
+                  color: Colors.amber[100]),
+            ],
+          ),
         ),
       ),
     );
