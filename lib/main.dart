@@ -7,7 +7,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -36,18 +35,19 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text('OT - Organizador de Tarefas'),
       ),
-      body: SafeArea(
+      body: Center(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: ListView(
             padding: EdgeInsets.zero,
             scrollDirection: Axis.vertical,
             children: [
-              Column(mainAxisSize: MainAxisSize.max, children: []),
-              Container(
-                  width: 100,
-                  height: MediaQuery.of(context).size.height * 1,
-                  color: Colors.amber[100]),
+              Column(mainAxisSize: MainAxisSize.max, children: [
+                Container(
+                    width: 100,
+                    height: MediaQuery.of(context).size.height * 1,
+                    color: Colors.amber[100])
+              ]),
             ],
           ),
         ),
