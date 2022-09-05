@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -38,14 +40,13 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: Column(children: const [
           Center(
-            heightFactor: 2,
-            child: Text('Aqui deverá ter um botão um dia',
-                textDirection: TextDirection.ltr,
-                style: TextStyle(
-                  fontSize: 32,
-                  color: Colors.black,
-                )),
-          ),
+              heightFactor: 2,
+              child: TextButton(
+                onPressed: () {
+                  print('Button pressed');
+                },
+                child: Text('TextButton'),
+              )),
           Text('Tarefa 1',
               textDirection: TextDirection.ltr,
               style: TextStyle(
