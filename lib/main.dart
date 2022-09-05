@@ -42,12 +42,15 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: EdgeInsets.zero,
             scrollDirection: Axis.vertical,
             children: [
-              Column(mainAxisSize: MainAxisSize.max, children: [
-                Container(
-                    width: 100,
-                    height: MediaQuery.of(context).size.height * 1,
-                    color: Colors.amber[100])
-              ]),
+              Column(
+                  mainAxisSize: MainAxisSize.max,
+                  verticalDirection: VerticalDirection.up,
+                  children: [
+                    Container(
+                        width: 100,
+                        height: MediaQuery.of(context).size.height * 1,
+                        color: Colors.amber[100])
+                  ]),
             ],
           ),
         ),
