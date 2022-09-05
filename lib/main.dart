@@ -32,29 +32,49 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('OT - Organizador de Tarefas'),
-      ),
-      body: Center(
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: ListView(
-            padding: EdgeInsets.zero,
-            scrollDirection: Axis.vertical,
-            children: [
-              Column(
-                  mainAxisSize: MainAxisSize.max,
-                  verticalDirection: VerticalDirection.up,
-                  children: [
-                    Container(
-                        width: 100,
-                        height: MediaQuery.of(context).size.height * 1,
-                        color: Colors.amber[100])
-                  ]),
-            ],
-          ),
+        appBar: AppBar(
+          title: Text('OT - Organizador de Tarefas'),
         ),
-      ),
-    );
+        body: Column(children: const [
+          Center(
+            heightFactor: 2,
+            child: Text('Aqui deverá ter um botão um dia',
+                textDirection: TextDirection.ltr,
+                style: TextStyle(
+                  fontSize: 32,
+                  color: Colors.black,
+                )),
+          ),
+          Text('Tarefa 1',
+              textDirection: TextDirection.ltr,
+              style: TextStyle(
+                fontSize: 32,
+                color: Colors.black,
+              )),
+          Text('Tarefa 2',
+              textDirection: TextDirection.ltr,
+              style: TextStyle(
+                fontSize: 32,
+                color: Colors.black,
+              )),
+          Text('Tarefa 3',
+              textDirection: TextDirection.ltr,
+              style: TextStyle(
+                fontSize: 32,
+                color: Colors.black,
+              )),
+          Text('Tarefa 4',
+              textDirection: TextDirection.ltr,
+              style: TextStyle(
+                fontSize: 32,
+                color: Colors.black,
+              )),
+          Text('Tarefa 5',
+              textDirection: TextDirection.ltr,
+              style: TextStyle(
+                fontSize: 32,
+                color: Colors.black,
+              ))
+        ]));
   }
 }
