@@ -38,14 +38,19 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           title: Text('OT - Organizador de Tarefas'),
         ),
-        body: Column(children: const [
+        body: Column(children: [
           Center(
               heightFactor: 2,
-              child: TextButton(
+              child: ElevatedButton(
                 onPressed: () {
-                  print('Button pressed');
+                  print('clicou');
                 },
-                child: Text('TextButton'),
+                child: Text('Agora sim UM BOTÃO!',
+                    textDirection: TextDirection.ltr,
+                    style: TextStyle(
+                      fontSize: 32,
+                      color: Colors.black,
+                    )),
               )),
           Text('Tarefa 1',
               textDirection: TextDirection.ltr,
