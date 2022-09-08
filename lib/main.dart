@@ -43,9 +43,14 @@ class _MyHomePageState extends State<MyHomePage> {
               heightFactor: 2,
               child: ElevatedButton(
                 onPressed: () {
-                  print('clicou');
+                  //
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CadastrarTarefa()),
+                  );
+                  //
                 },
-                child: Text('Agora sim UM BOTÃO!',
+                child: Text('Nova Tarefa',
                     textDirection: TextDirection.ltr,
                     style: TextStyle(
                       fontSize: 32,
@@ -57,31 +62,30 @@ class _MyHomePageState extends State<MyHomePage> {
               style: TextStyle(
                 fontSize: 32,
                 color: Colors.black,
-              )),
-          Text('Tarefa 2',
-              textDirection: TextDirection.ltr,
-              style: TextStyle(
-                fontSize: 32,
-                color: Colors.black,
-              )),
-          Text('Tarefa 3',
-              textDirection: TextDirection.ltr,
-              style: TextStyle(
-                fontSize: 32,
-                color: Colors.black,
-              )),
-          Text('Tarefa 4',
-              textDirection: TextDirection.ltr,
-              style: TextStyle(
-                fontSize: 32,
-                color: Colors.black,
-              )),
-          Text('Tarefa 5',
-              textDirection: TextDirection.ltr,
-              style: TextStyle(
-                fontSize: 32,
-                color: Colors.black,
               ))
         ]));
+  }
+}
+
+class CadastrarTarefa extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Cadastrar a tarefa",
+            style: TextStyle(
+              fontSize: 32,
+              color: Colors.black,
+            )),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text('Retornar !'),
+        ),
+      ),
+    );
   }
 }
