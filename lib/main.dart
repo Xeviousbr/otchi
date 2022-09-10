@@ -79,11 +79,13 @@ class CadastrarTarefa extends StatelessWidget {
             )),
       ),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.pop(context);
+        child: TextFormField(
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Informe o nome da tarefa';
+            }
+            return null;
           },
-          child: Text('Retornar !'),
         ),
       ),
     );
