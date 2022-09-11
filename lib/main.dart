@@ -80,13 +80,16 @@ class CadastrarTarefa extends StatelessWidget {
       ),
       body: Center(
         child: TextFormField(
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Informe o nome da tarefa';
-            }
-            return null;
-          },
-        ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Informe o nome da tarefa';
+              }
+              return null;
+            },
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: 'Informe o nome da tarefa',
+            )),
       ),
     );
   }
