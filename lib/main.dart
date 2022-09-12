@@ -43,12 +43,10 @@ class _MyHomePageState extends State<MyHomePage> {
               heightFactor: 2,
               child: ElevatedButton(
                 onPressed: () {
-                  //
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => CadastrarTarefa()),
                   );
-                  //
                 },
                 child: Text('Nova Tarefa',
                     textDirection: TextDirection.ltr,
@@ -79,17 +77,67 @@ class CadastrarTarefa extends StatelessWidget {
             )),
       ),
       body: Center(
-        child: TextFormField(
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Informe o nome da tarefa';
-              }
-              return null;
-            },
-            decoration: InputDecoration(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          scrollDirection: Axis.vertical,
+          children: [
+            TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Informe o nome da tarefa';
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Informe o nome da tarefa',
+                )),
+            TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Informe a prioridade';
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Informe a prioridade',
+                )),
+            TextField(
+                decoration: InputDecoration(
               border: OutlineInputBorder(),
-              hintText: 'Informe o nome da tarefa',
+              hintText: 'Informe o horário máximo',
             )),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CadastrarTarefa()),
+                );
+              },
+              child: Text('Salvar',
+                  textDirection: TextDirection.ltr,
+                  style: TextStyle(
+                    fontSize: 32,
+                    color: Colors.black,
+                  )),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CadastrarTarefa()),
+                );
+              },
+              child: Text('Cancelar',
+                  textDirection: TextDirection.ltr,
+                  style: TextStyle(
+                    fontSize: 32,
+                    color: Colors.black,
+                  )),
+            )
+          ],
+        ),
       ),
     );
   }
