@@ -66,6 +66,11 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class CadastrarTarefa extends StatelessWidget {
+  // REQUISITO PARA O FUNCIONAMENTO DO DROPDOWNBUTTON - INICIO
+  List<String> _locations = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+  String _selectedLocation = '';
+  // REQUISITO PARA O FUNCIONAMENTO DO DROPDOWNBUTTON - FIM
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,17 +97,22 @@ class CadastrarTarefa extends StatelessWidget {
                   border: OutlineInputBorder(),
                   hintText: 'Informe o nome da tarefa',
                 )),
-            TextFormField(
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Informe a prioridade';
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Informe a prioridade',
-                )),
+
+            // DROPDOWNBUTTON INICIO
+            DropdownButton(
+              hint: Text('Escolha a prioridade'),
+              value: _selectedLocation,
+              onChanged: (newValue) {
+                print('onChanged');
+              },
+              items: _locations.map((location) {
+                return DropdownMenuItem(
+                  child: new Text(location),
+                  value: location,
+                );
+              }).toList(),
+            ),
+            // DROPDOWNBUTTON FIM
             TextField(
                 decoration: InputDecoration(
               border: OutlineInputBorder(),
