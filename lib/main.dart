@@ -69,6 +69,9 @@ class CadastrarTarefa extends StatelessWidget {
   List<String> _locations = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
   String? _selectedLocation;
 
+  TimeOfDay _time = TimeOfDay.now();
+  late TimeOfDay picked;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,11 +111,20 @@ class CadastrarTarefa extends StatelessWidget {
                 );
               }).toList(),
             ),
-            TextField(
-                decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Informe o horário máximo',
-            )),
+            //
+            ElevatedButton(
+              onPressed: () {
+                selectTime(context);
+              },
+              child: Text('Definir Horário Limite',
+                  textDirection: TextDirection.ltr,
+                  style: TextStyle(
+                    fontSize: 32,
+                    color: Colors.black,
+                  )),
+            )
+            //
+            ,
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -145,5 +157,12 @@ class CadastrarTarefa extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<Null> selectTime(BuildContext context) async {
+    picked = (await showTimePicker(
+      context: context,
+      initialTime: _time,
+    ))!;
   }
 }
