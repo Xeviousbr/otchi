@@ -71,7 +71,9 @@ class CadastrarTarefa extends StatelessWidget {
   TimeOfDay _time = TimeOfDay.now();
   late TimeOfDay picked;
 
-  SingingCharacter? _character = SingingCharacter.lafayette;
+  bool? h1 = true;
+  bool? h2 = false;
+  bool? h3 = false;
 
   @override
   Widget build(BuildContext context) {
@@ -123,30 +125,30 @@ class CadastrarTarefa extends StatelessWidget {
                     color: Colors.black,
                   )),
             ),
-            Checkbox(
-              value: false,
-              onChanged: (bool? newValue) {
-                print('onChanged(newValue!)');
+            CheckboxListTile(
+              title: const Text('Dias de semana'),
+              value: h1,
+              onChanged: (bool? value) {
+                h1 = value;
               },
             ),
-            Checkbox(
-              value: false,
-              onChanged: (bool? newValue) {
-                print('onChanged(newValue!)');
+            CheckboxListTile(
+              title: const Text('Sábados'),
+              value: h2,
+              onChanged: (bool? value) {
+                h2 = value;
               },
             ),
-            Checkbox(
-              value: false,
-              onChanged: (bool? newValue) {
-                print('onChanged(newValue!)');
+            CheckboxListTile(
+              title: const Text('Domingos'),
+              value: h3,
+              onChanged: (bool? value) {
+                h3 = value;
               },
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CadastrarTarefa()),
-                );
+                print('Salvar');
               },
               child: Text('Salvar',
                   textDirection: TextDirection.ltr,
@@ -157,10 +159,7 @@ class CadastrarTarefa extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CadastrarTarefa()),
-                );
+                print('Cancelar');
               },
               child: Text('Cancelar',
                   textDirection: TextDirection.ltr,
