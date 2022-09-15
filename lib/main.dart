@@ -23,10 +23,7 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
-
   final String title;
-  //oi
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
@@ -65,12 +62,16 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+enum SingingCharacter { lafayette, jefferson }
+
 class CadastrarTarefa extends StatelessWidget {
   List<String> _locations = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
   String? _selectedLocation;
 
   TimeOfDay _time = TimeOfDay.now();
   late TimeOfDay picked;
+
+  SingingCharacter? _character = SingingCharacter.lafayette;
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +112,6 @@ class CadastrarTarefa extends StatelessWidget {
                 );
               }).toList(),
             ),
-            //
             ElevatedButton(
               onPressed: () {
                 selectTime(context);
@@ -122,9 +122,25 @@ class CadastrarTarefa extends StatelessWidget {
                     fontSize: 32,
                     color: Colors.black,
                   )),
-            )
-            //
-            ,
+            ),
+            Checkbox(
+              value: false,
+              onChanged: (bool? newValue) {
+                print('onChanged(newValue!)');
+              },
+            ),
+            Checkbox(
+              value: false,
+              onChanged: (bool? newValue) {
+                print('onChanged(newValue!)');
+              },
+            ),
+            Checkbox(
+              value: false,
+              onChanged: (bool? newValue) {
+                print('onChanged(newValue!)');
+              },
+            ),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
