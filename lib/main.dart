@@ -47,12 +47,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
                 child: Text('Nova Tarefa',
                     textDirection: TextDirection.ltr,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 32,
                       color: Colors.black,
                     )),
               )),
-          Text('Tarefa 1',
+          const Text('Tarefa 1',
               textDirection: TextDirection.ltr,
               style: TextStyle(
                 fontSize: 32,
@@ -80,7 +80,7 @@ class CadastrarTarefa extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Cadastrar a tarefa",
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 32,
               color: Colors.black,
             )),
@@ -97,17 +97,18 @@ class CadastrarTarefa extends StatelessWidget {
                   }
                   return null;
                 },
+                // ignore: prefer_const_constructors
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Informe o nome da tarefa',
                 )),
             DropdownButton(
-              hint: Text('Escolha a prioridade'),
-              value: this._selectedLocation,
+              hint: const Text('Escolha a prioridade'),
+              value: _selectedLocation,
               onChanged: (newValue) {
                 print('onChanged');
               },
-              items: this._locations.map((location) {
+              items: _locations.map((location) {
                 return DropdownMenuItem(
                   child: new Text(location),
                   value: location,
@@ -118,7 +119,7 @@ class CadastrarTarefa extends StatelessWidget {
               onPressed: () {
                 selectTime(context);
               },
-              child: Text('Definir Horário Limite',
+              child: const Text('Definir Horário Limite',
                   textDirection: TextDirection.ltr,
                   style: TextStyle(
                     fontSize: 32,
@@ -180,4 +181,21 @@ class CadastrarTarefa extends StatelessWidget {
       initialTime: _time,
     ))!;
   }
+}
+
+class Tarefas {
+  String? Nome;
+  int? Prioridade;
+  bool? HabDiaSem;
+  bool? HamSab;
+  bool? HabDom;
+  bool? Habilitado;
+
+  Tarefas(
+      {this.Nome,
+      this.Prioridade,
+      this.HabDiaSem,
+      this.HamSab,
+      this.HabDom,
+      this.Habilitado});
 }
