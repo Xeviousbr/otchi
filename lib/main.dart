@@ -33,7 +33,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('OT - Organizador de Tarefas'),
+          title: const Text('OT - Organizador de Tarefas'),
         ),
         body: Column(children: [
           Center(
@@ -45,9 +45,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     MaterialPageRoute(builder: (context) => CadastrarTarefa()),
                   );
                 },
-                child: Text('Nova Tarefa',
+                child: const Text('Nova Tarefa',
                     textDirection: TextDirection.ltr,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 32,
                       color: Colors.black,
                     )),
@@ -62,25 +62,38 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-enum SingingCharacter { lafayette, jefferson }
-
 class CadastrarTarefa extends StatelessWidget {
-  List<String> _locations = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+  final List<String> _locations = [
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10'
+  ];
   String? _selectedLocation;
 
-  TimeOfDay _time = TimeOfDay.now();
+  final TimeOfDay _time = TimeOfDay.now();
   late TimeOfDay picked;
 
   bool? h1 = true;
   bool? h2 = false;
   bool? h3 = false;
 
+  String Nome = "";
+  String Prioridade = "";
+  String Horario = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Cadastrar a tarefa",
-            style: const TextStyle(
+        title: const Text("Cadastrar a tarefa",
+            style: TextStyle(
               fontSize: 32,
               color: Colors.black,
             )),
@@ -91,27 +104,31 @@ class CadastrarTarefa extends StatelessWidget {
           scrollDirection: Axis.vertical,
           children: [
             TextFormField(
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Informe o nome da tarefa';
-                  }
-                  return null;
-                },
-                // ignore: prefer_const_constructors
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Informe o nome da tarefa',
-                )),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Informe o nome da tarefa';
+                }
+                return value;
+              },
+              // ignore: prefer_const_constructors
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                hintText: 'Informe o nome da tarefa',
+              ),
+              onChanged: (newValue) {
+                Nome = newValue;
+              },
+            ),
             DropdownButton(
               hint: const Text('Escolha a prioridade'),
               value: _selectedLocation,
               onChanged: (newValue) {
-                print('onChanged');
+                Prioridade = newValue.toString();
               },
               items: _locations.map((location) {
                 return DropdownMenuItem(
-                  child: new Text(location),
                   value: location,
+                  child: Text(location),
                 );
               }).toList(),
             ),
@@ -149,9 +166,9 @@ class CadastrarTarefa extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                print('Salvar');
+                print('Nome = ' + Nome + " Prioridade = " + Prioridade);
               },
-              child: Text('Salvar',
+              child: const Text('Salvar',
                   textDirection: TextDirection.ltr,
                   style: TextStyle(
                     fontSize: 32,
@@ -162,7 +179,7 @@ class CadastrarTarefa extends StatelessWidget {
               onPressed: () {
                 print('Cancelar');
               },
-              child: Text('Cancelar',
+              child: const Text('Cancelar',
                   textDirection: TextDirection.ltr,
                   style: TextStyle(
                     fontSize: 32,
@@ -175,7 +192,7 @@ class CadastrarTarefa extends StatelessWidget {
     );
   }
 
-  Future<Null> selectTime(BuildContext context) async {
+  Future<void> selectTime(BuildContext context) async {
     picked = (await showTimePicker(
       context: context,
       initialTime: _time,
