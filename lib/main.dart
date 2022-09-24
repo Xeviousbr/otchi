@@ -166,7 +166,12 @@ class CadastrarTarefa extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                print('Nome = ' + Nome + " Prioridade = " + Prioridade);
+                print('Nome = ' +
+                    Nome +
+                    " Prioridade = " +
+                    Prioridade +
+                    " Horario = " +
+                    Horario);
               },
               child: const Text('Salvar',
                   textDirection: TextDirection.ltr,
@@ -197,6 +202,7 @@ class CadastrarTarefa extends StatelessWidget {
       context: context,
       initialTime: _time,
     ))!;
+    Horario = picked.hour.toString() + ":" + picked.minute.toString();
   }
 }
 
