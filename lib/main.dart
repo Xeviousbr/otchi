@@ -62,7 +62,12 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class CadastrarTarefa extends StatelessWidget {
+class CadastrarTarefa extends StatefulWidget {
+  @override
+  State<CadastrarTarefa> createState() => _CadastrarTarefaState();
+}
+
+class _CadastrarTarefaState extends State<CadastrarTarefa> {
   final List<String> _locations = [
     '1',
     '2',
@@ -76,18 +81,14 @@ class CadastrarTarefa extends StatelessWidget {
     '10'
   ];
   String? _selectedLocation;
-
   final TimeOfDay _time = TimeOfDay.now();
   late TimeOfDay picked;
-
   bool? diassem = true;
   bool? sabados = false;
   bool? domingos = false;
-
   String nome = "";
   String prioridade = "";
   String horario = "";
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -147,23 +148,22 @@ class CadastrarTarefa extends StatelessWidget {
               title: const Text('Dias de semana'),
               value: diassem,
               onChanged: (bool? value) {
-                diassem = value;
+                setState(() => diassem = value);
               },
             ),
             CheckboxListTile(
               title: const Text('Sábados'),
               value: sabados,
               onChanged: (bool? value) {
-                sabados = value;
+                setState(() => sabados = value);
               },
             ),
             CheckboxListTile(
-              title: const Text('Domingos'),
-              value: domingos,
-              onChanged: (bool? value) {
-                domingos = value;
-              },
-            ),
+                title: const Text('Domingos'),
+                value: domingos,
+                onChanged: (bool? value) {
+                  setState(() => domingos = value);
+                }),
             ElevatedButton(
               onPressed: () {
                 print('Nome = ' +
