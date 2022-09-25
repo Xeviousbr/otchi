@@ -80,13 +80,13 @@ class CadastrarTarefa extends StatelessWidget {
   final TimeOfDay _time = TimeOfDay.now();
   late TimeOfDay picked;
 
-  bool? h1 = true;
-  bool? h2 = false;
-  bool? h3 = false;
+  bool? diassem = true;
+  bool? sabados = false;
+  bool? domingos = false;
 
-  String Nome = "";
-  String Prioridade = "";
-  String Horario = "";
+  String nome = "";
+  String prioridade = "";
+  String horario = "";
 
   @override
   Widget build(BuildContext context) {
@@ -116,14 +116,14 @@ class CadastrarTarefa extends StatelessWidget {
                 hintText: 'Informe o nome da tarefa',
               ),
               onChanged: (newValue) {
-                Nome = newValue;
+                nome = newValue;
               },
             ),
             DropdownButton(
               hint: const Text('Escolha a prioridade'),
               value: _selectedLocation,
               onChanged: (newValue) {
-                Prioridade = newValue.toString();
+                prioridade = newValue.toString();
               },
               items: _locations.map((location) {
                 return DropdownMenuItem(
@@ -145,33 +145,39 @@ class CadastrarTarefa extends StatelessWidget {
             ),
             CheckboxListTile(
               title: const Text('Dias de semana'),
-              value: h1,
+              value: diassem,
               onChanged: (bool? value) {
-                h1 = value;
+                diassem = value;
               },
             ),
             CheckboxListTile(
               title: const Text('Sábados'),
-              value: h2,
+              value: sabados,
               onChanged: (bool? value) {
-                h2 = value;
+                sabados = value;
               },
             ),
             CheckboxListTile(
               title: const Text('Domingos'),
-              value: h3,
+              value: domingos,
               onChanged: (bool? value) {
-                h3 = value;
+                domingos = value;
               },
             ),
             ElevatedButton(
               onPressed: () {
                 print('Nome = ' +
-                    Nome +
+                    nome +
                     " Prioridade = " +
-                    Prioridade +
+                    prioridade +
                     " Horario = " +
-                    Horario);
+                    horario +
+                    " DiasSem =" +
+                    diassem.toString() +
+                    " Sabados = " +
+                    sabados.toString() +
+                    " Domingos = " +
+                    domingos.toString());
               },
               child: const Text('Salvar',
                   textDirection: TextDirection.ltr,
@@ -202,7 +208,7 @@ class CadastrarTarefa extends StatelessWidget {
       context: context,
       initialTime: _time,
     ))!;
-    Horario = picked.hour.toString() + ":" + picked.minute.toString();
+    horario = picked.hour.toString() + ":" + picked.minute.toString();
   }
 }
 
