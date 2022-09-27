@@ -1,6 +1,6 @@
-// ignore_for_file: avoid_print
-
 import 'package:flutter/material.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:ot/post_detail.dart';
 
 void main() {
   runApp(const MyApp());
@@ -178,6 +178,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                     sabados.toString() +
                     " Domingos = " +
                     domingos.toString());
+                EnviaDados();
               },
               child: const Text('Salvar',
                   textDirection: TextDirection.ltr,
@@ -210,7 +211,17 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
     ))!;
     horario = picked.hour.toString() + ":" + picked.minute.toString();
   }
+
+  void EnviaDados() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => PostDetail(),
+      ),
+    );
+  }
 }
+
+// PostDetail
 
 class Tarefas {
   String? Nome;
