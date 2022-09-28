@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:ot/post_detail.dart';
 
 void main() {
@@ -220,8 +219,6 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
     );
   }
 }
-
-// PostDetail
 
 class Tarefas {
   String? Nome;
