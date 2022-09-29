@@ -6,6 +6,8 @@ class HttpService {
   Future<List<Post>> getPosts() async {
     Response res = await get(Uri.http('https://google.com.br', ''));
 
+    print('res.statusCode = ' + res.statusCode.toString());
+
     if (res.statusCode == 200) {
       List<dynamic> body = jsonDecode(res.body);
 

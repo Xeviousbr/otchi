@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
+// import 'package:http/http.dart';
 import 'package:ot/post_detail.dart';
+import 'package:ot/post_model.dart';
+
+import 'dart:async';
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MyApp());
@@ -212,11 +219,48 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
   }
 
   void EnviaDados() {
-    Navigator.of(context).push(
+    print('EnviaDados');
+
+    API.getMovie("search").then((response) {
+      setState(() {
+        print("setState");
+        print(response.body);
+        // Iterable lista = json.decode(response.body); // Usamos um iterator
+      });
+    });
+
+    // final Future<Post> post;
+    /* final Future<Post>? futureX;
+
+    FutureBuilder<Post>(
+      future: futureX,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text("TESTE"),
+          );
+        } else if (snapshot.hasError) {
+          return Text("${snapshot.error}");
+        }
+        return CircularProgressIndicator();
+      },
+    ); */
+
+    /* Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => PostDetail(),
       ),
-    );
+    ); */
+  }
+}
+
+class API {
+  static Future getMovie(search) async {
+    String baseUrl = "https://tele-tudo.com";
+    // var url = baseUrl + search;
+    var url = baseUrl;
+    return await http.get(Uri.parse(url));
   }
 }
 
