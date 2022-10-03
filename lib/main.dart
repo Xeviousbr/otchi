@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:http/http.dart';
-import 'package:ot/post_detail.dart';
-import 'package:ot/post_model.dart';
+// import 'package:ot/post_detail.dart';
+// import 'package:ot/post_model.dart';
 
 import 'dart:async';
 import 'dart:convert';
@@ -185,6 +185,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                     " Domingos = " +
                     domingos.toString());
                 EnviaDados();
+                Navigator.pop;
               },
               child: const Text('Salvar',
                   textDirection: TextDirection.ltr,
@@ -195,7 +196,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
             ),
             ElevatedButton(
               onPressed: () {
-                print('Cancelar');
+                Navigator.pop(context);
               },
               child: const Text('Cancelar',
                   textDirection: TextDirection.ltr,
