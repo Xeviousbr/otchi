@@ -130,7 +130,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
               hint: const Text('Escolha a prioridade'),
               value: _selectedLocation,
               onChanged: (newValue) {
-                prioridade = newValue.toString();
+                setState(() => _selectedLocation = newValue.toString());
               },
               items: _locations.map((location) {
                 return DropdownMenuItem(
@@ -172,20 +172,8 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                 }),
             ElevatedButton(
               onPressed: () {
-                print('Nome = ' +
-                    nome +
-                    " Prioridade = " +
-                    prioridade +
-                    " Horario = " +
-                    horario +
-                    " DiasSem =" +
-                    diassem.toString() +
-                    " Sabados = " +
-                    sabados.toString() +
-                    " Domingos = " +
-                    domingos.toString());
                 EnviaDados();
-                Navigator.pop;
+                Navigator.pop(context);
               },
               child: const Text('Salvar',
                   textDirection: TextDirection.ltr,
@@ -220,8 +208,6 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
   }
 
   void EnviaDados() {
-    print('EnviaDados');
-
     API.getMovie("search").then((response) {
       setState(() {
         print("setState");
@@ -229,30 +215,6 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
         // Iterable lista = json.decode(response.body); // Usamos um iterator
       });
     });
-
-    // final Future<Post> post;
-    /* final Future<Post>? futureX;
-
-    FutureBuilder<Post>(
-      future: futureX,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text("TESTE"),
-          );
-        } else if (snapshot.hasError) {
-          return Text("${snapshot.error}");
-        }
-        return CircularProgressIndicator();
-      },
-    ); */
-
-    /* Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => PostDetail(),
-      ),
-    ); */
   }
 }
 
