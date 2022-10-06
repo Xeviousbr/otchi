@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'cadastrar_tarefa.dart';
 import 'api.dart';
 
-class cadastrarTarefa extends StatefulWidget {
+class CadastrarTarefa extends StatefulWidget {
   @override
-  State<cadastrarTarefa> createState() => _cadastrarTarefaState();
+  State<CadastrarTarefa> createState() => _CadastrarTarefaState();
 }
 
-class _cadastrarTarefaState extends State<cadastrarTarefa> {
+class _CadastrarTarefaState extends State<CadastrarTarefa> {
   final List<String> _locations = [
     '1',
     '2',
@@ -150,4 +151,3 @@ class _cadastrarTarefaState extends State<cadastrarTarefa> {
     });
   }
 }
-

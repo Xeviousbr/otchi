@@ -7,7 +7,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 // import 'package:http/http.dart' as http;
-import 'cadastrarTarefa.dart';
+import 'cadastrar_tarefa.dart';
 
 void main() {
   runApp(const MyApp());
@@ -49,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => cadastrarTarefa()),
+                    MaterialPageRoute(builder: (context) => CadastrarTarefa()),
                   );
                 },
                 child: const Text('Nova Tarefa',
