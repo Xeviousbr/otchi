@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:ot/login_page/login_page.dart';
 // import 'package:http/http.dart' as http;
 import 'cadastrar_tarefa.dart';
 
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'OT - Organizador de Tarefas'),
+      home: LoginPage(),
     );
   }
 }
