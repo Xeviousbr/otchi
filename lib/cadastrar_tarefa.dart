@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'cadastrar_tarefa.dart';
 import 'api.dart';
+import 'tarefa.dart';
 
 class CadastrarTarefa extends StatefulWidget {
   @override
@@ -64,6 +67,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
               hint: const Text('Escolha a prioridade'),
               value: _selectedLocation,
               onChanged: (newValue) {
+                prioridade = newValue.toString();
                 setState(() => _selectedLocation = newValue.toString());
               },
               items: _locations.map((location) {
@@ -106,6 +110,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                 }),
             ElevatedButton(
               onPressed: () {
+                print("Botão gravar clicado ");
                 EnviaDados();
                 Navigator.pop(context);
               },
@@ -142,11 +147,26 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
   }
 
   void EnviaDados() {
-    API.getMovie("search").then((response) {
+    print("Entrou em EnviaDados");
+    String id = "";
+    Tarefa tarefa = new Tarefa();
+    tarefa.Nome = nome;
+    tarefa.Prioridade = prioridade;
+    tarefa.Hora = horario;
+    tarefa.HabDiaSem = (diassem == true) ? "1" : "0";
+    tarefa.HamSab = (sabados == true) ? "1" : "0";
+    tarefa.HabDom = (domingos == true) ? "1" : "0";
+    tarefa.Habilitado = "1";
+    print("Dados populados");
+    API.Cadastra(tarefa).then((response) {
       setState(() {
-        print("setState");
-        print(response.body);
-        // Iterable lista = json.decode(response.body); // Usamos um iterator
+        var ret = json.decode(response.body);
+        if (ret.OK == 1) {
+          id = ret.ID;
+          print("Registro efetuado ID = " + id);
+        } else {
+          print("ret.OK = " + ret.OK);
+        }
       });
     });
   }

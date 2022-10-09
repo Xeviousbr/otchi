@@ -70,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class Tarefas {
+/* class Tarefas {
   String? Nome;
   int? Prioridade;
   bool? HabDiaSem;
@@ -85,4 +85,4 @@ class Tarefas {
       this.HamSab,
       this.HabDom,
       this.Habilitado});
-}
+} */
