@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-// import 'package:http/http.dart';
-// import 'package:ot/post_detail.dart';
-// import 'package:ot/post_model.dart';
-
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:ot/login_page/login_page.dart';
-// import 'package:http/http.dart' as http;
 import 'cadastrar_tarefa.dart';
 
 void main() {

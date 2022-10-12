@@ -1,7 +1,12 @@
 // import 'dart:ui';
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:ot/cadastrar_tarefa.dart';
+
+import '../api.dart';
+import '../main.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -67,12 +72,26 @@ class _LoginPageState extends State<LoginPage> {
                   ),*/
                   padding: EdgeInsets.all(15)),
               onPressed: () {
-                // id = API.VeLogin(email, password);
-                // if (id > 0) {
-                if (email == "email@correto" && password == "123") {
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => CadastrarTarefa()));
-                }
+                print('Acionado login ' + email + ' ' + password);
+                API.VeLogin(email, password).then((response) {
+                  setState(() {
+                    var ret = json.decode(response.body);
+                    if (ret['OK'] == 1) {
+                      if (ret['count'] == 0) {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => CadastrarTarefa()));
+                      } else {[]
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => MyHomePage(
+                                  title: 'OT - Organizador de Tarefas',
+                                )));
+                      }
+                    } else {
+                      // AVISAR QUE O LOGIN ESTA ERRADO
+                      print('AVISAR QUE O LOGIN ESTA ERRADO');
+                    }
+                  });
+                });
               },
               child: const Text(
                 "Login",
