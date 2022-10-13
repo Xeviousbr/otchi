@@ -72,7 +72,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),*/
                   padding: EdgeInsets.all(15)),
               onPressed: () {
-                print('Acionado login ' + email + ' ' + password);
                 API.VeLogin(email, password).then((response) {
                   setState(() {
                     var ret = json.decode(response.body);
@@ -80,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                       if (ret['count'] == 0) {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => CadastrarTarefa()));
-                      } else {[]
+                      } else {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => MyHomePage(
                                   title: 'OT - Organizador de Tarefas',

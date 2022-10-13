@@ -110,9 +110,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                 }),
             ElevatedButton(
               onPressed: () {
-                print("Botão gravar clicado ");
                 EnviaDados();
-                Navigator.pop(context);
               },
               child: const Text('Salvar',
                   textDirection: TextDirection.ltr,
@@ -147,9 +145,12 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
   }
 
   void EnviaDados() {
-    print("Entrou em EnviaDados");
-    String id = "";
+    String id = "1";
     Tarefa tarefa = new Tarefa();
+
+    // AQUI DEVE TER O ID RETORNADO PELO LOGIN
+    tarefa.idUser = "1";
+
     tarefa.Nome = nome;
     tarefa.Prioridade = prioridade;
     tarefa.Hora = horario;
@@ -157,15 +158,14 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
     tarefa.HamSab = (sabados == true) ? "1" : "0";
     tarefa.HabDom = (domingos == true) ? "1" : "0";
     tarefa.Habilitado = "1";
-    print("Dados populados");
     API.Cadastra(tarefa).then((response) {
       setState(() {
         var ret = json.decode(response.body);
-        if (ret.OK == 1) {
-          id = ret.ID;
-          print("Registro efetuado ID = " + id);
+        if (ret['OK'] == 1) {
+          Navigator.pop(context);
         } else {
-          print("ret.OK = " + ret.OK);
+          // COLOCAR UMA MENSAGEM DE ERRO AQUI
+          print('Deu errado');
         }
       });
     });
