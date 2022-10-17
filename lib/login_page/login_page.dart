@@ -76,10 +76,13 @@ class _LoginPageState extends State<LoginPage> {
                   setState(() {
                     var ret = json.decode(response.body);
                     if (ret['OK'] == 1) {
+                      print('LOGIN REALIZADO');
                       if (ret['count'] == 0) {
+                        print('NÃO TEM TAREFAS CADASTRADAS');
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => CadastrarTarefa()));
                       } else {
+                        print('TEM TAREFAS CADASTRADAS');
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => MyHomePage(
                                   title: 'OT - Organizador de Tarefas',

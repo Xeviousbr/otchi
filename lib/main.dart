@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:ot/login_page/login_page.dart';
 import 'cadastrar_tarefa.dart';
 import 'tarefa.dart';
+import 'api.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,11 +34,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var list = [
-    {'id': "1", "Nome": "Tarefa 1"},
-    {'id': "2", "date": "Tarefa 2"},
-    {'id': "3", "date": "Tarefa 3"}
-  ];
+  List<String> list = ["Tarefa 1", "Tarefa 2", "Tarefa 3"];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   for (var item in list)
                     TableRow(children: [
-                      Text("item.Nome",
+                      Text(item,
                           textDirection: TextDirection.ltr,
                           style: TextStyle(
                             fontSize: 32,
