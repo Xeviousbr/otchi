@@ -3,7 +3,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:ot/cadastrar_tarefa.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api.dart';
 import '../main.dart';
@@ -18,7 +20,22 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String email = '';
   String password = '';
-  int id = 0;
+  
+
+ /* @override
+  void initState() {
+    super.initState();
+    idCheck().then((value) {
+      if(value) {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => MyHomePage(title: 'OT - Organizador de Tarefas',
+                               )));
+      } else {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => LoginPage()));
+      }
+    });
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -74,16 +91,22 @@ class _LoginPageState extends State<LoginPage> {
               onPressed: () {
                 API.VeLogin(email, password).then((response) {
                   setState(() {
+                    var idResponse = json.decode(response.body)['ID'];
                     var ret = json.decode(response.body);
                     if (ret['OK'] == 1) {
+                      print("ID = $idResponse");
                       if (ret['count'] == 0) {
+
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => CadastrarTarefa()));
+                            
                       } else {
+                        print(idResponse);
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => MyHomePage(
                                   title: 'OT - Organizador de Tarefas',
                                 )));
+                                
                       }
                     } else {
                       // AVISAR QUE O LOGIN ESTA ERRADO
@@ -102,4 +125,22 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+  //O idResponse é o objeto que contem o json do ID, mas não consegui utiliza-lo.
+  /*idSharedSave() async {
+    SharedPreferences prefers = await SharedPreferences.getInstance();
+    prefers.setString('ID', "Id ${idResponse}");
+  }*/
+
+  
+  Future<bool> idCheck() async {
+    SharedPreferences prefers = await SharedPreferences.getInstance();
+    if( prefers.getString("ID") != null) {
+      return true;
+    }else {
+      return false;
+    }
+  }
+
+  
+
 }
