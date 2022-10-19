@@ -34,8 +34,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<String> list = ["Tarefa 1", "Tarefa 2", "Tarefa 3"];
   @override
+  List<dynamic> list = PegaLista(1);
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -76,5 +76,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 ])
           ])
         ]));
+  }
+
+  static List<dynamic> PegaLista(int i) {
+    List<dynamic> ret = [];
+    API.ListaTarefas(1).then((response) {
+      print(response.body);
+      ret = json.decode(response.body);
+    });
+    print(ret);
+    return ret;
   }
 }
