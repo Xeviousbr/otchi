@@ -35,8 +35,23 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   @override
-  List<dynamic> list = PegaLista(1);
+  // List<dynamic> list = PegaLista(1);
+  List _itens = [];
+  void carregaFake() {
+    for (int i = 0; i < 5; i++) {
+      Map<String, dynamic> item = Map();
+      item["id"] = i;
+      item["Nome"] = i.toString() + i.toString();
+      _itens.add(item);
+    }
+  }
+
+  static int TotRegs = 0;
   Widget build(BuildContext context) {
+    // print('TotRegs1 = ' + TotRegs.toString());
+    carregaFake();
+    // _itens = PegaLista(1);
+    print("_itens.length = " + _itens.length.toString());
     return Scaffold(
         appBar: AppBar(
           title: const Text('OT - Organizador de Tarefas'),
@@ -64,27 +79,58 @@ class _MyHomePageState extends State<MyHomePage> {
                 border: TableBorder.all(color: Colors.black),
                 columnWidths: {},
                 children: [
-                  for (var item in list)
+                  for (int i = 0; i < 3; i++)
                     TableRow(children: [
-                      Text(item,
+                      Text(_itens[i]["id"].toString(),
                           textDirection: TextDirection.ltr,
                           style: TextStyle(
                             fontSize: 32,
                             color: Colors.black,
                           ))
                     ])
+
+                  // for (var =0 to TotRegs)
+                  // for (var item in list)
+                  //   TableRow(children: [
+                  //     Text(item,
+                  //         textDirection: TextDirection.ltr,
+                  //         style: TextStyle(
+                  //           fontSize: 32,
+                  //           color: Colors.black,
+                  //         ))
+                  //   ])
                 ])
           ])
         ]));
   }
 
-  static List<dynamic> PegaLista(int i) {
+  static List PegaLista(int i) {
     List<dynamic> ret = [];
+    List _itens = [];
+    // List<String> retS = [];
     API.ListaTarefas(1).then((response) {
       print(response.body);
       ret = json.decode(response.body);
+      print("ret[0]");
+      print(ret[0]);
+      print("ret[0][0]");
+      print(ret[0][0]);
+      TotRegs = ret[0][0];
+      print('TotRegs3 = ' + TotRegs.toString());
+
+      for (int i = 1; i < TotRegs; i++) {
+        Map<String, dynamic> item = Map();
+        item["id"] = ret[i][0];
+        item["Nome"] = ret[i][1];
+        _itens.add(item);
+      }
+
+      // retS = ret.cast<String>();
+      // print(retS[1]);
     });
-    print(ret);
-    return ret;
+    // print(ret);
+    // print(retS);
+    // print('TotRegs2 = ' + TotRegs.toString());
+    return _itens;
   }
 }

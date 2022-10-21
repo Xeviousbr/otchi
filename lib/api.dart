@@ -18,14 +18,7 @@ class API {
   }
 
   static Future ListaTarefas(id) async {
-    /* print('ListaTarefas - VeLogin');
-    String baseUrl = "https://tele-tudo.com/ot?op=1&user=Xevious&pass=123";
-    var url = baseUrl;
-    return await http.get(Uri.parse(url)); */
-
-    print('Dentro de static Future ListaTarefas(id) async');
     String baseUrl = "https://tele-tudo.com/ot?op=3&idUsuario=" + id.toString();
-    // String baseUrl = "https://tele-tudo.com/ot?op=3&idUsuario=1";
     var url = baseUrl;
     return await http.get(Uri.parse(url));
   }
