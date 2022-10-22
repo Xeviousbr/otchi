@@ -1,14 +1,11 @@
-// import 'dart:ui';
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:ot/cadastrar_tarefa.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api.dart';
 import '../main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -18,24 +15,25 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String email = '';
-  String password = '';
-  
-
- /* @override
+  @override
   void initState() {
     super.initState();
-    idCheck().then((value) {
-      if(value) {
+    verificarId().then((value) {
+      if (value) {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => MyHomePage(title: 'OT - Organizador de Tarefas',
-                               )));
+                            builder: (context) => MyHomePage(
+                                  title: 'OT - Organizador de Tarefas',
+                                )));
       } else {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => LoginPage()));
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => LoginPage()));
       }
     });
-  }*/
+  }
+
+  String email = '';
+  String password = '';
+  int id = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -91,23 +89,23 @@ class _LoginPageState extends State<LoginPage> {
               onPressed: () {
                 API.VeLogin(email, password).then((response) {
                   setState(() {
-                    var idResponse = json.decode(response.body)['ID'];
                     var ret = json.decode(response.body);
+                    int idUser = (ret["ID"]);
                     if (ret['OK'] == 1) {
-                      print("ID = $idResponse");
-                      if (ret['count'] == 0) {
-
+                      saveId(idUser);
+                      print('LOGIN REALIZADO');
+                      //como exite um initState essa funçao seria ignorada.
+                      /*if (ret['count'] == 0) {
+                        print('NÃO TEM TAREFAS CADASTRADAS');
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => CadastrarTarefa()));
-                            
                       } else {
-                        print(idResponse);
+                        print('TEM TAREFAS CADASTRADAS');
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => MyHomePage(
                                   title: 'OT - Organizador de Tarefas',
                                 )));
-                                
-                      }
+                      }*/
                     } else {
                       // AVISAR QUE O LOGIN ESTA ERRADO
                       print('AVISAR QUE O LOGIN ESTA ERRADO');
@@ -125,22 +123,18 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-  //O idResponse é o objeto que contem o json do ID, mas não consegui utiliza-lo.
-  /*idSharedSave() async {
-    SharedPreferences prefers = await SharedPreferences.getInstance();
-    prefers.setString('ID', "Id ${idResponse}");
-  }*/
 
-  
-  Future<bool> idCheck() async {
-    SharedPreferences prefers = await SharedPreferences.getInstance();
-    if( prefers.getString("ID") != null) {
+  void saveId(int idUser) async {
+    SharedPreferences prefer = await SharedPreferences.getInstance();
+    await prefer.setInt('ID', idUser);
+  }
+
+  Future<bool> verificarId() async {
+    SharedPreferences prefer = await SharedPreferences.getInstance();
+    if (prefer.getInt('ID') != null) {
       return true;
-    }else {
+    } else {
       return false;
     }
   }
-
-  
-
 }

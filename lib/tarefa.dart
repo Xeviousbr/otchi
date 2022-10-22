@@ -1,4 +1,6 @@
 class Tarefa {
+  int? id;
+  String? idUser;
   String? Nome;
   String? Prioridade;
   String? Hora;
@@ -8,7 +10,9 @@ class Tarefa {
   String? Habilitado;
 
   Tarefa(
-      {this.Nome,
+      {this.id,
+      this.idUser,
+      this.Nome,
       this.Prioridade,
       this.Hora,
       this.HabDiaSem,
