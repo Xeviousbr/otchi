@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'cadastrar_tarefa.dart';
 import 'api.dart';
 import 'tarefa.dart';
 

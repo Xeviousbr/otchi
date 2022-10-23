@@ -48,6 +48,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   static int TotRegs = 0;
+
+  @override
   Widget build(BuildContext context) {
     // print('TotRegs1 = ' + TotRegs.toString());
     carregaFake();
@@ -76,22 +78,26 @@ class _MyHomePageState extends State<MyHomePage> {
                         color: Colors.black,
                       )),
                 )),
-                SizedBox(height: 20,),
-                 TextButton(onPressed: () async {
-                  bool logOut = await logout();
-                  if(logOut) {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => LoginPage()));
-                  }
-                 }, 
-                child: const Text('Logout',
-                      textDirection: TextDirection.ltr,
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.red,
-                     ),
-                    ),
-                  ),
+            SizedBox(
+              height: 20,
+            ),
+            TextButton(
+              onPressed: () async {
+                bool logOut = await logout();
+                if (logOut) {
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => LoginPage()));
+                }
+              },
+              child: const Text(
+                'Logout',
+                textDirection: TextDirection.ltr,
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Colors.red,
+                ),
+              ),
+            ),
             Table(
                 border: TableBorder.all(color: Colors.black),
                 columnWidths: {},
@@ -121,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ]));
   }
 
-   Future<bool> logout() async {
+  Future<bool> logout() async {
     SharedPreferences prefer = await SharedPreferences.getInstance();
     await prefer.clear();
     return true;
