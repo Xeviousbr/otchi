@@ -1,5 +1,3 @@
-// import 'dart:ui';
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -7,6 +5,7 @@ import 'package:ot/cadastrar_tarefa.dart';
 
 import '../api.dart';
 import '../main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -16,6 +15,22 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  @override
+  void initState() {
+    super.initState();
+    verificarId().then((value) {
+      if (value) {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => MyHomePage(
+                                  title: 'OT - Organizador de Tarefas',
+                                )));
+      } else {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => LoginPage()));
+      }
+    });
+  }
+
   String email = '';
   String password = '';
   int id = 0;
@@ -75,9 +90,14 @@ class _LoginPageState extends State<LoginPage> {
                 API.VeLogin(email, password).then((response) {
                   setState(() {
                     var ret = json.decode(response.body);
+                    int idUser = (ret["ID"]);
                     if (ret['OK'] == 1) {
-                      print('LOGIN REALIZADO');
-                      if (ret['count'] == 0) {
+                      saveId(idUser);
+                      print('LOGIN REALIZADO'); 
+                      
+                      // DÉBITO TÉCNICO
+                      if (1==2)
+                      
                         print('NÃO TEM TAREFAS CADASTRADAS');
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => CadastrarTarefa()));
@@ -87,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                             builder: (context) => MyHomePage(
                                   title: 'OT - Organizador de Tarefas',
                                 )));
-                      }
+                      }*/
                     } else {
                       // AVISAR QUE O LOGIN ESTA ERRADO
                       print('AVISAR QUE O LOGIN ESTA ERRADO');
@@ -104,5 +124,19 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  void saveId(int idUser) async {
+    SharedPreferences prefer = await SharedPreferences.getInstance();
+    await prefer.setInt('ID', idUser);
+  }
+
+  Future<bool> verificarId() async {
+    SharedPreferences prefer = await SharedPreferences.getInstance();
+    if (prefer.getInt('ID') != null) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

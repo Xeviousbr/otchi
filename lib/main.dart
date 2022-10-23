@@ -6,6 +6,7 @@ import 'package:ot/login_page/login_page.dart';
 import 'cadastrar_tarefa.dart';
 import 'tarefa.dart';
 import 'api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const MyApp());
@@ -75,6 +76,22 @@ class _MyHomePageState extends State<MyHomePage> {
                         color: Colors.black,
                       )),
                 )),
+                SizedBox(height: 20,),
+                 TextButton(onPressed: () async {
+                  bool logOut = await logout();
+                  if(logOut) {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => LoginPage()));
+                  }
+                 }, 
+                child: const Text('Logout',
+                      textDirection: TextDirection.ltr,
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.red,
+                     ),
+                    ),
+                  ),
             Table(
                 border: TableBorder.all(color: Colors.black),
                 columnWidths: {},
@@ -102,6 +119,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 ])
           ])
         ]));
+  }
+
+   Future<bool> logout() async {
+    SharedPreferences prefer = await SharedPreferences.getInstance();
+    await prefer.clear();
+    return true;
   }
 
   static List PegaLista(int i) {
