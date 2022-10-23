@@ -93,9 +93,11 @@ class _LoginPageState extends State<LoginPage> {
                     int idUser = (ret["ID"]);
                     if (ret['OK'] == 1) {
                       saveId(idUser);
-                      print('LOGIN REALIZADO');
-                      //como exite um initState essa funçao seria ignorada.
-                      /*if (ret['count'] == 0) {
+                      print('LOGIN REALIZADO'); 
+                      
+                      // DÉBITO TÉCNICO
+                      if (1==2)
+                      
                         print('NÃO TEM TAREFAS CADASTRADAS');
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => CadastrarTarefa()));
