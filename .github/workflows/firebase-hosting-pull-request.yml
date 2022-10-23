@@ -14,8 +14,6 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
       - shell: bash
-        run: flutter packages pub run build_runner build --delete-conflicting-outputs
-      - shell: bash
         run: flutter build web --web-renderer canvaskit
 
       - run: 'flutter build web --web-renderer canvaskit '
