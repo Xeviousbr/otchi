@@ -6,7 +6,7 @@ import 'package:ot/cadastrar_tarefa.dart';
 import '../api.dart';
 import '../main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:ot/sharedPreferencePage.dart';
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
 
   String email = '';
   String password = '';
-  int id = 0;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -91,6 +91,7 @@ class _LoginPageState extends State<LoginPage> {
                     if (ret['OK'] == 1) {
                       saveId(idUser);
                       print('LOGIN REALIZADO');
+                      print('Id: $idUser');
 
                       // DÉBITO TÉCNICO
                       if (1 == 2) {
@@ -122,14 +123,13 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void saveId(int idUser) async {
+  static saveId(int idUser) async {
     SharedPreferences prefer = await SharedPreferences.getInstance();
     await prefer.setInt('ID', idUser);
   }
 
   Future<bool> verificarId() async {
-    SharedPreferences prefer = await SharedPreferences.getInstance();
-    if (prefer.getInt('ID') != null) {
+    if (await SharedPrefUtils.readId() != null) {
       return true;
     } else {
       return false;

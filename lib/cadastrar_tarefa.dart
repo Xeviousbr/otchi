@@ -147,7 +147,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
     String id = "1";
     Tarefa tarefa = new Tarefa();
 
-    // AQUI DEVE TER O ID RETORNADO PELO LOGIN
+    // para chamar o ID basta usar SharedPrefUtils.readId()
     tarefa.idUser = "1";
 
     tarefa.Nome = nome;
