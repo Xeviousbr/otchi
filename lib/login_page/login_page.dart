@@ -21,12 +21,11 @@ class _LoginPageState extends State<LoginPage> {
     verificarId().then((value) {
       if (value) {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => MyHomePage(
-                                  title: 'OT - Organizador de Tarefas',
-                                )));
+            builder: (context) => MyHomePage(
+                  title: 'OT - Organizador de Tarefas',
+                )));
       } else {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => LoginPage()));
+        // Se não tem não faz nada
       }
     });
   }
@@ -93,11 +92,12 @@ class _LoginPageState extends State<LoginPage> {
                     int idUser = (ret["ID"]);
                     if (ret['OK'] == 1) {
                       saveId(idUser);
-                      print('LOGIN REALIZADO'); 
-                      
+                      print('LOGIN REALIZADO');
+
                       // DÉBITO TÉCNICO
-                      if (1==2)
-                      
+                      if (1 == 2) {
+                        //
+
                         print('NÃO TEM TAREFAS CADASTRADAS');
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => CadastrarTarefa()));
@@ -107,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                             builder: (context) => MyHomePage(
                                   title: 'OT - Organizador de Tarefas',
                                 )));
-                      }*/
+                      }
                     } else {
                       // AVISAR QUE O LOGIN ESTA ERRADO
                       print('AVISAR QUE O LOGIN ESTA ERRADO');
