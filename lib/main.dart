@@ -48,6 +48,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   static int TotRegs = 0;
+
+  @override
   Widget build(BuildContext context) {
     // print('TotRegs1 = ' + TotRegs.toString());
     carregaFake();
@@ -76,22 +78,26 @@ class _MyHomePageState extends State<MyHomePage> {
                         color: Colors.black,
                       )),
                 )),
-                SizedBox(height: 20,),
-                 TextButton(onPressed: () async {
-                  bool logOut = await logout();
-                  if(logOut) {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => LoginPage()));
-                  }
-                 }, 
-                child: const Text('Logout',
-                      textDirection: TextDirection.ltr,
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.red,
-                     ),
-                    ),
-                  ),
+            SizedBox(
+              height: 20,
+            ),
+            TextButton(
+              onPressed: () async {
+                bool logOut = await logout();
+                if (logOut) {
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => LoginPage()));
+                }
+              },
+              child: const Text(
+                'Logout',
+                textDirection: TextDirection.ltr,
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Colors.red,
+                ),
+              ),
+            ),
             Table(
                 border: TableBorder.all(color: Colors.black),
                 columnWidths: {},
@@ -121,39 +127,39 @@ class _MyHomePageState extends State<MyHomePage> {
         ]));
   }
 
-   Future<bool> logout() async {
+  Future<bool> logout() async {
     SharedPreferences prefer = await SharedPreferences.getInstance();
     await prefer.clear();
     return true;
   }
 
-  static List PegaLista(int i) {
-    List<dynamic> ret = [];
-    List _itens = [];
-    // List<String> retS = [];
-    API.ListaTarefas(1).then((response) {
-      print(response.body);
-      ret = json.decode(response.body);
-      print("ret[0]");
-      print(ret[0]);
-      print("ret[0][0]");
-      print(ret[0][0]);
-      TotRegs = ret[0][0];
-      print('TotRegs3 = ' + TotRegs.toString());
+  // static List PegaLista(int i) {
+  //   List<dynamic> ret = [];
+  //   List _itens = [];
+  //   // List<String> retS = [];
+  //   API.ListaTarefas(1).then((response) {
+  //     print(response.body);
+  //     ret = json.decode(response.body);
+  //     print("ret[0]");
+  //     print(ret[0]);
+  //     print("ret[0][0]");
+  //     print(ret[0][0]);
+  //     TotRegs = ret[0][0];
+  //     print('TotRegs3 = ' + TotRegs.toString());
 
-      for (int i = 1; i < TotRegs; i++) {
-        Map<String, dynamic> item = Map();
-        item["id"] = ret[i][0];
-        item["Nome"] = ret[i][1];
-        _itens.add(item);
-      }
+  //     for (int i = 1; i < TotRegs; i++) {
+  //       Map<String, dynamic> item = Map();
+  //       item["id"] = ret[i][0];
+  //       item["Nome"] = ret[i][1];
+  //       _itens.add(item);
+  //     }
 
-      // retS = ret.cast<String>();
-      // print(retS[1]);
-    });
-    // print(ret);
-    // print(retS);
-    // print('TotRegs2 = ' + TotRegs.toString());
-    return _itens;
-  }
+  //     // retS = ret.cast<String>();
+  //     // print(retS[1]);
+  //   });
+  //   // print(ret);
+  //   // print(retS);
+  //   // print('TotRegs2 = ' + TotRegs.toString());
+  //   return _itens;
+  // }
 }

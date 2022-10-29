@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'cadastrar_tarefa.dart';
 import 'api.dart';
 import 'tarefa.dart';
@@ -32,6 +33,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
   String nome = "";
   String prioridade = "";
   String horario = "";
+  String idUser = "0";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -144,13 +146,10 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
     horario = picked.hour.toString() + ":" + picked.minute.toString();
   }
 
-  void EnviaDados() {
-    String id = "1";
+  Future<void> EnviaDados() async {
     Tarefa tarefa = new Tarefa();
-
-    // AQUI DEVE TER O ID RETORNADO PELO LOGIN
-    tarefa.idUser = "1";
-
+    SharedPreferences prefer = await SharedPreferences.getInstance();
+    tarefa.idUser = prefer.getInt('ID').toString();
     tarefa.Nome = nome;
     tarefa.Prioridade = prioridade;
     tarefa.Hora = horario;
