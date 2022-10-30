@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:ot/cadastrar_tarefa.dart';
 import '../api.dart';
-import '../main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ot/sharedPreferencePage.dart';
+
+import '../home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -19,13 +20,7 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     verificarId().then((value) {
       if (value) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const MyHomePage(
-              title: 'OT - Organizador de Tarefas',
-            ),
-          ),
-        );
+        Navigator.of(context).pushReplacementNamed('/home');
       } else {
         // Se não tem não faz nada
       }
@@ -99,17 +94,10 @@ class _LoginPageState extends State<LoginPage> {
                       if (1 == 2) {
                         // DÉBITO TÉCNICO
                         print('NÃO TEM TAREFAS CADASTRADAS');
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => CadastrarTarefa()));
+                        Navigator.of(context).pushNamed('/cadastrar_tarefa');
                       } else {
                         print('TEM TAREFAS CADASTRADAS');
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => const MyHomePage(
-                              title: 'OT - Organizador de Tarefas',
-                            ),
-                          ),
-                        );
+                        Navigator.of(context).pushNamed('/home');
                       }
                     } else {
                       // AVISAR QUE O LOGIN ESTA ERRADO

@@ -1,5 +1,5 @@
 class Tarefa {
-  final int? id;
+  final String? id;
   final int idUser;
   final String nome;
   final int prioridade;
@@ -23,13 +23,13 @@ class Tarefa {
 
   factory Tarefa.fromJson(Map<String, dynamic> data) {
     return Tarefa(
-      id: data['id'] as int,
+      id: data['id'] as String,
       nome: data['nome'],
       habDiaSem: data['habDiaSem'] as bool,
       habDom: data['habDom'] as bool,
       habilitado: data['habilitado'] as bool,
       hamSab: data['hamSab'] as bool,
-      idUser: data['idUser'],
+      idUser: data['idUser'] as int,
       prioridade: data['prioridade'] as int,
     );
   }
