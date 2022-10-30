@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api.dart';
 import 'cadastrar_tarefa.dart';
-import 'tarefa.dart';
+import 'tarLista.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -13,7 +13,7 @@ class HomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<HomePage> {
   @override
-  List<Tarefa> tarefas = [];
+  List<TarLista> tarefas = [];
 
   @override
   void initState() {

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:ot/sharedPreferencePage.dart';
 import 'tarefa.dart';
+import 'tarLista.dart';
 
 class API {
   static Future cadastra(Tarefa tar) async {
@@ -19,15 +20,17 @@ class API {
     return await http.get(Uri.parse(url));
   }
 
-  static Future<Iterable<Tarefa>> listaTarefas() async {
+  static Future<Iterable<TarLista>> listaTarefas() async {
     final userId = await SharedPrefUtils.readId();
     if (userId == null) {
       return [];
     }
-    final url =
-        'https://635d4a9fcb6cf98e56b197ad.mockapi.io/tarefas'; //"https://tele-tudo.com/ot?op=3&idUsuario=$userId";
+    final url = 'https://tele-tudo.com/ot?op=3&idUsuario=$userId';
+    // final url = 'https://635d4a9fcb6cf98e56b197ad.mockapi.io/tarefas';
+    //
     final response = await http.get(Uri.parse(url));
+    print(response.body);
     final tarefas = jsonDecode(response.body) as List<dynamic>;
-    return tarefas.map((data) => Tarefa.fromJson(data));
+    return tarefas.map((data) => TarLista.fromJson(data));
   }
 }
