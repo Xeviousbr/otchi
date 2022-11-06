@@ -100,8 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                         Navigator.of(context).pushNamed('/home');
                       }
                     } else {
-                      // AVISAR QUE O LOGIN ESTA ERRADO
-                      print('AVISAR QUE O LOGIN ESTA ERRADO');
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     }
                   });
                 });
@@ -116,6 +115,10 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
+  final snackBar = SnackBar(content: Text("Usuário ou senha incorretos", 
+  textAlign: TextAlign.center),
+   backgroundColor: Colors.redAccent);
 
   static saveId(int idUser) async {
     SharedPreferences prefer = await SharedPreferences.getInstance();

@@ -64,7 +64,23 @@ class _MyHomePageState extends State<HomePage> {
               children: tarefas.map(
                 (tarefa) {
                   return Card(
-                    child: Text(tarefa.nome),
+                    child: ListTile(
+                      title: Text(tarefa.nome),
+                      trailing: PopupMenuButton(
+                        itemBuilder: (context) => [
+                          PopupMenuItem(
+                            child: Row(
+                              children: [
+                                IconButton(
+                                    onPressed: () {}, icon: Icon(Icons.delete)),
+                                IconButton(
+                                    onPressed: () {}, icon: Icon(Icons.edit)),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   );
                 },
               ).toList(),
