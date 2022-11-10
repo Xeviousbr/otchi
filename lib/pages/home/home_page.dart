@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'api.dart';
-import 'cadastrar_tarefa.dart';
-import 'tarLista.dart';
+import '../../models/tar_lista.dart';
+import '../../services/api.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -11,12 +10,14 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<HomePage> {
-  @override
+class _MyHomePageState extends State<HomePage> with TickerProviderStateMixin {
   List<TarLista> tarefas = [];
+  bool _isPlay = false;
+  late AnimationController _controller;
 
   @override
   void initState() {
+    _controller = AnimationController(duration: const Duration(seconds: 1), vsync: this);
     super.initState();
     API.listaTarefas().then((items) {
       setState(() {
@@ -25,13 +26,20 @@ class _MyHomePageState extends State<HomePage> {
     });
   }
 
+  //dispose para o botão de play
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: Drawer(
         child: Column(
           children: [
-            Spacer(),
+            const Spacer(),
             ElevatedButton(
               onPressed: () async {
                 bool logOut = await logout();
@@ -41,7 +49,7 @@ class _MyHomePageState extends State<HomePage> {
               },
               child: const Text('Deslogar'),
             ),
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
           ],
         ),
       ),
@@ -65,19 +73,32 @@ class _MyHomePageState extends State<HomePage> {
                 (tarefa) {
                   return Card(
                     child: ListTile(
+                      leading: GestureDetector(
+                        onTap: () {
+                          if (_isPlay == false) {
+                            _controller.forward();
+                            _isPlay = true;
+                          } else {
+                            _controller.reverse();
+                            _isPlay = false;
+                          }
+                        },
+                        child: AnimatedIcon(
+                          icon: AnimatedIcons.play_pause,
+                          progress: _controller,
+                          color: Colors.blue,
+                        ),
+                      ),
                       title: Text(tarefa.nome),
-                      trailing: PopupMenuButton(
-                        itemBuilder: (context) => [
-                          PopupMenuItem(
-                            child: Row(
-                              children: [
-                                IconButton(
-                                    onPressed: () {}, icon: Icon(Icons.delete)),
-                                IconButton(
-                                    onPressed: () {}, icon: Icon(Icons.edit)),
-                              ],
-                            ),
-                          )
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                              onPressed: () {
+                                print("editar tarefa ");
+                              },
+                              icon: const Icon(Icons.edit)),
+                          IconButton(onPressed: () {}, icon: const Icon(Icons.delete)),
                         ],
                       ),
                     ),

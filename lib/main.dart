@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ot/cadastrar_tarefa.dart';
-import 'package:ot/home_page.dart';
-import 'package:ot/login_page/login_page.dart';
+
+import 'pages/cadastrar_tarefa.dart';
+import 'pages/home/home_page.dart';
+import 'pages/login_page/login_page.dart';
 
 void main() {
   runApp(const MyApp());

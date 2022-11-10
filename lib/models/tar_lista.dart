@@ -47,7 +47,3 @@ class TarLista {
     };
   }
 }
-
-bool _converteParaBool(int data) {
-  return data == 1 ? true : false;
-}

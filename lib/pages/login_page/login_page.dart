@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:ot/cadastrar_tarefa.dart';
-import '../api.dart';
+import '../../services/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ot/sharedPreferencePage.dart';
+import 'package:ot/services/shared_reference_page.dart';
 
-import '../home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -100,6 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                         Navigator.of(context).pushNamed('/home');
                       }
                     } else {
+                      print("login errado");
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     }
                   });
@@ -116,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  final snackBar = SnackBar(
+  final snackBar = const SnackBar(
       content: Text("Usuário ou senha incorretos", textAlign: TextAlign.center),
       backgroundColor: Colors.redAccent);
 
