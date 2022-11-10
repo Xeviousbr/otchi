@@ -117,13 +117,14 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  final snackBar = SnackBar(content: Text("Usuário ou senha incorretos", 
-  textAlign: TextAlign.center),
-   backgroundColor: Colors.redAccent);
+  final snackBar = SnackBar(
+      content: Text("Usuário ou senha incorretos", textAlign: TextAlign.center),
+      backgroundColor: Colors.redAccent);
 
   static saveId(int idUser) async {
     SharedPreferences prefer = await SharedPreferences.getInstance();
     await prefer.setInt('ID', idUser);
+    await prefer.setInt('TarefEditID', 0);
   }
 
   Future<bool> verificarId() async {

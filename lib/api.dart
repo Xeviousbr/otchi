@@ -43,4 +43,10 @@ class API {
     var url = baseUrl;
     return await http.get(Uri.parse(url));
   }
+
+  static Future fim(String id) async {
+    String baseUrl = "https://tele-tudo.com/ot?op=6&id=$id";
+    var url = baseUrl;
+    return await http.get(Uri.parse(url));
+  }
 }

@@ -35,7 +35,21 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
   int prioridade = 0;
   String horario = "";
   String idUser = "0";
+  int? TarefEditID;
   @override
+  void initState() {
+    super.initState();
+    SharedPrefUtils.readTarefEditID().then((vlr) {
+      setState(() {
+        if (vlr == 0) {
+          print('Nova Tarefa');
+        } else {
+          print('EDIÇÃO');
+        }
+      });
+    });
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
