@@ -1,8 +1,10 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
-import 'package:ot/sharedPreferencePage.dart';
-import 'tarefa.dart';
-import 'tarLista.dart';
+
+import '../models/tar_lista.dart';
+import '../models/tarefa.dart';
+import 'shared_reference_page.dart';
 
 class API {
   static Future cadastra(Tarefa tar) async {

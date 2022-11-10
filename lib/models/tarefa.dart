@@ -47,7 +47,3 @@ class Tarefa {
     };
   }
 }
-
-bool _converteParaBool(int data) {
-  return data == 1 ? true : false;
-}

@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:ot/sharedPreferencePage.dart';
-import 'api.dart';
-import 'tarLista.dart';
-import 'tarefa.dart';
+import 'package:ot/services/shared_reference_page.dart';
+import '../models/tarefa.dart';
+import '../services/api.dart';
 
 class CadastrarTarefa extends StatefulWidget {
   const CadastrarTarefa({super.key});
@@ -50,6 +49,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
