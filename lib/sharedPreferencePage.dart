@@ -5,4 +5,14 @@ class SharedPrefUtils {
     final prefer = await SharedPreferences.getInstance();
     return prefer.getInt('ID');
   }
+
+  static readTarefEditID() async {
+    final prefer = await SharedPreferences.getInstance();
+    return prefer.getInt('TarefEditID');
+  }
+
+  /* static Future<int?> readTarefEditID() async {
+    final prefer = await SharedPreferences.getInstance();
+    return prefer.getInt('TarefEditID');
+  } */
 }
