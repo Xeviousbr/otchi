@@ -100,6 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                         Navigator.of(context).pushNamed('/home');
                       }
                     } else {
+                      print("login errado");
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     }
                   });

@@ -11,18 +11,30 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<HomePage> {
+class _MyHomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   List<TarLista> tarefas = [];
+  bool _isPlay = false;
+  late AnimationController _controller;
+  
 
   @override
   void initState() {
+     _controller =
+        AnimationController(duration: const Duration(seconds: 1), vsync: this);
     super.initState();
     API.listaTarefas().then((items) {
       setState(() {
         tarefas = items.toList();
       });
     });
+  }
+
+  //dispose para o botão de play
+   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -61,25 +73,42 @@ class _MyHomePageState extends State<HomePage> {
           ),
           Expanded(
             child: ListView(
+              
               children: tarefas.map(
                 (tarefa) {
                   return Card(
                     child: ListTile(
+                      
+                      leading: GestureDetector(
+                        onTap: () {
+                          
+                          
+                          if (_isPlay == false) {
+                _controller.forward();
+                _isPlay = true;
+              } else {
+                _controller.reverse();
+                _isPlay = false;
+              }
+                        },
+                        child: AnimatedIcon(
+                          icon: AnimatedIcons.play_pause,
+                          progress: _controller,
+                          color: Colors.blue,),
+                      ),
                       title: Text(tarefa.nome),
-                      trailing: PopupMenuButton(
-                        itemBuilder: (context) => [
-                          PopupMenuItem(
-                            child: Row(
-                              children: [
-                                IconButton(
-                                    onPressed: () {}, icon: Icon(Icons.delete)),
-                                IconButton(
-                                    onPressed: () {}, icon: Icon(Icons.edit)),
-                              ],
-                            ),
-                          )
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(onPressed: () {
+                            print("editar tarefa ");
+                          }, 
+                          icon: Icon(Icons.edit)),
+                          IconButton(onPressed: () {}, 
+                          icon: Icon(Icons.delete)),
                         ],
                       ),
+                      
                     ),
                   );
                 },
