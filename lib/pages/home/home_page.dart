@@ -100,10 +100,7 @@ class _MyHomePageState extends State<HomePage> with TickerProviderStateMixin {
                               },
                               icon: const Icon(Icons.edit)),
                           IconButton(
-                              onPressed: () {
-                                null;
-                              },
-                              icon: const Icon(Icons.delete)),
+                              onPressed: () {}, icon: const Icon(Icons.delete)),
                         ],
                       ),
                     ),
