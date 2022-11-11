@@ -45,6 +45,7 @@ class _MyHomePageState extends State<HomePage> with TickerProviderStateMixin {
               onPressed: () async {
                 bool logOut = await logout();
                 if (logOut) {
+                  if (!mounted) return;
                   Navigator.of(context).pushNamed('/login');
                 }
               },
