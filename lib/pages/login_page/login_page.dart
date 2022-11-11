@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../../services/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ot/services/shared_reference_page.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -79,12 +81,24 @@ class _LoginPageState extends State<LoginPage> {
                 padding: const EdgeInsets.all(15),
               ),
               onPressed: () {
-                API.veLogin(email, password).then((logou) {
+                API.veLogin(email, password).then((response) {
                   setState(() {
-                    if (logou) {
-                      Navigator.of(context).pushNamed('/home');
+                    var ret = json.decode(response.body);
+                    int idUser = (ret["ID"]);
+                    if (ret['OK'] == 1) {
+                      saveId(idUser);
+                      print('LOGIN REALIZADO');
+                      // DÉBITO TÉCNICO
+                      if (1 == 2) {
+                        // DÉBITO TÉCNICO
+                        print('NÃO TEM TAREFAS CADASTRADAS');
+                        Navigator.of(context).pushNamed('/cadastrar_tarefa');
+                      } else {
+                        print('TEM TAREFAS CADASTRADAS');
+                        Navigator.of(context).pushNamed('/home');
+                      }
                     } else {
-                      debugPrint("login invalido");
+                      print("login errado");
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     }
                   });
