@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ot/pages/home/tarefa_item_component.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/tar_lista.dart';
@@ -10,28 +11,17 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<HomePage> with TickerProviderStateMixin {
+class _MyHomePageState extends State<HomePage> {
   List<TarLista> tarefas = [];
-  bool _isPlay = false;
-  late AnimationController _controller;
 
   @override
   void initState() {
-    _controller =
-        AnimationController(duration: const Duration(seconds: 1), vsync: this);
     super.initState();
     API.listaTarefas().then((items) {
       setState(() {
         tarefas = items.toList();
       });
     });
-  }
-
-  //dispose para o botão de play
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 
   @override
@@ -66,48 +56,10 @@ class _MyHomePageState extends State<HomePage> with TickerProviderStateMixin {
       ),
       body: Column(
         children: [
-          const SizedBox(
-            height: 20,
-          ),
+          const SizedBox(height: 20),
           Expanded(
             child: ListView(
-              children: tarefas.map(
-                (tarefa) {
-                  return Card(
-                    child: ListTile(
-                      leading: GestureDetector(
-                        onTap: () {
-                          if (_isPlay == false) {
-                            _controller.forward();
-                            _isPlay = true;
-                          } else {
-                            _controller.reverse();
-                            _isPlay = false;
-                          }
-                        },
-                        child: AnimatedIcon(
-                          icon: AnimatedIcons.play_pause,
-                          progress: _controller,
-                          color: Colors.blue,
-                        ),
-                      ),
-                      title: Text(tarefa.nome),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                              onPressed: () {
-                                debugPrint("editar tarefa ");
-                              },
-                              icon: const Icon(Icons.edit)),
-                          IconButton(
-                              onPressed: () {}, icon: const Icon(Icons.delete)),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ).toList(),
+              children: tarefas.map((tarefa) => TarefaItemComponent(tarefa: tarefa)).toList(),
             ),
           )
         ],
