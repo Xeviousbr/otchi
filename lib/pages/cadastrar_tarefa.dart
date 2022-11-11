@@ -34,16 +34,16 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
   int prioridade = 0;
   String horario = "";
   String idUser = "0";
-  int? TarefEditID;
+  int? tarefEditID;
   @override
   void initState() {
     super.initState();
     SharedPrefUtils.readTarefEditID().then((vlr) {
       setState(() {
         if (vlr == 0) {
-          print('Nova Tarefa');
+          debugPrint('Nova Tarefa');
         } else {
-          print('EDIÇÃO');
+          debugPrint('EDIÇÃO');
         }
       });
     });
@@ -188,7 +188,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
           Navigator.pop(context);
         } else {
           // COLOCAR UMA MENSAGEM DE ERRO AQUI
-          print('Deu errado');
+          debugPrint('Deu errado');
         }
       });
     });
