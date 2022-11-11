@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ot/pages/home/tarefa_item_component.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/tar_lista.dart';
@@ -10,10 +11,8 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<HomePage> with TickerProviderStateMixin {
+class _MyHomePageState extends State<HomePage> {
   List<TarLista> tarefas = [];
-  bool _isPlay = false;
-  late AnimationController _controller;
 
   @override
   void initState() {
@@ -25,13 +24,6 @@ class _MyHomePageState extends State<HomePage> with TickerProviderStateMixin {
         tarefas = items.toList();
       });
     });
-  }
-
-  //dispose para o botão de play
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 
   @override
@@ -65,9 +57,7 @@ class _MyHomePageState extends State<HomePage> with TickerProviderStateMixin {
       ),
       body: Column(
         children: [
-          const SizedBox(
-            height: 20,
-          ),
+          const SizedBox(height: 20),
           Expanded(
             child: ListView(
               children: tarefas.map(
