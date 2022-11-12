@@ -21,7 +21,7 @@ class API {
     var url = baseUrl;
     final response = await http.get(Uri.parse(url));
     var ret = json.decode(response.body);
-    int? idUser = (ret["ID"]);
+    final int? idUser = (ret["ID"]);
     if (ret['OK'] == 1 && idUser != null) {
       final prefer = await SharedPreferences.getInstance();
       await prefer.setInt('ID', idUser);
@@ -58,6 +58,22 @@ class API {
   static Future fim(String id) async {
     String baseUrl = "https://tele-tudo.com/ot?op=6&id=$id";
     var url = baseUrl;
+    return await http.get(Uri.parse(url));
+  }
+
+  static Future cadastraUser(String user, String pass) async {
+    String baseUrl = "https://tele-tudo.com/ot?op=7&user=$user&pass=$pass";
+    var url = baseUrl;
+
+    final response = await http.get(Uri.parse(url));
+    var ret = json.decode(response.body);
+    if (ret['OK'] == 1) {
+      print("CADASTRO REALIZADO");
+      print("ID USUARIO = $ret['ID']");
+    } else {
+      print("ERRO NO CADSTRO");
+      print(ret['DescErro']);
+    }
     return await http.get(Uri.parse(url));
   }
 }

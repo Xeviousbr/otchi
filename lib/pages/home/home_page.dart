@@ -59,7 +59,9 @@ class _MyHomePageState extends State<HomePage> {
           const SizedBox(height: 20),
           Expanded(
             child: ListView(
-              children: tarefas.map((tarefa) => TarefaItemComponent(tarefa: tarefa)).toList(),
+              children: tarefas
+                  .map((tarefa) => TarefaItemComponent(tarefa: tarefa))
+                  .toList(),
             ),
           )
         ],
