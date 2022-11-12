@@ -162,7 +162,10 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
       context: context,
       initialTime: _time,
     ))!;
-    horario = '${picked.hour} : ${picked.minute}'; // TODO: VER DATETIME
+
+    horario = '${picked.hour} : ${picked.minute}';
+    // ignore: todo
+    //TODO: VER DATETIME
   }
 
   Future<void> enviaDados() async {

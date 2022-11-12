@@ -105,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
       content: Text("Usuário ou senha incorretos", textAlign: TextAlign.center),
       backgroundColor: Colors.redAccent);
 
-  static saveId(int idUser) async {
+  static(int idUser) async {
     SharedPreferences prefer = await SharedPreferences.getInstance();
     await prefer.setInt('ID', idUser);
     await prefer.setInt('TarefEditID', 0);

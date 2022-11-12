@@ -35,6 +35,7 @@ class _MyHomePageState extends State<HomePage> {
               onPressed: () async {
                 bool logOut = await logout();
                 if (logOut) {
+                  if (!mounted) return;
                   Navigator.of(context).pushNamed('/login');
                 }
               },
