@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'pages/cadastrar_tarefa.dart';
+import 'pages/register_page/register_page.dart';
 import 'pages/home/home_page.dart';
 import 'pages/login_page/login_page.dart';
 
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
         '/login': (_) => const LoginPage(),
         '/cadastrar_tarefa': (_) => const CadastrarTarefa(),
         '/home': (_) => const HomePage(),
+        '/cadastro_user': (_) => const RegisterPage(),
       },
       home: const LoginPage(),
     );
