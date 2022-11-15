@@ -61,19 +61,16 @@ class API {
     return await http.get(Uri.parse(url));
   }
 
-  static Future cadastraUser(String user, String pass) async {
+  static Future<bool> cadastraUser(String user, String pass) async {
     String baseUrl = "https://tele-tudo.com/ot?op=7&user=$user&pass=$pass";
     var url = baseUrl;
 
     final response = await http.get(Uri.parse(url));
     var ret = json.decode(response.body);
     if (ret['OK'] == 1) {
-      print("CADASTRO REALIZADO");
-      print("ID USUARIO = $ret['ID']");
+      return true;
     } else {
-      print("ERRO NO CADSTRO");
-      print(ret['DescErro']);
+      return false;
     }
-    return await http.get(Uri.parse(url));
   }
 }

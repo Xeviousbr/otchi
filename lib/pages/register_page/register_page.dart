@@ -57,7 +57,7 @@ class RegisterPage extends StatelessWidget {
               onPressed: () {
                 API.cadastraUser(user, pass).then((cadastrou) {
                   if (cadastrou) {
-                    Navigator.of(context).pushNamed('/home');
+                    Navigator.of(context).pushNamed('/login');
                   } else {
                     debugPrint("cadastro invalido");
                   }
