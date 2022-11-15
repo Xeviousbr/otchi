@@ -94,6 +94,27 @@ class _LoginPageState extends State<LoginPage> {
                 "Login",
                 style: TextStyle(color: Colors.black, fontSize: 15),
               ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                /* backgroundColor: Color(0xFF33b1d0),
+                  textStyle: TextStyle(
+                    fontSize: 20,
+                  ),*/
+                padding: const EdgeInsets.all(15),
+              ),
+              onPressed: () {
+                Navigator.of(context).pushNamed('/cadastro_user');
+              },
+              child: const Text(
+                "Cadastre-se",
+                style: TextStyle(color: Colors.black, fontSize: 15),
+              ),
             )
           ],
         ),
