@@ -9,13 +9,15 @@ class TarefaItemComponent extends StatefulWidget {
   State<TarefaItemComponent> createState() => _TarefaItemComponentState();
 }
 
-class _TarefaItemComponentState extends State<TarefaItemComponent> with TickerProviderStateMixin {
+class _TarefaItemComponentState extends State<TarefaItemComponent>
+    with TickerProviderStateMixin {
   late AnimationController _controller;
   bool _isPlay = false;
 
   @override
   void initState() {
-    _controller = AnimationController(duration: const Duration(seconds: 1), vsync: this);
+    _controller =
+        AnimationController(duration: const Duration(seconds: 1), vsync: this);
     super.initState();
   }
 
@@ -45,7 +47,7 @@ class _TarefaItemComponentState extends State<TarefaItemComponent> with TickerPr
           children: [
             IconButton(
                 onPressed: () {
-                  print("editar tarefa ");
+                  debugPrint("editar tarefa ");
                 },
                 icon: const Icon(Icons.edit)),
             IconButton(onPressed: () {}, icon: const Icon(Icons.delete)),
