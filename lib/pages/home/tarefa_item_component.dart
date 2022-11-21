@@ -23,6 +23,7 @@ class _TarefaItemComponentState extends State<TarefaItemComponent>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Card(
       child: ListTile(
         leading: GestureDetector(
@@ -36,21 +37,30 @@ class _TarefaItemComponentState extends State<TarefaItemComponent>
             }
           },
           child: AnimatedIcon(
+            size: 30,
             icon: AnimatedIcons.play_pause,
             progress: _controller,
-            color: Colors.blue,
+            color: const Color(0xff5F8D4E),
           ),
         ),
-        title: Text(widget.tarefa.nome),
+        title: Text(
+          widget.tarefa.nome,
+          style: theme.textTheme.bodyMedium,
+        ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
+                color: const Color(0xff5F8D4E),
                 onPressed: () {
                   debugPrint("editar tarefa ");
                 },
                 icon: const Icon(Icons.edit)),
-            IconButton(onPressed: () {}, icon: const Icon(Icons.delete)),
+            IconButton(
+              color: const Color(0xffAC0D0D),
+              onPressed: () {},
+              icon: const Icon(Icons.delete),
+            ),
           ],
         ),
       ),

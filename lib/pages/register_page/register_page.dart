@@ -1,23 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:ot/services/api.dart';
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
   @override
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  String user = '';
+  String pass = '';
+  bool isPasswordVisible = true;
+
+  @override
   Widget build(BuildContext context) {
-    String user = '';
-    String pass = '';
+    final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 241, 241, 241),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
+            Text(
               "Faça seu cadastro",
-              style: TextStyle(fontSize: 20),
+              style: theme.textTheme.titleMedium,
             ),
             const SizedBox(
               height: 35,
@@ -26,8 +33,10 @@ class RegisterPage extends StatelessWidget {
               onChanged: (text) {
                 user = text;
               },
+              style: theme.textTheme.bodyMedium,
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
+                suffixIcon: Icon(Icons.email),
                 labelText: "Email:",
                 border: OutlineInputBorder(),
               ),
@@ -39,33 +48,44 @@ class RegisterPage extends StatelessWidget {
               onChanged: (text) {
                 pass = text;
               },
-              obscureText: true,
-              decoration: const InputDecoration(
+              style: theme.textTheme.bodyMedium,
+              obscureText: isPasswordVisible,
+              decoration: InputDecoration(
+                suffixIcon: IconButton(
+                  icon: isPasswordVisible
+                      ? const Icon(Icons.visibility_off)
+                      : const Icon(Icons.visibility),
+                  onPressed: () =>
+                      setState(() => isPasswordVisible = !isPasswordVisible),
+                ),
                 labelText: "Senha:",
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(
               height: 20,
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                padding: const EdgeInsets.all(15),
-              ),
-              onPressed: () {
-                API.cadastraUser(user, pass).then((cadastrou) {
-                  if (cadastrou) {
-                    Navigator.of(context).pushNamed('/login');
-                  } else {
-                    debugPrint("cadastro invalido");
-                  }
-                });
-              },
-              child: const Text(
-                "Cadastrar",
-                style: TextStyle(color: Colors.black, fontSize: 15),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  padding: const EdgeInsets.all(15),
+                ),
+                onPressed: () {
+                  API.cadastraUser(user, pass).then((cadastrou) {
+                    if (cadastrou) {
+                      Navigator.of(context).pushNamed('/login');
+                    } else {
+                      debugPrint("cadastro invalido");
+                    }
+                  });
+                },
+                child: Text(
+                  "Cadastrar",
+                  style: theme.textTheme.bodyLarge,
+                ),
               ),
             )
           ],
