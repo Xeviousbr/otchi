@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ot/services/api.dart';
+import 'package:ot/services/auth_service.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
@@ -8,6 +8,7 @@ class RegisterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     String user = '';
     String pass = '';
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 241, 241, 241),
       body: Padding(
@@ -50,12 +51,12 @@ class RegisterPage extends StatelessWidget {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 padding: const EdgeInsets.all(15),
               ),
               onPressed: () {
-                API.cadastraUser(user, pass).then((cadastrou) {
+                // todo: validar email
+                AuthService.cadastraUser(user, pass).then((cadastrou) {
                   if (cadastrou) {
                     Navigator.of(context).pushNamed('/login');
                   } else {

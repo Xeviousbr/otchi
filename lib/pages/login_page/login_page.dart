@@ -1,28 +1,12 @@
 import 'package:flutter/material.dart';
-import '../../services/api.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ot/services/shared_reference_page.dart';
+import 'package:ot/services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
-
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  @override
-  void initState() {
-    super.initState();
-    verificarId().then((value) {
-      if (value) {
-        Navigator.of(context).pushReplacementNamed('/home');
-      } else {
-        // Se não tem não faz nada
-      }
-    });
-  }
-
   String email = '';
   String password = '';
 
@@ -70,8 +54,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 /* backgroundColor: Color(0xFF33b1d0),
                   textStyle: TextStyle(
                     fontSize: 20,
@@ -79,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
                 padding: const EdgeInsets.all(15),
               ),
               onPressed: () {
-                API.veLogin(email, password).then((logou) {
+                AuthService.login(email, password).then((logou) {
                   setState(() {
                     if (logou) {
                       Navigator.of(context).pushNamed('/home');
@@ -100,8 +83,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 /* backgroundColor: Color(0xFF33b1d0),
                   textStyle: TextStyle(
                     fontSize: 20,
@@ -123,20 +105,5 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   final snackBar = const SnackBar(
-      content: Text("Usuário ou senha incorretos", textAlign: TextAlign.center),
-      backgroundColor: Colors.redAccent);
-
-  static(int idUser) async {
-    SharedPreferences prefer = await SharedPreferences.getInstance();
-    await prefer.setInt('ID', idUser);
-    await prefer.setInt('TarefEditID', 0);
-  }
-
-  Future<bool> verificarId() async {
-    if (await SharedPrefUtils.readId() != null) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+      content: Text("Usuário ou senha incorretos", textAlign: TextAlign.center), backgroundColor: Colors.redAccent);
 }
