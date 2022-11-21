@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ot/services/api.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -73,15 +72,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       borderRadius: BorderRadius.circular(10)),
                   padding: const EdgeInsets.all(15),
                 ),
-                onPressed: () {
-                  API.cadastraUser(user, pass).then((cadastrou) {
-                    if (cadastrou) {
-                      Navigator.of(context).pushNamed('/login');
-                    } else {
-                      debugPrint("cadastro invalido");
-                    }
-                  });
-                },
+                onPressed: () {},
                 child: Text(
                   "Cadastrar",
                   style: theme.textTheme.bodyLarge,

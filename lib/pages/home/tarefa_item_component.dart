@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:ot/models/tar_lista.dart';
+import 'package:ot/models/tarefa.dart';
+import 'package:ot/services/api.dart';
 
 class TarefaItemComponent extends StatefulWidget {
   const TarefaItemComponent({Key? key, required this.tarefa}) : super(key: key);
-  final TarLista tarefa;
+  final Tarefa tarefa;
 
   @override
   State<TarefaItemComponent> createState() => _TarefaItemComponentState();
@@ -27,7 +28,8 @@ class _TarefaItemComponentState extends State<TarefaItemComponent>
     return Card(
       child: ListTile(
         leading: GestureDetector(
-          onTap: () {
+          onTap: () async {
+            await API.acaoTarefa(widget.tarefa.id, !_isPlay);
             if (_isPlay == false) {
               _controller.forward();
               _isPlay = true;
@@ -53,7 +55,8 @@ class _TarefaItemComponentState extends State<TarefaItemComponent>
             IconButton(
                 color: const Color(0xff5F8D4E),
                 onPressed: () {
-                  debugPrint("editar tarefa ");
+                  Navigator.of(context).pushNamed('/cadastrar_tarefa',
+                      arguments: {'id': widget.tarefa.id});
                 },
                 icon: const Icon(Icons.edit)),
             IconButton(

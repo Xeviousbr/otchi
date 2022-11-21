@@ -1,28 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:ot/pages/home/tarefa_item_component.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ot/services/auth_service.dart';
 
-import '../../models/tar_lista.dart';
+import '../../models/tarefa.dart';
 import '../../services/api.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
-  @override
-  State<HomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<HomePage> {
-  List<TarLista> tarefas = [];
-
-  @override
-  void initState() {
-    super.initState();
-    API.listaTarefas().then((items) {
-      setState(() {
-        tarefas = items.toList();
-      });
-    });
-  }
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +18,8 @@ class _MyHomePageState extends State<HomePage> {
             const Spacer(),
             ElevatedButton(
               onPressed: () async {
-                bool logOut = await logout();
-                if (logOut) {
-                  if (!mounted) return;
-                  Navigator.of(context).pushNamed('/login');
-                }
+                await AuthService.logout();
+                Navigator.of(context).pushNamed('/login');
               },
               child: Text(
                 'Deslogar',
@@ -64,20 +45,18 @@ class _MyHomePageState extends State<HomePage> {
         children: [
           const SizedBox(height: 20),
           Expanded(
-            child: ListView(
-              children: tarefas
-                  .map((tarefa) => TarefaItemComponent(tarefa: tarefa))
-                  .toList(),
+            child: StreamBuilder<Iterable<Tarefa>>(
+              stream: API.listaTarefas(),
+              initialData: const [],
+              builder: (context, snapshot) {
+                return ListView(
+                  children: snapshot.data!.map((tarefa) => TarefaItemComponent(tarefa: tarefa)).toList(),
+                );
+              },
             ),
           )
         ],
       ),
     );
-  }
-
-  Future<bool> logout() async {
-    SharedPreferences prefer = await SharedPreferences.getInstance();
-    await prefer.clear();
-    return true;
   }
 }

@@ -1,6 +1,5 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:ot/services/shared_reference_page.dart';
+import 'package:uuid/uuid.dart';
 import '../models/tarefa.dart';
 import '../services/api.dart';
 
@@ -38,15 +37,6 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
   @override
   void initState() {
     super.initState();
-    SharedPrefUtils.readTarefEditID().then((vlr) {
-      setState(() {
-        if (vlr == 0) {
-          debugPrint('Nova Tarefa');
-        } else {
-          debugPrint('EDIÇÃO');
-        }
-      });
-    });
   }
 
   @override
@@ -188,31 +178,24 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
   }
 
   Future<void> enviaDados() async {
-    final userId = await SharedPrefUtils.readId();
-    if (userId == null) {
-      return;
-    }
+    // todo: ler os dados da tela e preencher esse objeto abaixo
+    final id = (ModalRoute.of(context)?.settings.arguments
+        as Map<String, dynamic>?)?['id'] as String?;
     final tarefa = Tarefa(
-      idUser: userId,
+      id: id ?? const Uuid().v1(),
       nome: nome,
       prioridade: prioridade,
-      hora: horario,
-      habDiaSem: diassem,
-      hamSab: sabados,
-      habDom: domingos,
       habilitado: true,
+      horarios: [],
+      diasSemanaHabilitado: diasSemana,
     );
 
-    API.cadastra(tarefa).then((response) {
-      setState(() {
-        var ret = json.decode(response.body);
-        if (ret['OK'] == 1) {
-          Navigator.pop(context);
-        } else {
-          // COLOCAR UMA MENSAGEM DE ERRO AQUI
-          debugPrint('Deu errado');
-        }
-      });
-    });
+    if (id == null) {
+      await API.cadastra(tarefa);
+    } else {
+      await API.edita(tarefa);
+    }
+    //todo: add tratamento de erro
+    Navigator.of(context).pop();
   }
 }

@@ -1,28 +1,11 @@
 import 'package:flutter/material.dart';
-import '../../services/api.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ot/services/shared_reference_page.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
-
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  @override
-  void initState() {
-    super.initState();
-    verificarId().then((value) {
-      if (value) {
-        Navigator.of(context).pushReplacementNamed('/home');
-      } else {
-        // Se não tem não faz nada
-      }
-    });
-  }
-
   String email = '';
   String password = '';
   bool isPasswordVisible = true;
@@ -87,18 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius: BorderRadius.circular(10)),
                   padding: const EdgeInsets.all(15),
                 ),
-                onPressed: () {
-                  API.veLogin(email, password).then((logou) {
-                    setState(() {
-                      if (logou) {
-                        Navigator.of(context).pushNamed('/home');
-                      } else {
-                        debugPrint("login invalido");
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      }
-                    });
-                  });
-                },
+                onPressed: () {},
                 child: Text(
                   "Login",
                   style: theme.textTheme.bodyLarge,
@@ -138,18 +110,4 @@ class _LoginPageState extends State<LoginPage> {
   final snackBar = const SnackBar(
       content: Text("Usuário ou senha incorretos", textAlign: TextAlign.center),
       backgroundColor: Colors.redAccent);
-
-  static(int idUser) async {
-    SharedPreferences prefer = await SharedPreferences.getInstance();
-    await prefer.setInt('ID', idUser);
-    await prefer.setInt('TarefEditID', 0);
-  }
-
-  Future<bool> verificarId() async {
-    if (await SharedPrefUtils.readId() != null) {
-      return true;
-    } else {
-      return false;
-    }
-  }
 }
