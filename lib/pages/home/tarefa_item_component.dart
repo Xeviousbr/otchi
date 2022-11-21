@@ -61,13 +61,7 @@ class _TarefaItemComponentState extends State<TarefaItemComponent>
                 icon: const Icon(Icons.edit)),
             IconButton(
               color: const Color(0xffAC0D0D),
-<<<<<<< HEAD
               onPressed: () {},
-=======
-              onPressed: () {
-                API.deleta(widget.tarefa.id);
-              },
->>>>>>> 268848af6ef905be092aa986e1f4224046e49703
               icon: const Icon(Icons.delete),
             ),
           ],

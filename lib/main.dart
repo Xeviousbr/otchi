@@ -3,11 +3,6 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:ot/components/theme.dart';
-<<<<<<< HEAD
-=======
-import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:ot/services/auth_service.dart';
->>>>>>> 268848af6ef905be092aa986e1f4224046e49703
 
 import 'firebase_options.dart';
 import 'pages/cadastrar_tarefa.dart';
@@ -39,39 +34,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
     return MaterialApp(
       title: 'OT - Organizador de Tarefas',
       theme: theme(),
       routes: {
-        '/login': (_) => LoginPage(),
+        '/login': (_) => const LoginPage(),
         '/cadastrar_tarefa': (_) => const CadastrarTarefa(),
         '/home': (_) => const HomePage(),
         '/cadastro_user': (_) => const RegisterPage(),
       },
-      home: LoginPage(),
+      home: const LoginPage(),
     );
-=======
-    return StreamBuilder<bool>(
-        stream: AuthService.estaLogado(),
-        builder: (context, snapshot) {
-          if (snapshot.data == null) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          return MaterialApp(
-            title: 'OT - Organizador de Tarefas',
-            theme: theme(),
-            routes: {
-              '/login': (_) => LoginPage(),
-              '/cadastrar_tarefa': (_) => CadastrarTarefa(),
-              '/home': (_) => const HomePage(),
-              '/cadastro_user': (_) => const RegisterPage(),
-            },
-            home: snapshot.data! ? const HomePage() : LoginPage(),
-          );
-        });
->>>>>>> 268848af6ef905be092aa986e1f4224046e49703
   }
 }
