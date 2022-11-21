@@ -1,5 +1,3 @@
-// ignore_for_file: depend_on_referenced_packages
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -8,10 +6,7 @@ import '../models/tarefa.dart';
 class API {
   static CollectionReference<Map<String, dynamic>> _tarefasCollection() {
     final userId = FirebaseAuth.instance.currentUser!.uid;
-    return FirebaseFirestore.instance
-        .collection('users')
-        .doc(userId)
-        .collection('tarefas');
+    return FirebaseFirestore.instance.collection('users').doc(userId).collection('tarefas');
   }
 
   static Future<void> cadastra(Tarefa tarefa) async {
@@ -48,9 +43,7 @@ class API {
       ),
       toFirestore: (tarefa, _) => tarefa.toJson(),
     );
-    return referencia
-        .snapshots()
-        .map((event) => event.docs.map((doc) => doc.data()));
+    return referencia.snapshots().map((event) => event.docs.map((doc) => doc.data()));
   }
 
   static Future deleta(String id) async {
