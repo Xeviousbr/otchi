@@ -72,7 +72,19 @@ class _RegisterPageState extends State<RegisterPage> {
                       borderRadius: BorderRadius.circular(10)),
                   padding: const EdgeInsets.all(15),
                 ),
+<<<<<<< HEAD
                 onPressed: () {},
+=======
+                onPressed: () {
+                  AuthService.cadastraUser(user, pass).then((cadastrou) {
+                    if (cadastrou) {
+                      Navigator.of(context).pushNamed('/login');
+                    } else {
+                      debugPrint("cadastro invalido");
+                    }
+                  });
+                },
+>>>>>>> 268848af6ef905be092aa986e1f4224046e49703
                 child: Text(
                   "Cadastrar",
                   style: theme.textTheme.bodyLarge,
