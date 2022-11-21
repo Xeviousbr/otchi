@@ -1,29 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:ot/services/auth_service.dart';
 
-class RegisterPage extends StatefulWidget {
+class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
-}
-
-class _RegisterPageState extends State<RegisterPage> {
-  String user = '';
-  String pass = '';
-  bool isPasswordVisible = true;
-
-  @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    String user = '';
+    String pass = '';
+
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 241, 241, 241),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               "Faça seu cadastro",
-              style: theme.textTheme.titleMedium,
+              style: TextStyle(fontSize: 20),
             ),
             const SizedBox(
               height: 35,
@@ -32,10 +27,8 @@ class _RegisterPageState extends State<RegisterPage> {
               onChanged: (text) {
                 user = text;
               },
-              style: theme.textTheme.bodyMedium,
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
-                suffixIcon: Icon(Icons.email),
                 labelText: "Email:",
                 border: OutlineInputBorder(),
               ),
@@ -47,36 +40,33 @@ class _RegisterPageState extends State<RegisterPage> {
               onChanged: (text) {
                 pass = text;
               },
-              style: theme.textTheme.bodyMedium,
-              obscureText: isPasswordVisible,
-              decoration: InputDecoration(
-                suffixIcon: IconButton(
-                  icon: isPasswordVisible
-                      ? const Icon(Icons.visibility_off)
-                      : const Icon(Icons.visibility),
-                  onPressed: () =>
-                      setState(() => isPasswordVisible = !isPasswordVisible),
-                ),
+              obscureText: true,
+              decoration: const InputDecoration(
                 labelText: "Senha:",
-                border: const OutlineInputBorder(),
+                border: OutlineInputBorder(),
               ),
             ),
             const SizedBox(
               height: 20,
             ),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  padding: const EdgeInsets.all(15),
-                ),
-                onPressed: () {},
-                child: Text(
-                  "Cadastrar",
-                  style: theme.textTheme.bodyLarge,
-                ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                padding: const EdgeInsets.all(15),
+              ),
+              onPressed: () {
+                // todo: validar email
+                AuthService.cadastraUser(user, pass).then((cadastrou) {
+                  if (cadastrou) {
+                    Navigator.of(context).pushNamed('/login');
+                  } else {
+                    debugPrint("cadastro invalido");
+                  }
+                });
+              },
+              child: const Text(
+                "Cadastrar",
+                style: TextStyle(color: Colors.black, fontSize: 15),
               ),
             )
           ],
