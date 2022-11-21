@@ -10,6 +10,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       drawer: Drawer(
         child: Column(
@@ -20,16 +21,21 @@ class HomePage extends StatelessWidget {
                 await AuthService.logout();
                 Navigator.of(context).pushNamed('/login');
               },
-              child: const Text('Deslogar'),
+              child: Text(
+                'Deslogar',
+                style: theme.textTheme.bodyLarge,
+              ),
             ),
             const SizedBox(height: 40),
           ],
         ),
       ),
       appBar: AppBar(
-        title: const Text('OT - Organizador de Tarefas'),
+        title: Text('OT - Organizador de Tarefas',
+            style: theme.textTheme.titleLarge),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: const Color(0xff5F8D4E),
         child: const Icon(Icons.add),
         onPressed: () {
           Navigator.of(context).pushNamed('/cadastrar_tarefa');

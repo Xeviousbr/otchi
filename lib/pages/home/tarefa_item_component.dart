@@ -10,18 +10,21 @@ class TarefaItemComponent extends StatefulWidget {
   State<TarefaItemComponent> createState() => _TarefaItemComponentState();
 }
 
-class _TarefaItemComponentState extends State<TarefaItemComponent> with TickerProviderStateMixin {
+class _TarefaItemComponentState extends State<TarefaItemComponent>
+    with TickerProviderStateMixin {
   late AnimationController _controller;
   bool _isPlay = false;
 
   @override
   void initState() {
-    _controller = AnimationController(duration: const Duration(seconds: 1), vsync: this);
+    _controller =
+        AnimationController(duration: const Duration(seconds: 1), vsync: this);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Card(
       child: ListTile(
         leading: GestureDetector(
@@ -36,24 +39,29 @@ class _TarefaItemComponentState extends State<TarefaItemComponent> with TickerPr
             }
           },
           child: AnimatedIcon(
+            size: 30,
             icon: AnimatedIcons.play_pause,
             progress: _controller,
-            color: Colors.blue,
+            color: const Color(0xff5F8D4E),
           ),
         ),
-        title: Text(widget.tarefa.nome),
+        title: Text(
+          widget.tarefa.nome,
+          style: theme.textTheme.bodyMedium,
+        ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
+                color: const Color(0xff5F8D4E),
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/cadastrar_tarefa', arguments: {'id': widget.tarefa.id});
+                  Navigator.of(context).pushNamed('/cadastrar_tarefa',
+                      arguments: {'id': widget.tarefa.id});
                 },
                 icon: const Icon(Icons.edit)),
             IconButton(
-              onPressed: () {
-                API.deleta(widget.tarefa.id);
-              },
+              color: const Color(0xffAC0D0D),
+              onPressed: () {},
               icon: const Icon(Icons.delete),
             ),
           ],

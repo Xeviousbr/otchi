@@ -4,12 +4,25 @@ import '../models/tarefa.dart';
 import '../services/api.dart';
 
 class CadastrarTarefa extends StatefulWidget {
+  const CadastrarTarefa({super.key});
+
   @override
   State<CadastrarTarefa> createState() => _CadastrarTarefaState();
 }
 
 class _CadastrarTarefaState extends State<CadastrarTarefa> {
-  final List<String> _locations = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+  final List<String> _locations = [
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10'
+  ];
   String? _selectedLocation;
   final TimeOfDay _time = TimeOfDay.now();
   late TimeOfDay picked;
@@ -28,21 +41,20 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "Cadastrar a tarefa",
-          style: TextStyle(
-            fontSize: 32,
-            color: Colors.black,
-          ),
+          style: theme.textTheme.titleLarge,
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
+        padding: const EdgeInsets.all(8.0),
+        child: Center(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            scrollDirection: Axis.vertical,
             children: [
               TextFormField(
                 validator: (value) {
@@ -51,8 +63,8 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                   }
                   return value;
                 },
-                // ignore: prefer_const_constructors
                 decoration: InputDecoration(
+                  labelStyle: theme.textTheme.bodyMedium,
                   border: const OutlineInputBorder(),
                   hintText: 'Informe o nome da tarefa',
                 ),
@@ -60,8 +72,13 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                   nome = newValue;
                 },
               ),
+              const SizedBox(
+                height: 20,
+              ),
               DropdownButton(
                 hint: const Text('Escolha a prioridade'),
+                dropdownColor: const Color(0xffE5D9B6),
+                style: theme.textTheme.bodyMedium,
                 value: _selectedLocation,
                 onChanged: (newValue) {
                   prioridade = newValue as int;
@@ -74,59 +91,72 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                   );
                 }).toList(),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  selectTime(context);
-                },
-                child: const Text('Definir Horário Limite',
-                    textDirection: TextDirection.ltr,
-                    style: TextStyle(
-                      fontSize: 32,
-                      color: Colors.black,
-                    )),
+              const SizedBox(
+                height: 20,
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    selectTime(context);
+                  },
+                  child: Text(
+                    'Definir Horário Limite',
+                    //textDirection: TextDirection.ltr,
+                    style: theme.textTheme.bodyLarge,
+                  ),
+                ),
               ),
               CheckboxListTile(
-                title: const Text('Dias de semana'),
+                title: Text(
+                  'Dias de semana',
+                  style: theme.textTheme.bodyMedium,
+                ),
                 value: diassem,
                 onChanged: (bool? value) {
                   setState(() => diassem = value!);
                 },
               ),
               CheckboxListTile(
-                title: const Text('Sábados'),
+                title: Text(
+                  'Sábados',
+                  style: theme.textTheme.bodyMedium,
+                ),
                 value: sabados,
                 onChanged: (bool? value) {
                   setState(() => sabados = value!);
                 },
               ),
               CheckboxListTile(
-                  title: const Text('Domingos'),
+                  title: Text(
+                    'Domingos',
+                    style: theme.textTheme.bodyMedium,
+                  ),
                   value: domingos,
                   onChanged: (bool? value) {
                     setState(() => domingos = value!);
                   }),
+              const SizedBox(
+                height: 100,
+              ),
               ElevatedButton(
                 onPressed: () {
                   enviaDados();
                 },
-                child: const Text('Salvar',
-                    textDirection: TextDirection.ltr,
-                    style: TextStyle(
-                      fontSize: 32,
-                      color: Colors.black,
-                    )),
+                child: Text(
+                  'Salvar',
+                  textDirection: TextDirection.ltr,
+                  style: theme.textTheme.bodyLarge,
+                ),
               ),
               ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text(
+                child: Text(
                   'Cancelar',
                   textDirection: TextDirection.ltr,
-                  style: TextStyle(
-                    fontSize: 32,
-                    color: Colors.black,
-                  ),
+                  style: theme.textTheme.bodyLarge,
                 ),
               )
             ],
@@ -149,7 +179,8 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
 
   Future<void> enviaDados() async {
     // todo: ler os dados da tela e preencher esse objeto abaixo
-    final id = (ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?)?['id'] as String?;
+    final id = (ModalRoute.of(context)?.settings.arguments
+        as Map<String, dynamic>?)?['id'] as String?;
     final tarefa = Tarefa(
       id: id ?? const Uuid().v1(),
       nome: nome,
