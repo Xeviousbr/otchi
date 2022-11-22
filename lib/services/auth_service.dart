@@ -25,7 +25,6 @@ class AuthService {
         email: email,
         password: password,
       );
-
       await FirebaseFirestore.instance.collection('users').doc(credential.user!.uid).set({});
 
       return true;

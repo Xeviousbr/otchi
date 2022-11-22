@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ot/services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
@@ -9,19 +11,23 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String email = '';
   String password = '';
+  bool isPasswordVisible = true;
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 241, 241, 241),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
+            Text(
               "Faça seu login",
-              style: TextStyle(fontSize: 20),
+              style: theme.textTheme.titleMedium,
+              textAlign: TextAlign.center,
             ),
             const SizedBox(
               height: 35,
@@ -30,9 +36,11 @@ class _LoginPageState extends State<LoginPage> {
               onChanged: (text) {
                 email = text;
               },
+              style: theme.textTheme.bodyMedium,
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
                 labelText: "Email:",
+                suffixIcon: Icon(Icons.email),
                 border: OutlineInputBorder(),
               ),
             ),
@@ -43,10 +51,15 @@ class _LoginPageState extends State<LoginPage> {
               onChanged: (text) {
                 password = text;
               },
-              obscureText: true,
-              decoration: const InputDecoration(
+              style: theme.textTheme.bodyMedium,
+              obscureText: isPasswordVisible,
+              decoration: InputDecoration(
+                suffixIcon: IconButton(
+                  icon: isPasswordVisible ? const Icon(Icons.visibility_off) : const Icon(Icons.visibility),
+                  onPressed: () => setState(() => isPasswordVisible = !isPasswordVisible),
+                ),
                 labelText: "Senha:",
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(
@@ -55,47 +68,45 @@ class _LoginPageState extends State<LoginPage> {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                /* backgroundColor: Color(0xFF33b1d0),
-                  textStyle: TextStyle(
-                    fontSize: 20,
-                  ),*/
                 padding: const EdgeInsets.all(15),
               ),
               onPressed: () {
                 AuthService.login(email, password).then((logou) {
                   setState(() {
-                    if (logou) {
-                      Navigator.of(context).pushNamed('/home');
-                    } else {
+                    if (!logou) {
                       debugPrint("login invalido");
+                      const snackBar = SnackBar(
+                        content: Text("Usuário ou senha incorretos", textAlign: TextAlign.center),
+                        backgroundColor: Colors.redAccent,
+                      );
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     }
                   });
                 });
               },
-              child: const Text(
+              child: Text(
                 "Login",
-                style: TextStyle(color: Colors.black, fontSize: 15),
+                style: theme.textTheme.bodyLarge,
               ),
             ),
             const SizedBox(
               height: 20,
             ),
-            ElevatedButton(
+            OutlinedButton(
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 /* backgroundColor: Color(0xFF33b1d0),
-                  textStyle: TextStyle(
-                    fontSize: 20,
-                  ),*/
+                    textStyle: TextStyle(
+                      fontSize: 20,
+                    ),*/
                 padding: const EdgeInsets.all(15),
               ),
               onPressed: () {
                 Navigator.of(context).pushNamed('/cadastro_user');
               },
-              child: const Text(
+              child: Text(
                 "Cadastre-se",
-                style: TextStyle(color: Colors.black, fontSize: 15),
+                style: theme.textTheme.bodyLarge?.copyWith(color: Colors.black),
               ),
             )
           ],
@@ -103,7 +114,4 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
-  final snackBar = const SnackBar(
-      content: Text("Usuário ou senha incorretos", textAlign: TextAlign.center), backgroundColor: Colors.redAccent);
 }

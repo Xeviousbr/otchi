@@ -22,6 +22,7 @@ class _TarefaItemComponentState extends State<TarefaItemComponent> with TickerPr
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Card(
       child: ListTile(
         leading: GestureDetector(
@@ -38,10 +39,13 @@ class _TarefaItemComponentState extends State<TarefaItemComponent> with TickerPr
           child: AnimatedIcon(
             icon: AnimatedIcons.play_pause,
             progress: _controller,
-            color: Colors.blue,
+            color: const Color(0xff5F8D4E),
           ),
         ),
-        title: Text(widget.tarefa.nome),
+        title: Text(
+          widget.tarefa.nome,
+          style: theme.textTheme.bodyMedium,
+        ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -51,6 +55,7 @@ class _TarefaItemComponentState extends State<TarefaItemComponent> with TickerPr
                 },
                 icon: const Icon(Icons.edit)),
             IconButton(
+              color: const Color(0xffAC0D0D),
               onPressed: () {
                 API.deleta(widget.tarefa.id);
               },
