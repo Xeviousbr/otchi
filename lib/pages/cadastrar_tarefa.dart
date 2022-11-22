@@ -4,6 +4,8 @@ import '../models/tarefa.dart';
 import '../services/api.dart';
 
 class CadastrarTarefa extends StatefulWidget {
+  const CadastrarTarefa({super.key});
+
   @override
   State<CadastrarTarefa> createState() => _CadastrarTarefaState();
 }
@@ -21,6 +23,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
   String horario = "";
   String idUser = "0";
   int? tarefEditID;
+
   @override
   void initState() {
     super.initState();
@@ -28,20 +31,19 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "Cadastrar a tarefa",
-          style: TextStyle(
-            fontSize: 32,
-            color: Colors.black,
-          ),
+          style: theme.textTheme.titleLarge,
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(8),
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               TextFormField(
@@ -51,18 +53,23 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                   }
                   return value;
                 },
-                // ignore: prefer_const_constructors
                 decoration: InputDecoration(
+                  labelStyle: theme.textTheme.bodyMedium,
                   border: const OutlineInputBorder(),
                   hintText: 'Informe o nome da tarefa',
                 ),
                 onChanged: (newValue) {
-                  nome = newValue;
+                  setState(() {
+                    nome = newValue;
+                  });
                 },
               ),
+              const SizedBox(height: 20),
               DropdownButton(
                 hint: const Text('Escolha a prioridade'),
                 value: _selectedLocation,
+                dropdownColor: const Color(0xffE5D9B6),
+                style: theme.textTheme.bodyMedium,
                 onChanged: (newValue) {
                   prioridade = newValue as int;
                   setState(() => _selectedLocation = newValue.toString());
@@ -74,59 +81,68 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                   );
                 }).toList(),
               ),
+              const SizedBox(
+                height: 20,
+              ),
               ElevatedButton(
                 onPressed: () {
                   selectTime(context);
                 },
-                child: const Text('Definir Horário Limite',
-                    textDirection: TextDirection.ltr,
-                    style: TextStyle(
-                      fontSize: 32,
-                      color: Colors.black,
-                    )),
+                child: Text(
+                  'Definir Horário Limite',
+                  textDirection: TextDirection.ltr,
+                  style: theme.textTheme.bodyLarge,
+                ),
               ),
               CheckboxListTile(
-                title: const Text('Dias de semana'),
+                title: Text(
+                  'Dias de semana',
+                  style: theme.textTheme.bodyMedium,
+                ),
                 value: diassem,
                 onChanged: (bool? value) {
                   setState(() => diassem = value!);
                 },
               ),
               CheckboxListTile(
-                title: const Text('Sábados'),
+                title: Text(
+                  'Sábados',
+                  style: theme.textTheme.bodyMedium,
+                ),
                 value: sabados,
                 onChanged: (bool? value) {
                   setState(() => sabados = value!);
                 },
               ),
               CheckboxListTile(
-                  title: const Text('Domingos'),
-                  value: domingos,
-                  onChanged: (bool? value) {
-                    setState(() => domingos = value!);
-                  }),
+                title: Text(
+                  'Domingos',
+                  style: theme.textTheme.bodyMedium,
+                ),
+                value: domingos,
+                onChanged: (bool? value) {
+                  setState(() => domingos = value!);
+                },
+              ),
               ElevatedButton(
                 onPressed: () {
                   enviaDados();
                 },
-                child: const Text('Salvar',
-                    textDirection: TextDirection.ltr,
-                    style: TextStyle(
-                      fontSize: 32,
-                      color: Colors.black,
-                    )),
+                child: Text(
+                  'Salvar',
+                  textDirection: TextDirection.ltr,
+                  style: theme.textTheme.bodyLarge,
+                ),
               ),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text(
+                child: Text(
                   'Cancelar',
                   textDirection: TextDirection.ltr,
-                  style: TextStyle(
-                    fontSize: 32,
-                    color: Colors.black,
-                  ),
+                  style: theme.textTheme.bodyLarge,
                 ),
               )
             ],
