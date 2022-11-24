@@ -12,6 +12,7 @@ class API {
     final dados =
         "idUsuario=${tar.idUser}&Nome=${tar.nome}&Prioridade=${tar.prioridade}&HoraLim=${tar.hora}&HabDiaSem=${tar.habDiaSem}&HabSab=${tar.habDom}&HabDom=${tar.habDom}&Habilitado=${tar.habilitado}";
     String? baseUrl = "https://tele-tudo.com/ot?op=2&$dados";
+    print(baseUrl);
     var url = baseUrl;
     return await http.get(Uri.parse(url));
   }
