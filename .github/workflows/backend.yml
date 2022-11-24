@@ -21,10 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - working-directory: functions
-      
-      - id: "install"
-        name: Download deps
-        run: npm install
+        run: npm install        
 
       - id: "auth"
         name: "Authenticate to Google Cloud"
