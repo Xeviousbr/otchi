@@ -1,11 +1,11 @@
-name: Deploy-Cloud-Functions
+name: Deploy to Firebase Cloud Functions
 
 on:
   push:
-    branches: [master]
+    branches: [ "master" ]
   pull_request:
-    branches: [master]
-
+    branches: [ "master" ]
+    
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -20,6 +20,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
+      - id: "install"
+      - name: Download deps
+      - uses: actions/checkout@v2
+        working-directory: functions
+        run: npm install
 
       - id: "auth"
         name: "Authenticate to Google Cloud"
