@@ -20,10 +20,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
       - id: "install"
       - name: Download deps
-      - uses: actions/checkout@v2
         working-directory: functions
         run: npm install
 
