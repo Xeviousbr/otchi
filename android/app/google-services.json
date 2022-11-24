@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "25169885901",
+    "project_id": "otchi-7e9b3",
+    "storage_bucket": "otchi-7e9b3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:25169885901:android:f77ac551b5971067748784",
+        "android_client_info": {
+          "package_name": "ot.com.example.ot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "25169885901-vfeofdncrhq6e7plt109djscg8cipb6a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlZsPP87m9fq5y7gjti-MdrvPgVhUhyUw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "25169885901-vfeofdncrhq6e7plt109djscg8cipb6a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "25169885901-23jng30rnrqgmed7jr3r9ibcna572jif.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ot.com.example.ot"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

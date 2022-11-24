@@ -1,36 +1,87 @@
+import 'package:flutter/material.dart';
+
+enum DiasHabilitado { seg, ter, qua, qui, sex, sab, dom }
+
+final finalDeSemana = DiasHabilitado.values.reversed.take(2);
+final diasSemana = DiasHabilitado.values.take(5);
+
+class TarefaHistorico {
+  TarefaHistorico({
+    required this.date,
+    required this.iniciou,
+  });
+  final DateTime date;
+  final bool iniciou;
+
+  factory TarefaHistorico.fromJson(Map<String, dynamic> data) {
+    return TarefaHistorico(
+      iniciou: data['iniciou'],
+      date: data['date'],
+    );
+  }
+  Map<String, dynamic> toJson() {
+    return {
+      'iniciou': iniciou,
+      'date': date,
+    };
+  }
+}
+
+class Horario {
+  Horario({
+    required this.inicio,
+    required this.duracao,
+  });
+
+  final TimeOfDay inicio;
+  final int duracao;
+
+  factory Horario.fromJson(Map<String, dynamic> data) {
+    return Horario(
+      inicio: data['inicio'],
+      duracao: data['duracao'],
+    );
+  }
+  Map<String, dynamic> toJson() {
+    return {
+      'inicio': inicio.toString(),
+      'duracao': duracao,
+    };
+  }
+}
+
 class Tarefa {
-  final int? id;
-  final int idUser;
+  final String id;
   final String nome;
   final int prioridade;
-  final String? hora;
-  final bool habDiaSem;
-  final bool hamSab;
-  final bool habDom;
+  final Iterable<Horario> horarios;
+  final Iterable<DiasHabilitado> diasSemanaHabilitado;
   final bool habilitado;
+  final int tempo;
 
   Tarefa({
-    required this.idUser,
+    required this.id,
     required this.nome,
     required this.prioridade,
-    this.hora,
-    this.id,
-    required this.habDiaSem,
-    required this.hamSab,
-    required this.habDom,
+    required this.horarios,
     required this.habilitado,
+    required this.diasSemanaHabilitado,
+    required this.tempo,
   });
 
   factory Tarefa.fromJson(Map<String, dynamic> data) {
+    final dias =
+        (data['diasSemanaHabilitado'] as List<dynamic>).whereType<int>();
+    final horarios =
+        (data['horarios'] as List<dynamic>).whereType<Map<String, dynamic>>();
     return Tarefa(
-      id: data['id'] as int,
+      id: data['id'],
       nome: data['nome'],
-      habDiaSem: data['habDiaSem'] as bool,
-      habDom: data['habDom'] as bool,
-      habilitado: data['habilitado'] as bool,
-      hamSab: data['hamSab'] as bool,
-      idUser: data['idUser'] as int,
       prioridade: data['prioridade'] as int,
+      horarios: horarios.map(Horario.fromJson),
+      habilitado: data['habilitado'] as bool,
+      tempo: data['tempo'] as int,
+      diasSemanaHabilitado: dias.map(DiasHabilitado.values.elementAt),
     );
   }
 
@@ -38,12 +89,12 @@ class Tarefa {
     return {
       'id': id,
       'nome': nome,
-      'habDiaSem': habDiaSem,
-      'habDom': habDom,
-      'habilitado': habilitado,
-      'hamSab': hamSab,
-      'idUser': idUser,
       'prioridade': prioridade,
+      'horarios': horarios,
+      'habilitado': habilitado,
+      'tempo': tempo,
+      'diasSemanaHabilitado': diasSemanaHabilitado
+          .map((dia) => DiasHabilitado.values.indexOf(dia) + 1),
     };
   }
 }

@@ -1,6 +1,5 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:ot/services/shared_reference_page.dart';
+import 'package:uuid/uuid.dart';
 import '../models/tarefa.dart';
 import '../services/api.dart';
 
@@ -35,123 +34,130 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
   String horario = "";
   String idUser = "0";
   int? tarefEditID;
+
   @override
   void initState() {
     super.initState();
-    SharedPrefUtils.readTarefEditID().then((vlr) {
-      setState(() {
-        if (vlr == 0) {
-          debugPrint('Nova Tarefa');
-        } else {
-          debugPrint('EDIÇÃO');
-        }
-      });
-    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "Cadastrar a tarefa",
-          style: TextStyle(
-            fontSize: 32,
-            color: Colors.black,
-          ),
+          style: theme.textTheme.titleLarge,
         ),
       ),
-      body: Center(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          scrollDirection: Axis.vertical,
-          children: [
-            TextFormField(
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Informe o nome da tarefa';
-                }
-                return value;
-              },
-              // ignore: prefer_const_constructors
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                hintText: 'Informe o nome da tarefa',
+      body: Padding(
+        padding: const EdgeInsets.all(8),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Informe o nome da tarefa';
+                  }
+                  return value;
+                },
+                decoration: InputDecoration(
+                  labelStyle: theme.textTheme.bodyMedium,
+                  border: const OutlineInputBorder(),
+                  hintText: 'Informe o nome da tarefa',
+                ),
+                onChanged: (newValue) {
+                  setState(() {
+                    nome = newValue;
+                  });
+                },
               ),
-              onChanged: (newValue) {
-                nome = newValue;
-              },
-            ),
-            DropdownButton(
-              hint: const Text('Escolha a prioridade'),
-              value: _selectedLocation,
-              onChanged: (newValue) {
-                prioridade = newValue as int;
-                setState(() => _selectedLocation = newValue.toString());
-              },
-              items: _locations.map((location) {
-                return DropdownMenuItem(
-                  value: location,
-                  child: Text(location),
-                );
-              }).toList(),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                selectTime(context);
-              },
-              child: const Text('Definir Horário Limite',
+              const SizedBox(height: 20),
+              DropdownButton(
+                hint: const Text('Escolha a prioridade'),
+                value: _selectedLocation,
+                dropdownColor: const Color(0xffE5D9B6),
+                style: theme.textTheme.bodyMedium,
+                onChanged: (newValue) {
+                  prioridade = newValue as int;
+                  setState(() => _selectedLocation = newValue.toString());
+                },
+                items: _locations.map((location) {
+                  return DropdownMenuItem(
+                    value: location,
+                    child: Text(location),
+                  );
+                }).toList(),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  selectTime(context);
+                },
+                child: Text(
+                  'Definir Horário Limite',
                   textDirection: TextDirection.ltr,
-                  style: TextStyle(
-                    fontSize: 32,
-                    color: Colors.black,
-                  )),
-            ),
-            CheckboxListTile(
-              title: const Text('Dias de semana'),
-              value: diassem,
-              onChanged: (bool? value) {
-                setState(() => diassem = value!);
-              },
-            ),
-            CheckboxListTile(
-              title: const Text('Sábados'),
-              value: sabados,
-              onChanged: (bool? value) {
-                setState(() => sabados = value!);
-              },
-            ),
-            CheckboxListTile(
-                title: const Text('Domingos'),
+                  style: theme.textTheme.bodyLarge,
+                ),
+              ),
+              CheckboxListTile(
+                title: Text(
+                  'Dias de semana',
+                  style: theme.textTheme.bodyMedium,
+                ),
+                value: diassem,
+                onChanged: (bool? value) {
+                  setState(() => diassem = value!);
+                },
+              ),
+              CheckboxListTile(
+                title: Text(
+                  'Sábados',
+                  style: theme.textTheme.bodyMedium,
+                ),
+                value: sabados,
+                onChanged: (bool? value) {
+                  setState(() => sabados = value!);
+                },
+              ),
+              CheckboxListTile(
+                title: Text(
+                  'Domingos',
+                  style: theme.textTheme.bodyMedium,
+                ),
                 value: domingos,
                 onChanged: (bool? value) {
                   setState(() => domingos = value!);
-                }),
-            ElevatedButton(
-              onPressed: () {
-                enviaDados();
-              },
-              child: const Text('Salvar',
+                },
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  enviaDados();
+                },
+                child: Text(
+                  'Salvar',
                   textDirection: TextDirection.ltr,
-                  style: TextStyle(
-                    fontSize: 32,
-                    color: Colors.black,
-                  )),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text(
-                'Cancelar',
-                textDirection: TextDirection.ltr,
-                style: TextStyle(
-                  fontSize: 32,
-                  color: Colors.black,
+                  style: theme.textTheme.bodyLarge,
                 ),
               ),
-            )
-          ],
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'Cancelar',
+                  textDirection: TextDirection.ltr,
+                  style: theme.textTheme.bodyLarge,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -169,32 +175,25 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
   }
 
   Future<void> enviaDados() async {
-    final userId = await SharedPrefUtils.readId();
-    if (userId == null) {
-      return;
-    }
+    // todo: ler os dados da tela e preencher esse objeto abaixo
+    final id = (ModalRoute.of(context)?.settings.arguments
+        as Map<String, dynamic>?)?['id'] as String?;
     final tarefa = Tarefa(
-      idUser: userId,
+      id: id ?? const Uuid().v1(),
       nome: nome,
       prioridade: prioridade,
-      hora: horario,
-      habDiaSem: diassem,
-      hamSab: sabados,
-      habDom: domingos,
       habilitado: true,
+      horarios: [],
+      diasSemanaHabilitado: diasSemana,
+      tempo: 0,
     );
 
-    API.cadastra(tarefa).then((response) {
-      setState(() {
-        var ret = json.decode(response.body);
-        if (ret['OK'] == 1) {
-          // ESTA SÓ VOLTANDO A PAGINA E ASSIM NAO TA MOSTRANDO A TAREFA QUE ACABOU DE SER INSERIDA
-          Navigator.pop(context);
-        } else {
-          // COLOCAR UMA MENSAGEM DE ERRO AQUI
-          debugPrint('Deu errado');
-        }
-      });
-    });
+    if (id == null) {
+      await API.cadastra(tarefa);
+    } else {
+      await API.edita(tarefa);
+    }
+    //todo: add tratamento de erro
+    Navigator.of(context).pop();
   }
 }

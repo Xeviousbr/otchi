@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:ot/models/tar_lista.dart';
+import 'package:ot/models/tarefa.dart';
+import 'package:ot/services/api.dart';
 
 class TarefaItemComponent extends StatefulWidget {
   const TarefaItemComponent({Key? key, required this.tarefa}) : super(key: key);
-  final TarLista tarefa;
+  final Tarefa tarefa;
 
   @override
   State<TarefaItemComponent> createState() => _TarefaItemComponentState();
@@ -21,10 +22,12 @@ class _TarefaItemComponentState extends State<TarefaItemComponent> with TickerPr
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Card(
       child: ListTile(
         leading: GestureDetector(
-          onTap: () {
+          onTap: () async {
+            await API.acaoTarefa(widget.tarefa.id, !_isPlay);
             if (_isPlay == false) {
               _controller.forward();
               _isPlay = true;
@@ -36,19 +39,28 @@ class _TarefaItemComponentState extends State<TarefaItemComponent> with TickerPr
           child: AnimatedIcon(
             icon: AnimatedIcons.play_pause,
             progress: _controller,
-            color: Colors.blue,
+            color: const Color(0xff5F8D4E),
           ),
         ),
-        title: Text(widget.tarefa.nome),
+        title: Text(
+          widget.tarefa.nome,
+          style: theme.textTheme.bodyMedium,
+        ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
                 onPressed: () {
-                  print("editar tarefa ");
+                  Navigator.of(context).pushNamed('/cadastrar_tarefa', arguments: {'id': widget.tarefa.id});
                 },
                 icon: const Icon(Icons.edit)),
-            IconButton(onPressed: () {}, icon: const Icon(Icons.delete)),
+            IconButton(
+              color: const Color(0xffAC0D0D),
+              onPressed: () {
+                API.deleta(widget.tarefa.id);
+              },
+              icon: const Icon(Icons.delete),
+            ),
           ],
         ),
       ),
