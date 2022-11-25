@@ -4,9 +4,9 @@ import 'package:ot/services/auth_service.dart';
 import 'components/theme.dart';
 import 'pages/cadastrar_tarefa.dart';
 
+import 'pages/login/login_page.dart';
 import 'pages/register_page/register_page.dart';
 import 'pages/home/home_page.dart';
-import 'pages/login_page/login_page.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);

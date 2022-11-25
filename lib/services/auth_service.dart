@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
@@ -15,9 +14,8 @@ class AuthService {
     }
   }
 
-  static Stream<bool> estaLogado() => FirebaseAuth.instance
-      .authStateChanges()
-      .map((user) => user != null && !user.isAnonymous);
+  static Stream<bool> estaLogado() =>
+      FirebaseAuth.instance.authStateChanges().map((user) => user != null && !user.isAnonymous);
 
   //sai da conta
   static Future<void> logout() => FirebaseAuth.instance.signOut();
