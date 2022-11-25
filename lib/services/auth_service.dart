@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
@@ -23,6 +24,10 @@ class AuthService {
 
   static Future<bool> cadastraUser(String email, String password) async {
     try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
       return true;
     } catch (_) {
       return false;
