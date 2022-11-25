@@ -21,8 +21,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: install
         working-directory: functions
+      - name: Download deps
         run: npm install
 
       - id: "auth"
