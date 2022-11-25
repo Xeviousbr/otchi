@@ -24,16 +24,6 @@ class AuthService {
 
   static Future<bool> cadastraUser(String email, String password) async {
     try {
-      final credential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(credential.user!.uid)
-          .set({});
-
       return true;
     } catch (_) {
       return false;
