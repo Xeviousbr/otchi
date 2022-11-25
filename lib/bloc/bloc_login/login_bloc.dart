@@ -27,7 +27,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       try {
         await FirebaseAuth.instance.signOut();
         emit(LogoutState());
-      } on FirebaseAuthException catch (e) {}
+      } on FirebaseAuthException catch (_) {}
     });
 
     on<CadastraUserEvent>((event, emit) async {
@@ -36,7 +36,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: event.email, password: event.password);
         emit(LogoutState());
-      } on FirebaseAuthException catch (e) {}
+      } on FirebaseAuthException catch (_) {}
     });
   }
 }
