@@ -17,6 +17,12 @@ class _TarefaItemComponentState extends State<TarefaItemComponent> with TickerPr
   @override
   void initState() {
     _controller = AnimationController(duration: const Duration(seconds: 1), vsync: this);
+    if (widget.tarefa.acao.emAndamento) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        _controller.forward();
+        _isPlay = true;
+      });
+    }
     super.initState();
   }
 
@@ -27,13 +33,13 @@ class _TarefaItemComponentState extends State<TarefaItemComponent> with TickerPr
       child: ListTile(
         leading: GestureDetector(
           onTap: () async {
-            await API.acaoTarefa(widget.tarefa.id, !_isPlay);
-            if (_isPlay == false) {
-              _controller.forward();
-              _isPlay = true;
-            } else {
+            await API.acaoTarefa(widget.tarefa, !_isPlay);
+            if (_isPlay) {
               _controller.reverse();
               _isPlay = false;
+            } else {
+              _controller.forward();
+              _isPlay = true;
             }
           },
           child: AnimatedIcon(

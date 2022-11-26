@@ -12,25 +12,13 @@ class API {
   static Future<void> cadastra(Tarefa tarefa) async {
     final data = tarefa.toJson();
     data.remove('id');
-    final userId = FirebaseAuth.instance.currentUser!.uid;
-    await _tarefasCollection().add(
-      {
-        ...data,
-        'userId': userId,
-      },
-    );
+    await _tarefasCollection().add(data);
   }
 
   static Future<void> edita(Tarefa tarefa) async {
     final data = tarefa.toJson();
     data.remove('id');
-    final userId = FirebaseAuth.instance.currentUser!.uid;
-    await _tarefasCollection().doc(tarefa.id).set(
-      {
-        ...data,
-        'userId': userId,
-      },
-    );
+    await _tarefasCollection().doc(tarefa.id).set(data);
   }
 
   static Stream<Iterable<Tarefa>> listaTarefas() {
@@ -50,10 +38,16 @@ class API {
     return _tarefasCollection().doc(id).delete();
   }
 
-  static Future<void> acaoTarefa(String id, bool iniciou) {
-    return _tarefasCollection()
-        .doc(id)
-        .collection('historico')
-        .add(TarefaHistorico(date: DateTime.now(), iniciou: iniciou).toJson());
+  static Future<void> acaoTarefa(Tarefa tarefa, bool iniciou) {
+    final tempoAtual = Timestamp.now();
+    final diferenca = tempoAtual.toDate().toLocal().difference(tarefa.acao.atualizadaEm.toDate().toLocal());
+    tarefa = tarefa.copyWith(
+      acao: TarefaAcao(
+        emAndamento: iniciou,
+        atualizadaEm: tempoAtual,
+        tempo: tarefa.acao.tempo + (diferenca.inSeconds),
+      ),
+    );
+    return _tarefasCollection().doc(tarefa.id).set(tarefa.toJson());
   }
 }

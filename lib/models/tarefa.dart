@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 enum DiasHabilitado { seg, ter, qua, qui, sex, sab, dom }
 
@@ -27,26 +27,41 @@ class TarefaHistorico {
   }
 }
 
-class Horario {
-  Horario({
-    required this.inicio,
-    required this.duracao,
+class TarefaAcao {
+  TarefaAcao({
+    required this.emAndamento,
+    required this.atualizadaEm,
+    required this.tempo,
   });
+  final bool emAndamento;
+  final Timestamp atualizadaEm;
+  final int tempo;
 
-  final TimeOfDay inicio;
-  final int duracao;
-
-  factory Horario.fromJson(Map<String, dynamic> data) {
-    return Horario(
-      inicio: data['inicio'],
-      duracao: data['duracao'],
+  factory TarefaAcao.fromJson(Map<String, dynamic> data) {
+    return TarefaAcao(
+      emAndamento: data['emAndamento'],
+      atualizadaEm: data['atualizadaEm'],
+      tempo: data['tempo'],
     );
   }
   Map<String, dynamic> toJson() {
     return {
-      'inicio': inicio.toString(),
-      'duracao': duracao,
+      'emAndamento': emAndamento,
+      'atualizadaEm': atualizadaEm,
+      'tempo': tempo,
     };
+  }
+
+  TarefaAcao copyWith({
+    bool? emAndamento,
+    Timestamp? atualizadaEm,
+    int? tempo,
+  }) {
+    return TarefaAcao(
+      emAndamento: emAndamento ?? this.emAndamento,
+      atualizadaEm: atualizadaEm ?? this.atualizadaEm,
+      tempo: tempo ?? this.tempo,
+    );
   }
 }
 
@@ -54,40 +69,28 @@ class Tarefa {
   final String id;
   final String nome;
   final int prioridade;
-  final Iterable<Horario> horarios;
   final Iterable<DiasHabilitado> diasSemanaHabilitado;
   final bool habilitado;
-  final DateTime? inicio;
-  final DateTime? fim;
-  final int tempo;
+  final TarefaAcao acao;
 
   Tarefa({
     required this.id,
     required this.nome,
     required this.prioridade,
-    required this.horarios,
     required this.diasSemanaHabilitado,
     required this.habilitado,
-    required this.inicio,
-    required this.fim,
-    required this.tempo,
+    required this.acao,
   });
 
   factory Tarefa.fromJson(Map<String, dynamic> data) {
-    final dias =
-        (data['diasSemanaHabilitado'] as List<dynamic>).whereType<int>();
-    final horarios =
-        (data['horarios'] as List<dynamic>).whereType<Map<String, dynamic>>();
+    final dias = (data['diasSemanaHabilitado'] as List<dynamic>?)?.whereType<int>() ?? [];
     return Tarefa(
       id: data['id'],
       nome: data['nome'],
       prioridade: data['prioridade'] as int,
-      horarios: horarios.map(Horario.fromJson),
       habilitado: data['habilitado'] as bool,
       diasSemanaHabilitado: dias.map(DiasHabilitado.values.elementAt),
-      inicio: DateTime(0, 0, 0),
-      fim: DateTime(0, 0, 0),
-      tempo: 0,
+      acao: TarefaAcao.fromJson(data['acao']),
     );
   }
 
@@ -96,13 +99,27 @@ class Tarefa {
       'id': id,
       'nome': nome,
       'prioridade': prioridade,
-      'horarios': horarios,
       'habilitado': habilitado,
-      'diasSemanaHabilitado': diasSemanaHabilitado
-          .map((dia) => DiasHabilitado.values.indexOf(dia) + 1),
-      'inicio': 0,
-      'fim': 0,
-      'tempo': 0,
+      'diasSemanaHabilitado': diasSemanaHabilitado.map((dia) => DiasHabilitado.values.indexOf(dia) + 1),
+      'acao': acao.toJson(),
     };
+  }
+
+  Tarefa copyWith({
+    String? id,
+    String? nome,
+    int? prioridade,
+    Iterable<DiasHabilitado>? diasSemanaHabilitado,
+    bool? habilitado,
+    TarefaAcao? acao,
+  }) {
+    return Tarefa(
+      id: id ?? this.id,
+      nome: nome ?? this.nome,
+      prioridade: prioridade ?? this.prioridade,
+      diasSemanaHabilitado: diasSemanaHabilitado ?? this.diasSemanaHabilitado,
+      habilitado: habilitado ?? this.habilitado,
+      acao: acao ?? this.acao,
+    );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import '../models/tarefa.dart';
@@ -11,18 +12,7 @@ class CadastrarTarefa extends StatefulWidget {
 }
 
 class _CadastrarTarefaState extends State<CadastrarTarefa> {
-  final List<String> _locations = [
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
-    '10'
-  ];
+  final List<String> _locations = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
   String? _selectedLocation;
   final TimeOfDay _time = TimeOfDay.now();
   late TimeOfDay picked;
@@ -176,18 +166,18 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
 
   Future<void> enviaDados() async {
     // todo: ler os dados da tela e preencher esse objeto abaixo
-    final id = (ModalRoute.of(context)?.settings.arguments
-        as Map<String, dynamic>?)?['id'] as String?;
+    final id = (ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?)?['id'] as String?;
     final tarefa = Tarefa(
       id: id ?? const Uuid().v1(),
       nome: nome,
       prioridade: prioridade,
       habilitado: true,
-      horarios: [],
       diasSemanaHabilitado: diasSemana,
-      inicio: DateTime(0, 0, 0),
-      fim: DateTime(0, 0, 0),
-      tempo: 0,
+      acao: TarefaAcao(
+        emAndamento: false,
+        atualizadaEm: Timestamp.now(),
+        tempo: 0,
+      ),
     );
 
     if (id == null) {
