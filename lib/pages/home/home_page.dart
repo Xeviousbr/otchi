@@ -30,7 +30,8 @@ class HomePage extends StatelessWidget {
         ),
       ),
       appBar: AppBar(
-        title: Text('OT - Organizador de Tarefas', style: theme.textTheme.titleLarge),
+        title: Text('OT - Organizador de Tarefas',
+            style: theme.textTheme.titleLarge),
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
@@ -47,7 +48,9 @@ class HomePage extends StatelessWidget {
               initialData: const [],
               builder: (context, snapshot) {
                 return ListView(
-                  children: snapshot.data!.map((tarefa) => TarefaItemComponent(tarefa: tarefa)).toList(),
+                  children: snapshot.data!
+                      .map((tarefa) => TarefaItemComponent(tarefa: tarefa))
+                      .toList(),
                 );
               },
             ),

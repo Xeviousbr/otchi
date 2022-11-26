@@ -60,8 +60,11 @@ class _LoginPageState extends State<LoginPage> {
                   obscureText: isPasswordVisible,
                   decoration: InputDecoration(
                     suffixIcon: IconButton(
-                      icon: isPasswordVisible ? const Icon(Icons.visibility_off) : const Icon(Icons.visibility),
-                      onPressed: () => setState(() => isPasswordVisible = !isPasswordVisible),
+                      icon: isPasswordVisible
+                          ? const Icon(Icons.visibility_off)
+                          : const Icon(Icons.visibility),
+                      onPressed: () => setState(
+                          () => isPasswordVisible = !isPasswordVisible),
                     ),
                     labelText: "Senha:",
                     border: const OutlineInputBorder(),
@@ -72,14 +75,17 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
                     padding: const EdgeInsets.all(15),
                   ),
                   onPressed: () {
                     bloc.add(TryToLoginEvent(email, password));
                   },
                   child: state is LoginLoadingState
-                      ? const CircularProgressIndicator()
+                      ? const CircularProgressIndicator(
+                          color: Colors.white,
+                        )
                       : Text(
                           "Login",
                           style: theme.textTheme.bodyLarge,
@@ -90,7 +96,8 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 OutlinedButton(
                   style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
                     /* backgroundColor: Color(0xFF33b1d0),
                         textStyle: TextStyle(
                           fontSize: 20,
@@ -102,7 +109,8 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   child: Text(
                     "Cadastre-se",
-                    style: theme.textTheme.bodyLarge?.copyWith(color: Colors.black),
+                    style: theme.textTheme.bodyLarge
+                        ?.copyWith(color: Colors.black),
                   ),
                 )
               ],
