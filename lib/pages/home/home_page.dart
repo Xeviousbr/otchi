@@ -46,6 +46,15 @@ class HomePage extends StatelessWidget {
               stream: API.listaTarefas(),
               initialData: const [],
               builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (snapshot.hasError) {
+                  print(snapshot.error.toString());
+                  // return Text(snapshot.error.toString());
+                }
                 return ListView(
                   children: snapshot.data!.map((tarefa) => TarefaItemComponent(tarefa: tarefa)).toList(),
                 );

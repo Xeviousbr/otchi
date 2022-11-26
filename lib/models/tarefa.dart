@@ -31,24 +31,25 @@ class TarefaAcao {
   TarefaAcao({
     required this.emAndamento,
     required this.atualizadaEm,
-    required this.tempo,
   });
   final bool emAndamento;
   final Timestamp atualizadaEm;
-  final int tempo;
+
+  factory TarefaAcao.inicial() => TarefaAcao(
+        emAndamento: false,
+        atualizadaEm: Timestamp.now(),
+      );
 
   factory TarefaAcao.fromJson(Map<String, dynamic> data) {
     return TarefaAcao(
       emAndamento: data['emAndamento'],
       atualizadaEm: data['atualizadaEm'],
-      tempo: data['tempo'],
     );
   }
   Map<String, dynamic> toJson() {
     return {
       'emAndamento': emAndamento,
       'atualizadaEm': atualizadaEm,
-      'tempo': tempo,
     };
   }
 
@@ -60,7 +61,6 @@ class TarefaAcao {
     return TarefaAcao(
       emAndamento: emAndamento ?? this.emAndamento,
       atualizadaEm: atualizadaEm ?? this.atualizadaEm,
-      tempo: tempo ?? this.tempo,
     );
   }
 }
@@ -72,6 +72,7 @@ class Tarefa {
   final Iterable<DiasHabilitado> diasSemanaHabilitado;
   final bool habilitado;
   final TarefaAcao acao;
+  final int tempo;
 
   Tarefa({
     required this.id,
@@ -80,6 +81,7 @@ class Tarefa {
     required this.diasSemanaHabilitado,
     required this.habilitado,
     required this.acao,
+    required this.tempo,
   });
 
   factory Tarefa.fromJson(Map<String, dynamic> data) {
@@ -87,6 +89,7 @@ class Tarefa {
     return Tarefa(
       id: data['id'],
       nome: data['nome'],
+      tempo: data['tempo'],
       prioridade: data['prioridade'] as int,
       habilitado: data['habilitado'] as bool,
       diasSemanaHabilitado: dias.map(DiasHabilitado.values.elementAt),
@@ -99,6 +102,7 @@ class Tarefa {
       'id': id,
       'nome': nome,
       'prioridade': prioridade,
+      'tempo': tempo,
       'habilitado': habilitado,
       'diasSemanaHabilitado': diasSemanaHabilitado.map((dia) => DiasHabilitado.values.indexOf(dia) + 1),
       'acao': acao.toJson(),
@@ -112,6 +116,7 @@ class Tarefa {
     Iterable<DiasHabilitado>? diasSemanaHabilitado,
     bool? habilitado,
     TarefaAcao? acao,
+    int? tempo,
   }) {
     return Tarefa(
       id: id ?? this.id,
@@ -120,6 +125,7 @@ class Tarefa {
       diasSemanaHabilitado: diasSemanaHabilitado ?? this.diasSemanaHabilitado,
       habilitado: habilitado ?? this.habilitado,
       acao: acao ?? this.acao,
+      tempo: tempo ?? this.tempo,
     );
   }
 }

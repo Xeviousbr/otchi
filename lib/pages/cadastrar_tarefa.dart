@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import '../models/tarefa.dart';
@@ -173,11 +172,8 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
       prioridade: prioridade,
       habilitado: true,
       diasSemanaHabilitado: diasSemana,
-      acao: TarefaAcao(
-        emAndamento: false,
-        atualizadaEm: Timestamp.now(),
-        tempo: 0,
-      ),
+      tempo: 0,
+      acao: TarefaAcao.inicial(),
     );
 
     if (id == null) {

@@ -22,15 +22,18 @@ class API {
   }
 
   static Stream<Iterable<Tarefa>> listaTarefas() {
-    final referencia = _tarefasCollection().withConverter<Tarefa>(
-      fromFirestore: (snapshots, _) => Tarefa.fromJson(
-        {
-          ...snapshots.data()!,
-          'id': snapshots.id,
-        },
-      ),
-      toFirestore: (tarefa, _) => tarefa.toJson(),
-    );
+    final referencia = _tarefasCollection()
+        .withConverter<Tarefa>(
+          fromFirestore: (snapshots, _) => Tarefa.fromJson(
+            {
+              ...snapshots.data()!,
+              'id': snapshots.id,
+            },
+          ),
+          toFirestore: (tarefa, _) => tarefa.toJson(),
+        )
+        .orderBy('prioridade')
+        .orderBy('tempo', descending: true);
     return referencia.snapshots().map((event) => event.docs.map((doc) => doc.data()));
   }
 
@@ -45,8 +48,8 @@ class API {
       acao: TarefaAcao(
         emAndamento: iniciou,
         atualizadaEm: tempoAtual,
-        tempo: tarefa.acao.tempo + (diferenca.inSeconds),
       ),
+      tempo: tarefa.tempo + (diferenca.inSeconds),
     );
     return _tarefasCollection().doc(tarefa.id).set(tarefa.toJson());
   }
