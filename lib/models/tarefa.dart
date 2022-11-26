@@ -57,6 +57,9 @@ class Tarefa {
   final Iterable<Horario> horarios;
   final Iterable<DiasHabilitado> diasSemanaHabilitado;
   final bool habilitado;
+  final DateTime? inicio;
+  final DateTime? fim;
+  final int tempo;
 
   Tarefa({
     required this.id,
@@ -65,11 +68,16 @@ class Tarefa {
     required this.horarios,
     required this.diasSemanaHabilitado,
     required this.habilitado,
+    required this.inicio,
+    required this.fim,
+    required this.tempo,
   });
 
   factory Tarefa.fromJson(Map<String, dynamic> data) {
-    final dias = (data['diasSemanaHabilitado'] as List<dynamic>).whereType<int>();
-    final horarios = (data['horarios'] as List<dynamic>).whereType<Map<String, dynamic>>();
+    final dias =
+        (data['diasSemanaHabilitado'] as List<dynamic>).whereType<int>();
+    final horarios =
+        (data['horarios'] as List<dynamic>).whereType<Map<String, dynamic>>();
     return Tarefa(
       id: data['id'],
       nome: data['nome'],
@@ -77,6 +85,9 @@ class Tarefa {
       horarios: horarios.map(Horario.fromJson),
       habilitado: data['habilitado'] as bool,
       diasSemanaHabilitado: dias.map(DiasHabilitado.values.elementAt),
+      inicio: DateTime(0, 0, 0),
+      fim: DateTime(0, 0, 0),
+      tempo: 0,
     );
   }
 
@@ -87,7 +98,11 @@ class Tarefa {
       'prioridade': prioridade,
       'horarios': horarios,
       'habilitado': habilitado,
-      'diasSemanaHabilitado': diasSemanaHabilitado.map((dia) => DiasHabilitado.values.indexOf(dia) + 1),
+      'diasSemanaHabilitado': diasSemanaHabilitado
+          .map((dia) => DiasHabilitado.values.indexOf(dia) + 1),
+      'inicio': 0,
+      'fim': 0,
+      'tempo': 0,
     };
   }
 }
