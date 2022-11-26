@@ -11,21 +11,21 @@ class CadastrarTarefa extends StatefulWidget {
 }
 
 class _CadastrarTarefaState extends State<CadastrarTarefa> {
-  final List<String> _locations = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-  String? _selectedLocation;
+  late List<int> _locations;
   final TimeOfDay _time = TimeOfDay.now();
   late TimeOfDay picked;
   bool diassem = true;
   bool sabados = false;
   bool domingos = false;
   String nome = "";
-  int prioridade = 0;
+  int prioridade = 1;
   String horario = "";
   String idUser = "0";
   int? tarefEditID;
 
   @override
   void initState() {
+    _locations = List<int>.generate(10, (index) => index + 1);
     super.initState();
   }
 
@@ -58,6 +58,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                   border: const OutlineInputBorder(),
                   hintText: 'Informe o nome da tarefa',
                 ),
+                autofocus: true,
                 onChanged: (newValue) {
                   setState(() {
                     nome = newValue;
@@ -65,64 +66,84 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                 },
               ),
               const SizedBox(height: 20),
-              DropdownButton(
-                hint: const Text('Escolha a prioridade'),
-                value: _selectedLocation,
-                dropdownColor: const Color(0xffE5D9B6),
-                style: theme.textTheme.bodyMedium,
-                onChanged: (newValue) {
-                  prioridade = newValue as int;
-                  setState(() => _selectedLocation = newValue.toString());
-                },
-                items: _locations.map((location) {
-                  return DropdownMenuItem(
-                    value: location,
-                    child: Text(location),
-                  );
-                }).toList(),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  selectTime(context);
-                },
-                child: Text(
-                  'Definir Horário Limite',
-                  textDirection: TextDirection.ltr,
-                  style: theme.textTheme.bodyLarge,
-                ),
-              ),
-              CheckboxListTile(
-                title: Text(
-                  'Dias de semana',
-                  style: theme.textTheme.bodyMedium,
-                ),
-                value: diassem,
-                onChanged: (bool? value) {
-                  setState(() => diassem = value!);
-                },
-              ),
-              CheckboxListTile(
-                title: Text(
-                  'Sábados',
-                  style: theme.textTheme.bodyMedium,
-                ),
-                value: sabados,
-                onChanged: (bool? value) {
-                  setState(() => sabados = value!);
-                },
-              ),
-              CheckboxListTile(
-                title: Text(
-                  'Domingos',
-                  style: theme.textTheme.bodyMedium,
-                ),
-                value: domingos,
-                onChanged: (bool? value) {
-                  setState(() => domingos = value!);
-                },
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const Text('Prioridade'),
+                        DropdownButton<int>(
+                          hint: const Text('Escolha a prioridade'),
+                          value: prioridade,
+                          dropdownColor: const Color(0xffE5D9B6),
+                          style: theme.textTheme.bodyMedium,
+                          onChanged: (int? newValue) {
+                            setState(() {
+                              prioridade = newValue ?? 0;
+                            });
+                          },
+                          items: _locations.map((location) {
+                            return DropdownMenuItem<int>(
+                              value: location,
+                              child: Text('$location'),
+                            );
+                          }).toList(),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            selectTime(context);
+                          },
+                          child: Text(
+                            'Definir Horário Limite',
+                            textDirection: TextDirection.ltr,
+                            style: theme.textTheme.bodyLarge,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        CheckboxListTile(
+                          title: Text(
+                            'Dias de semana',
+                            style: theme.textTheme.bodyMedium,
+                          ),
+                          value: diassem,
+                          onChanged: (bool? value) {
+                            setState(() => diassem = value!);
+                          },
+                        ),
+                        CheckboxListTile(
+                          title: Text(
+                            'Sábados',
+                            style: theme.textTheme.bodyMedium,
+                          ),
+                          value: sabados,
+                          onChanged: (bool? value) {
+                            setState(() => sabados = value!);
+                          },
+                        ),
+                        CheckboxListTile(
+                          title: Text(
+                            'Domingos',
+                            style: theme.textTheme.bodyMedium,
+                          ),
+                          value: domingos,
+                          onChanged: (bool? value) {
+                            setState(() => domingos = value!);
+                          },
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
               ElevatedButton(
                 onPressed: () {
@@ -135,14 +156,14 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                 ),
               ),
               const SizedBox(height: 16),
-              ElevatedButton(
+              OutlinedButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
                 child: Text(
                   'Cancelar',
                   textDirection: TextDirection.ltr,
-                  style: theme.textTheme.bodyLarge,
+                  style: theme.textTheme.bodyLarge?.copyWith(color: Colors.black),
                 ),
               )
             ],
@@ -171,7 +192,11 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
       nome: nome,
       prioridade: prioridade,
       habilitado: true,
-      diasSemanaHabilitado: diasSemana,
+      diasSemanaHabilitado: [
+        if (sabados) DiasHabilitado.sab,
+        if (domingos) DiasHabilitado.dom,
+        if (diassem) ...diasSemana,
+      ],
       tempo: 0,
       acao: TarefaAcao.inicial(),
     );
