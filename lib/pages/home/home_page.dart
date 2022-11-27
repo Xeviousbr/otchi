@@ -30,8 +30,7 @@ class HomePage extends StatelessWidget {
         ),
       ),
       appBar: AppBar(
-        title: Text('OT - Organizador de Tarefas',
-            style: theme.textTheme.titleLarge),
+        title: Text('OT - Organizador de Tarefas', style: theme.textTheme.titleLarge),
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
@@ -39,32 +38,27 @@ class HomePage extends StatelessWidget {
           Navigator.of(context).pushNamed('/cadastrar_tarefa');
         },
       ),
-      body: Column(
-        children: [
-          const SizedBox(height: 20),
-          Expanded(
-            child: StreamBuilder<Iterable<Tarefa>>(
-              stream: API.listaTarefas(),
-              initialData: const [],
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                if (snapshot.hasError) {
-                  print(snapshot.error.toString());
-                  // return Text(snapshot.error.toString());
-                }
-                return ListView(
-                  children: snapshot.data!
-                      .map((tarefa) => TarefaItemComponent(tarefa: tarefa))
-                      .toList(),
-                );
-              },
+      body: StreamBuilder<Iterable<Tarefa>>(
+        stream: API.listaTarefas(),
+        initialData: const [],
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (snapshot.hasError) {
+            print(snapshot.error.toString());
+            // return Text(snapshot.error.toString());
+          }
+          return SingleChildScrollView(
+            child: Center(
+              child: Wrap(
+                children: snapshot.data!.map((tarefa) => TarefaItemComponent(tarefa: tarefa)).toList(),
+              ),
             ),
-          )
-        ],
+          );
+        },
       ),
     );
   }

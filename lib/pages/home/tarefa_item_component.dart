@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:ot/models/tarefa.dart';
 import 'package:ot/services/api.dart';
+import 'package:collection/collection.dart';
 
 class TarefaItemComponent extends StatefulWidget {
   const TarefaItemComponent({Key? key, required this.tarefa}) : super(key: key);
@@ -29,43 +31,71 @@ class _TarefaItemComponentState extends State<TarefaItemComponent> with TickerPr
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Card(
-      child: ListTile(
-        leading: GestureDetector(
-          onTap: () async {
-            await API.acaoTarefa(widget.tarefa, !_isPlay);
-            if (_isPlay) {
-              _controller.reverse();
-              _isPlay = false;
-            } else {
-              _controller.forward();
-              _isPlay = true;
-            }
-          },
-          child: AnimatedIcon(
-            icon: AnimatedIcons.play_pause,
-            progress: _controller,
-            color: const Color(0xff5F8D4E),
-          ),
-        ),
-        title: Text(
-          widget.tarefa.nome,
-          style: theme.textTheme.bodyMedium,
-        ),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
+    final dias = [
+      widget.tarefa.diaSemana ? 'Dias de semana' : null,
+      widget.tarefa.sabado ? 'Sabados' : null,
+      widget.tarefa.domingo ? 'Domingos' : null,
+    ].whereType<String>();
+
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).pushNamed('/editar_tarefa', arguments: {'tarefa': widget.tarefa});
+      },
+      child: Container(
+        padding: const EdgeInsets.only(top: 8, left: 8, right: 8, bottom: 4),
+        width: 165,
+        color: Colors.amber[100],
+        margin: const EdgeInsets.only(top: 8, left: 8, right: 8, bottom: 4),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            IconButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/cadastrar_tarefa', arguments: {'id': widget.tarefa.id});
-                },
-                icon: const Icon(Icons.edit)),
-            IconButton(
-              color: const Color(0xffAC0D0D),
-              onPressed: () {
-                API.deleta(widget.tarefa.id);
-              },
-              icon: const Icon(Icons.delete),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Text(
+                    widget.tarefa.nome,
+                    style: theme.textTheme.bodyMedium,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    await API.acaoTarefa(widget.tarefa, !_isPlay);
+                    if (_isPlay) {
+                      _controller.reverse();
+                      _isPlay = false;
+                    } else {
+                      _controller.forward();
+                      _isPlay = true;
+                    }
+                  },
+                  child: AnimatedIcon(
+                    icon: AnimatedIcons.play_pause,
+                    progress: _controller,
+                    size: 20,
+                    color: const Color(0xff5F8D4E),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Text(
+              dias.mapIndexed(
+                ((index, element) {
+                  if (index == 0) {
+                    return element;
+                  }
+                  if (dias.length <= 1) {
+                    return element;
+                  }
+                  if (index == dias.length - 1) {
+                    return ' e $element';
+                  }
+                  return ', $element';
+                }),
+              ).join(),
+              textAlign: TextAlign.end,
+              style: TextStyle(fontSize: 13, color: Colors.grey[600]),
             ),
           ],
         ),

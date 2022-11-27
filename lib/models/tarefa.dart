@@ -69,7 +69,9 @@ class Tarefa {
   final String id;
   final String nome;
   final int prioridade;
-  final Iterable<DiasHabilitado> diasSemanaHabilitado;
+  final bool sabado;
+  final bool domingo;
+  final bool diaSemana;
   final bool habilitado;
   final TarefaAcao acao;
   final int tempo;
@@ -78,21 +80,26 @@ class Tarefa {
     required this.id,
     required this.nome,
     required this.prioridade,
-    required this.diasSemanaHabilitado,
     required this.habilitado,
+    required this.sabado,
+    required this.domingo,
+    required this.diaSemana,
     required this.acao,
     required this.tempo,
   });
 
   factory Tarefa.fromJson(Map<String, dynamic> data) {
     final dias = (data['diasSemanaHabilitado'] as List<dynamic>?)?.whereType<int>() ?? [];
+    final diaSemana = dias.map((e) => e - 1).map(DiasHabilitado.values.elementAt);
     return Tarefa(
       id: data['id'],
       nome: data['nome'],
       tempo: data['tempo'],
       prioridade: data['prioridade'] as int,
       habilitado: data['habilitado'] as bool,
-      diasSemanaHabilitado: dias.map(DiasHabilitado.values.elementAt),
+      sabado: diaSemana.contains(DiasHabilitado.sab),
+      domingo: diaSemana.contains(DiasHabilitado.dom),
+      diaSemana: diaSemana.where(diasSemana.contains).isNotEmpty,
       acao: TarefaAcao.fromJson(data['acao']),
     );
   }
@@ -104,7 +111,11 @@ class Tarefa {
       'prioridade': prioridade,
       'tempo': tempo,
       'habilitado': habilitado,
-      'diasSemanaHabilitado': diasSemanaHabilitado.map((dia) => DiasHabilitado.values.indexOf(dia) + 1),
+      'diasSemanaHabilitado': [
+        if (sabado) 6,
+        if (domingo) 7,
+        if (diaSemana) ...[1, 2, 3, 4, 5],
+      ],
       'acao': acao.toJson(),
     };
   }
@@ -117,13 +128,18 @@ class Tarefa {
     bool? habilitado,
     TarefaAcao? acao,
     int? tempo,
+    bool? sabado,
+    bool? domingo,
+    bool? diaSemana,
   }) {
     return Tarefa(
       id: id ?? this.id,
       nome: nome ?? this.nome,
       prioridade: prioridade ?? this.prioridade,
-      diasSemanaHabilitado: diasSemanaHabilitado ?? this.diasSemanaHabilitado,
       habilitado: habilitado ?? this.habilitado,
+      sabado: sabado ?? this.sabado,
+      domingo: domingo ?? this.domingo,
+      diaSemana: diaSemana ?? this.diaSemana,
       acao: acao ?? this.acao,
       tempo: tempo ?? this.tempo,
     );

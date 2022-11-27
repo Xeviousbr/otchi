@@ -1,32 +1,44 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import '../models/tarefa.dart';
 import '../services/api.dart';
 
 class CadastrarTarefa extends StatefulWidget {
-  const CadastrarTarefa({super.key});
+  const CadastrarTarefa({
+    super.key,
+    this.tarefa,
+  });
+  final Tarefa? tarefa;
 
   @override
   State<CadastrarTarefa> createState() => _CadastrarTarefaState();
 }
 
 class _CadastrarTarefaState extends State<CadastrarTarefa> {
-  late List<int> _locations;
-  final TimeOfDay _time = TimeOfDay.now();
-  late TimeOfDay picked;
-  bool diassem = true;
-  bool sabados = false;
-  bool domingos = false;
-  String nome = "";
-  int prioridade = 1;
-  String horario = "";
-  String idUser = "0";
-  int? tarefEditID;
+  late List<int> _prioridades;
+  late Tarefa _tarefaAtual;
 
   @override
   void initState() {
-    _locations = List<int>.generate(10, (index) => index + 1);
+    _prioridades = List<int>.generate(10, (index) => index + 1);
+
     super.initState();
+    _tarefaAtual = widget.tarefa ??
+        Tarefa(
+          id: const Uuid().v1(),
+          nome: '',
+          prioridade: 1,
+          diaSemana: false,
+          sabado: false,
+          domingo: false,
+          habilitado: true,
+          acao: TarefaAcao(
+            emAndamento: false,
+            atualizadaEm: Timestamp.now(),
+          ),
+          tempo: 0,
+        );
   }
 
   @override
@@ -47,6 +59,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               TextFormField(
+                initialValue: _tarefaAtual.nome,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Informe o nome da tarefa';
@@ -61,7 +74,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                 autofocus: true,
                 onChanged: (newValue) {
                   setState(() {
-                    nome = newValue;
+                    _tarefaAtual = _tarefaAtual.copyWith(nome: newValue);
                   });
                 },
               ),
@@ -74,23 +87,23 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         const Text('Prioridade'),
-                        DropdownButton<int>(
-                          hint: const Text('Escolha a prioridade'),
-                          value: prioridade,
-                          dropdownColor: const Color(0xffE5D9B6),
-                          style: theme.textTheme.bodyMedium,
-                          onChanged: (int? newValue) {
-                            setState(() {
-                              prioridade = newValue ?? 0;
-                            });
-                          },
-                          items: _locations.map((location) {
-                            return DropdownMenuItem<int>(
-                              value: location,
-                              child: Text('$location'),
-                            );
-                          }).toList(),
-                        ),
+                        // DropdownButton<int>(
+                        //   hint: const Text('Escolha a prioridade'),
+                        //   value: _tarefaAtual.prioridade,
+                        //   dropdownColor: const Color(0xffE5D9B6),
+                        //   style: theme.textTheme.bodyMedium,
+                        //   onChanged: (int? newValue) {
+                        //     setState(() {
+                        //       _tarefaAtual = _tarefaAtual.copyWith(prioridade: newValue ?? 0);
+                        //     });
+                        //   },
+                        //   items: _prioridades.map((location) {
+                        //     return DropdownMenuItem<int>(
+                        //       value: location,
+                        //       child: Text('$location'),
+                        //     );
+                        //   }).toList(),
+                        // ),
                         ElevatedButton(
                           onPressed: () {
                             selectTime(context);
@@ -115,9 +128,11 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                             'Dias de semana',
                             style: theme.textTheme.bodyMedium,
                           ),
-                          value: diassem,
+                          value: _tarefaAtual.diaSemana,
                           onChanged: (bool? value) {
-                            setState(() => diassem = value!);
+                            setState(() {
+                              _tarefaAtual = _tarefaAtual.copyWith(diaSemana: value);
+                            });
                           },
                         ),
                         CheckboxListTile(
@@ -125,9 +140,11 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                             'Sábados',
                             style: theme.textTheme.bodyMedium,
                           ),
-                          value: sabados,
+                          value: _tarefaAtual.sabado,
                           onChanged: (bool? value) {
-                            setState(() => sabados = value!);
+                            setState(() {
+                              _tarefaAtual = _tarefaAtual.copyWith(sabado: value);
+                            });
                           },
                         ),
                         CheckboxListTile(
@@ -135,9 +152,11 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                             'Domingos',
                             style: theme.textTheme.bodyMedium,
                           ),
-                          value: domingos,
+                          value: _tarefaAtual.domingo,
                           onChanged: (bool? value) {
-                            setState(() => domingos = value!);
+                            setState(() {
+                              _tarefaAtual = _tarefaAtual.copyWith(domingo: value);
+                            });
                           },
                         ),
                       ],
@@ -165,6 +184,18 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                   textDirection: TextDirection.ltr,
                   style: theme.textTheme.bodyLarge?.copyWith(color: Colors.black),
                 ),
+              ),
+              const SizedBox(height: 16),
+              OutlinedButton(
+                onPressed: () {
+                  API.deleta(_tarefaAtual.id);
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  'Deletar',
+                  textDirection: TextDirection.ltr,
+                  style: theme.textTheme.bodyLarge?.copyWith(color: Colors.black),
+                ),
               )
             ],
           ),
@@ -174,39 +205,22 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
   }
 
   Future<void> selectTime(BuildContext context) async {
-    picked = (await showTimePicker(
-      context: context,
-      initialTime: _time,
-    ))!;
+    // picked = (await showTimePicker(
+    //   context: context,
+    //   initialTime: _time,
+    // ))!;
 
-    horario = '${picked.hour} : ${picked.minute}';
+    // horario = '${picked.hour} : ${picked.minute}';
     // ignore: todo
     //TODO: VER DATETIME
   }
 
   Future<void> enviaDados() async {
-    // todo: ler os dados da tela e preencher esse objeto abaixo
-    final id = (ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?)?['id'] as String?;
-    final tarefa = Tarefa(
-      id: id ?? const Uuid().v1(),
-      nome: nome,
-      prioridade: prioridade,
-      habilitado: true,
-      diasSemanaHabilitado: [
-        if (sabados) DiasHabilitado.sab,
-        if (domingos) DiasHabilitado.dom,
-        if (diassem) ...diasSemana,
-      ],
-      tempo: 0,
-      acao: TarefaAcao.inicial(),
-    );
-
-    if (id == null) {
-      await API.cadastra(tarefa);
+    if (widget.tarefa == null) {
+      await API.cadastra(_tarefaAtual);
     } else {
-      await API.edita(tarefa);
+      await API.edita(_tarefaAtual);
     }
-    //todo: add tratamento de erro
     Navigator.of(context).pop();
   }
 }
