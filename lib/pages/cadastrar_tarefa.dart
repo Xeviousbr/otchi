@@ -1,43 +1,44 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import '../models/tarefa.dart';
 import '../services/api.dart';
 
 class CadastrarTarefa extends StatefulWidget {
-  const CadastrarTarefa({super.key});
+  const CadastrarTarefa({
+    super.key,
+    this.tarefa,
+  });
+  final Tarefa? tarefa;
 
   @override
   State<CadastrarTarefa> createState() => _CadastrarTarefaState();
 }
 
 class _CadastrarTarefaState extends State<CadastrarTarefa> {
-  final List<String> _locations = [
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
-    '10'
-  ];
-  String? _selectedLocation;
-  final TimeOfDay _time = TimeOfDay.now();
-  late TimeOfDay picked;
-  bool diassem = true;
-  bool sabados = false;
-  bool domingos = false;
-  String nome = "";
-  int prioridade = 0;
-  String horario = "";
-  String idUser = "0";
-  int? tarefEditID;
+  late List<int> _prioridades;
+  late Tarefa _tarefaAtual;
 
   @override
   void initState() {
+    _prioridades = List<int>.generate(10, (index) => index + 1);
+
     super.initState();
+    _tarefaAtual = widget.tarefa ??
+        Tarefa(
+          id: const Uuid().v1(),
+          nome: '',
+          prioridade: 1,
+          diaSemana: false,
+          sabado: false,
+          domingo: false,
+          habilitado: true,
+          acao: TarefaAcao(
+            emAndamento: false,
+            atualizadaEm: Timestamp.now(),
+          ),
+          tempo: 0,
+        );
   }
 
   @override
@@ -58,6 +59,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               TextFormField(
+                initialValue: _tarefaAtual.nome,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Informe o nome da tarefa';
@@ -69,71 +71,98 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                   border: const OutlineInputBorder(),
                   hintText: 'Informe o nome da tarefa',
                 ),
+                autofocus: true,
                 onChanged: (newValue) {
                   setState(() {
-                    nome = newValue;
+                    _tarefaAtual = _tarefaAtual.copyWith(nome: newValue);
                   });
                 },
               ),
               const SizedBox(height: 20),
-              DropdownButton(
-                hint: const Text('Escolha a prioridade'),
-                value: _selectedLocation,
-                dropdownColor: const Color(0xffE5D9B6),
-                style: theme.textTheme.bodyMedium,
-                onChanged: (newValue) {
-                  prioridade = newValue as int;
-                  setState(() => _selectedLocation = newValue.toString());
-                },
-                items: _locations.map((location) {
-                  return DropdownMenuItem(
-                    value: location,
-                    child: Text(location),
-                  );
-                }).toList(),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  selectTime(context);
-                },
-                child: Text(
-                  'Definir Horário Limite',
-                  textDirection: TextDirection.ltr,
-                  style: theme.textTheme.bodyLarge,
-                ),
-              ),
-              CheckboxListTile(
-                title: Text(
-                  'Dias de semana',
-                  style: theme.textTheme.bodyMedium,
-                ),
-                value: diassem,
-                onChanged: (bool? value) {
-                  setState(() => diassem = value!);
-                },
-              ),
-              CheckboxListTile(
-                title: Text(
-                  'Sábados',
-                  style: theme.textTheme.bodyMedium,
-                ),
-                value: sabados,
-                onChanged: (bool? value) {
-                  setState(() => sabados = value!);
-                },
-              ),
-              CheckboxListTile(
-                title: Text(
-                  'Domingos',
-                  style: theme.textTheme.bodyMedium,
-                ),
-                value: domingos,
-                onChanged: (bool? value) {
-                  setState(() => domingos = value!);
-                },
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const Text('Prioridade'),
+                        // DropdownButton<int>(
+                        //   hint: const Text('Escolha a prioridade'),
+                        //   value: _tarefaAtual.prioridade,
+                        //   dropdownColor: const Color(0xffE5D9B6),
+                        //   style: theme.textTheme.bodyMedium,
+                        //   onChanged: (int? newValue) {
+                        //     setState(() {
+                        //       _tarefaAtual = _tarefaAtual.copyWith(prioridade: newValue ?? 0);
+                        //     });
+                        //   },
+                        //   items: _prioridades.map((location) {
+                        //     return DropdownMenuItem<int>(
+                        //       value: location,
+                        //       child: Text('$location'),
+                        //     );
+                        //   }).toList(),
+                        // ),
+                        ElevatedButton(
+                          onPressed: () {
+                            selectTime(context);
+                          },
+                          child: Text(
+                            'Definir Horário Limite',
+                            textDirection: TextDirection.ltr,
+                            style: theme.textTheme.bodyLarge,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        CheckboxListTile(
+                          title: Text(
+                            'Dias de semana',
+                            style: theme.textTheme.bodyMedium,
+                          ),
+                          value: _tarefaAtual.diaSemana,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              _tarefaAtual = _tarefaAtual.copyWith(diaSemana: value);
+                            });
+                          },
+                        ),
+                        CheckboxListTile(
+                          title: Text(
+                            'Sábados',
+                            style: theme.textTheme.bodyMedium,
+                          ),
+                          value: _tarefaAtual.sabado,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              _tarefaAtual = _tarefaAtual.copyWith(sabado: value);
+                            });
+                          },
+                        ),
+                        CheckboxListTile(
+                          title: Text(
+                            'Domingos',
+                            style: theme.textTheme.bodyMedium,
+                          ),
+                          value: _tarefaAtual.domingo,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              _tarefaAtual = _tarefaAtual.copyWith(domingo: value);
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
               ElevatedButton(
                 onPressed: () {
@@ -146,14 +175,26 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                 ),
               ),
               const SizedBox(height: 16),
-              ElevatedButton(
+              OutlinedButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
                 child: Text(
                   'Cancelar',
                   textDirection: TextDirection.ltr,
-                  style: theme.textTheme.bodyLarge,
+                  style: theme.textTheme.bodyLarge?.copyWith(color: Colors.black),
+                ),
+              ),
+              const SizedBox(height: 16),
+              OutlinedButton(
+                onPressed: () {
+                  API.deleta(_tarefaAtual.id);
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  'Deletar',
+                  textDirection: TextDirection.ltr,
+                  style: theme.textTheme.bodyLarge?.copyWith(color: Colors.black),
                 ),
               )
             ],
@@ -164,36 +205,22 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
   }
 
   Future<void> selectTime(BuildContext context) async {
-    picked = (await showTimePicker(
-      context: context,
-      initialTime: _time,
-    ))!;
+    // picked = (await showTimePicker(
+    //   context: context,
+    //   initialTime: _time,
+    // ))!;
 
-    horario = '${picked.hour} : ${picked.minute}';
+    // horario = '${picked.hour} : ${picked.minute}';
     // ignore: todo
     //TODO: VER DATETIME
   }
 
   Future<void> enviaDados() async {
-    // todo: ler os dados da tela e preencher esse objeto abaixo
-    final id = (ModalRoute.of(context)?.settings.arguments
-        as Map<String, dynamic>?)?['id'] as String?;
-    final tarefa = Tarefa(
-      id: id ?? const Uuid().v1(),
-      nome: nome,
-      prioridade: prioridade,
-      habilitado: true,
-      horarios: [],
-      diasSemanaHabilitado: diasSemana,
-      tempo: 0,
-    );
-
-    if (id == null) {
-      await API.cadastra(tarefa);
+    if (widget.tarefa == null) {
+      await API.cadastra(_tarefaAtual);
     } else {
-      await API.edita(tarefa);
+      await API.edita(_tarefaAtual);
     }
-    //todo: add tratamento de erro
     Navigator.of(context).pop();
   }
 }

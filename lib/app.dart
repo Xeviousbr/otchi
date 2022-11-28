@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:ot/services/auth_service.dart';
 
 import 'components/theme.dart';
+import 'models/tarefa.dart';
 import 'pages/cadastrar_tarefa.dart';
 
+import 'pages/login/login_page.dart';
 import 'pages/register_page/register_page.dart';
 import 'pages/home/home_page.dart';
-import 'pages/login_page/login_page.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -18,6 +19,10 @@ class App extends StatelessWidget {
       theme: theme(),
       routes: {
         '/cadastrar_tarefa': (_) => const CadastrarTarefa(),
+        '/editar_tarefa': (context) {
+          final tarefa = (ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?)?['tarefa'] as Tarefa?;
+          return CadastrarTarefa(tarefa: tarefa);
+        },
         '/cadastro_user': (_) => const RegisterPage(),
       },
       home: StreamBuilder<bool>(
