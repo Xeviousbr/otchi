@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ot/pages/login/login_bloc.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  // const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -60,11 +60,8 @@ class _LoginPageState extends State<LoginPage> {
                   obscureText: isPasswordVisible,
                   decoration: InputDecoration(
                     suffixIcon: IconButton(
-                      icon: isPasswordVisible
-                          ? const Icon(Icons.visibility_off)
-                          : const Icon(Icons.visibility),
-                      onPressed: () => setState(
-                          () => isPasswordVisible = !isPasswordVisible),
+                      icon: isPasswordVisible ? const Icon(Icons.visibility_off) : const Icon(Icons.visibility),
+                      onPressed: () => setState(() => isPasswordVisible = !isPasswordVisible),
                     ),
                     labelText: "Senha:",
                     border: const OutlineInputBorder(),
@@ -75,8 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     padding: const EdgeInsets.all(15),
                   ),
                   onPressed: () {
@@ -94,25 +90,23 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(
                   height: 20,
                 ),
-                OutlinedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    /* backgroundColor: Color(0xFF33b1d0),
-                        textStyle: TextStyle(
-                          fontSize: 20,
-                        ),*/
-                    padding: const EdgeInsets.all(15),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pushNamed('/cadastro_user');
-                  },
-                  child: Text(
-                    "Cadastre-se",
-                    style: theme.textTheme.bodyLarge
-                        ?.copyWith(color: Colors.black),
-                  ),
-                )
+                // OutlinedButton(
+                //   style: ElevatedButton.styleFrom(
+                //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                //     /* backgroundColor: Color(0xFF33b1d0),
+                //         textStyle: TextStyle(
+                //           fontSize: 20,
+                //         ),*/
+                //     padding: const EdgeInsets.all(15),
+                //   ),
+                //   onPressed: () {
+                //     Navigator.of(context).pushNamed('/cadastro_user');
+                //   },
+                //   child: Text(
+                //     "Cadastre-se",
+                //     style: theme.textTheme.bodyLarge?.copyWith(color: Colors.black),
+                //   ),
+                // )
               ],
             ),
           );

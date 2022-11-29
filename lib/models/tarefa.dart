@@ -75,6 +75,7 @@ class Tarefa {
   final bool habilitado;
   final TarefaAcao acao;
   final int tempo;
+  final bool rascunho;
 
   Tarefa({
     required this.id,
@@ -86,6 +87,7 @@ class Tarefa {
     required this.diaSemana,
     required this.acao,
     required this.tempo,
+    this.rascunho = false,
   });
 
   factory Tarefa.fromJson(Map<String, dynamic> data) {
@@ -142,6 +144,7 @@ class Tarefa {
       diaSemana: diaSemana ?? this.diaSemana,
       acao: acao ?? this.acao,
       tempo: tempo ?? this.tempo,
+      rascunho: rascunho,
     );
   }
 }

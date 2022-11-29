@@ -23,7 +23,7 @@ class App extends StatelessWidget {
           final tarefa = (ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?)?['tarefa'] as Tarefa?;
           return CadastrarTarefa(tarefa: tarefa);
         },
-        '/cadastro_user': (_) => const RegisterPage(),
+        '/cadastro_user': (_) => RegisterPage(),
       },
       home: StreamBuilder<bool>(
         stream: AuthService.estaLogado(),
@@ -33,7 +33,7 @@ class App extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
-          return snapshot.data! ? const HomePage() : const LoginPage();
+          return snapshot.data! ? HomePage() : LoginPage();
         },
       ),
     );

@@ -6,7 +6,7 @@ import '../services/api.dart';
 
 class CadastrarTarefa extends StatefulWidget {
   const CadastrarTarefa({
-    super.key,
+    // super.key,
     this.tarefa,
   });
   final Tarefa? tarefa;
@@ -175,28 +175,28 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                 ),
               ),
               const SizedBox(height: 16),
-              OutlinedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  'Cancelar',
-                  textDirection: TextDirection.ltr,
-                  style: theme.textTheme.bodyLarge?.copyWith(color: Colors.black),
-                ),
-              ),
+              // OutlinedButton(
+              //   onPressed: () {
+              //     Navigator.pop(context);
+              //   },
+              //   child: Text(
+              //     'Cancelar',
+              //     textDirection: TextDirection.ltr,
+              //     style: theme.textTheme.bodyLarge?.copyWith(color: Colors.black),
+              //   ),
+              // ),
               const SizedBox(height: 16),
-              OutlinedButton(
-                onPressed: () {
-                  API.deleta(_tarefaAtual.id);
-                  Navigator.of(context).pop();
-                },
-                child: Text(
-                  'Deletar',
-                  textDirection: TextDirection.ltr,
-                  style: theme.textTheme.bodyLarge?.copyWith(color: Colors.black),
-                ),
-              )
+              // OutlinedButton(
+              //   onPressed: () {
+              //     API.deleta(_tarefaAtual.id);
+              //     Navigator.of(context).pop();
+              //   },
+              //   child: Text(
+              //     'Deletar',
+              //     textDirection: TextDirection.ltr,
+              //     style: theme.textTheme.bodyLarge?.copyWith(color: Colors.black),
+              //   ),
+              // )
             ],
           ),
         ),

@@ -4,8 +4,9 @@ import 'package:ot/services/api.dart';
 import 'package:collection/collection.dart';
 
 class TarefaItemComponent extends StatefulWidget {
-  const TarefaItemComponent({Key? key, required this.tarefa}) : super(key: key);
+  const TarefaItemComponent({Key? key, required this.tarefa, this.onCancel}) : super(key: key);
   final Tarefa tarefa;
+  final void Function()? onCancel;
 
   @override
   State<TarefaItemComponent> createState() => _TarefaItemComponentState();
@@ -19,10 +20,13 @@ class _TarefaItemComponentState extends State<TarefaItemComponent> with TickerPr
 
   @override
   void initState() {
-    _tarefaAtual = widget.tarefa;
+    setState(() {
+      _tarefaAtual = widget.tarefa;
+      _isEditing = widget.tarefa.rascunho;
+    });
     _controller = AnimationController(duration: const Duration(seconds: 1), vsync: this);
     if (widget.tarefa.acao.emAndamento) {
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
         _controller.forward();
         _isPlay = true;
       });
@@ -32,6 +36,9 @@ class _TarefaItemComponentState extends State<TarefaItemComponent> with TickerPr
 
   @override
   Widget build(BuildContext context) {
+    if (_tarefaAtual.rascunho && !_isEditing) {
+      return SizedBox.shrink();
+    }
     final theme = Theme.of(context);
     final dias = [
       widget.tarefa.diaSemana ? 'Dias de semana' : null,
@@ -73,6 +80,9 @@ class _TarefaItemComponentState extends State<TarefaItemComponent> with TickerPr
                 alignment: Alignment.topRight,
                 onPressed: () {
                   setState(() {
+                    if (_isEditing && _tarefaAtual.rascunho && widget.onCancel != null) {
+                      widget.onCancel!();
+                    }
                     _isEditing = !_isEditing;
                   });
                 },
@@ -147,15 +157,16 @@ class _TarefaItemComponentState extends State<TarefaItemComponent> with TickerPr
                         });
                       },
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.delete),
-                      onPressed: () async {
-                        await API.deleta(_tarefaAtual.id);
-                        setState(() {
-                          _isEditing = false;
-                        });
-                      },
-                    ),
+                    if (!_tarefaAtual.rascunho)
+                      IconButton(
+                        icon: const Icon(Icons.delete),
+                        onPressed: () async {
+                          await API.deleta(_tarefaAtual.id);
+                          setState(() {
+                            _isEditing = false;
+                          });
+                        },
+                      ),
                   ],
                 ),
               ],

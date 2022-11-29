@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ot/pages/register_page/resgister_bloc.dart';
 
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+  // const RegisterPage({super.key});
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -102,19 +102,19 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                   ),
                   const SizedBox(height: 16),
-                  OutlinedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                      padding: const EdgeInsets.all(15),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      "Cancelar",
-                      style: theme.textTheme.bodyLarge?.copyWith(color: Colors.black),
-                    ),
-                  )
+                  // OutlinedButton(
+                  //   style: ElevatedButton.styleFrom(
+                  //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  //     padding: const EdgeInsets.all(15),
+                  //   ),
+                  //   onPressed: () {
+                  //     Navigator.of(context).pop();
+                  //   },
+                  //   child: Text(
+                  //     "Cancelar",
+                  //     style: theme.textTheme.bodyLarge?.copyWith(color: Colors.black),
+                  //   ),
+                  // )
                 ],
               ),
             );
