@@ -228,22 +228,19 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
   
   Future<int> calculaTempo(int prioridade) async {
     final tarefas = await API.listaTarefas().first;
-    int tempo = 0;
-    if (tarefas.isEmpty) {
-      tempo = 1000;
-    } else {
-      int i = 0;
+    int tempo = 1000;
+    if (!tarefas.isEmpty) {
+      int auxTempo = 1001;
       for (Tarefa element in tarefas) {
-        i++;
-        int auxTempo = element.tempo + 1;
-        if (prioridade == element.prioridade) {
+        auxTempo = element.tempo + 1;
+        if (prioridade < (element.prioridade + 1)) {
           auxTempo = element.tempo - 1;
           break;
         }
-        tempo = auxTempo;
       }
+      tempo = auxTempo;
     }
     return tempo;
-  }  
+  }
   
 }
