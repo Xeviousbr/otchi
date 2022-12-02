@@ -165,7 +165,9 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                 ],
               ),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
+                  int tempo = await calculaTempo(_tarefaAtual.prioridade);
+                  _tarefaAtual.tempo = tempo;
                   enviaDados();
                 },
                 child: Text(
@@ -223,4 +225,25 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
     }
     Navigator.of(context).pop();
   }
+  
+  Future<int> calculaTempo(int prioridade) async {
+    final tarefas = await API.listaTarefas().first;
+    int tempo = 0;
+    if (tarefas.isEmpty) {
+      tempo = 1000;
+    } else {
+      int i = 0;
+      for (Tarefa element in tarefas) {
+        i++;
+        int auxTempo = element.tempo + 1;
+        if (prioridade == element.prioridade) {
+          auxTempo = element.tempo - 1;
+          break;
+        }
+        tempo = auxTempo;
+      }
+    }
+    return tempo;
+  }  
+  
 }
