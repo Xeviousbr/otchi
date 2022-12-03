@@ -131,7 +131,8 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                           value: _tarefaAtual.diaSemana,
                           onChanged: (bool? value) {
                             setState(() {
-                              _tarefaAtual = _tarefaAtual.copyWith(diaSemana: value);
+                              _tarefaAtual =
+                                  _tarefaAtual.copyWith(diaSemana: value);
                             });
                           },
                         ),
@@ -143,7 +144,8 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                           value: _tarefaAtual.sabado,
                           onChanged: (bool? value) {
                             setState(() {
-                              _tarefaAtual = _tarefaAtual.copyWith(sabado: value);
+                              _tarefaAtual =
+                                  _tarefaAtual.copyWith(sabado: value);
                             });
                           },
                         ),
@@ -155,7 +157,8 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                           value: _tarefaAtual.domingo,
                           onChanged: (bool? value) {
                             setState(() {
-                              _tarefaAtual = _tarefaAtual.copyWith(domingo: value);
+                              _tarefaAtual =
+                                  _tarefaAtual.copyWith(domingo: value);
                             });
                           },
                         ),
@@ -165,7 +168,9 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                 ],
               ),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
+                  int tempo = await calculaTempo(_tarefaAtual.prioridade);
+                  _tarefaAtual.tempo = tempo;
                   enviaDados();
                 },
                 child: Text(
@@ -182,7 +187,8 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                 child: Text(
                   'Cancelar',
                   textDirection: TextDirection.ltr,
-                  style: theme.textTheme.bodyLarge?.copyWith(color: Colors.black),
+                  style:
+                      theme.textTheme.bodyLarge?.copyWith(color: Colors.black),
                 ),
               ),
               const SizedBox(height: 16),
@@ -194,7 +200,8 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                 child: Text(
                   'Deletar',
                   textDirection: TextDirection.ltr,
-                  style: theme.textTheme.bodyLarge?.copyWith(color: Colors.black),
+                  style:
+                      theme.textTheme.bodyLarge?.copyWith(color: Colors.black),
                 ),
               )
             ],
@@ -222,5 +229,22 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
       await API.edita(_tarefaAtual);
     }
     Navigator.of(context).pop();
+  }
+
+  Future<int> calculaTempo(int prioridade) async {
+    final tarefas = await API.listaTarefas().first;
+    int tempo = 1000;
+    if (!tarefas.isEmpty) {
+      int auxTempo = 1001;
+      for (Tarefa element in tarefas) {
+        auxTempo = element.tempo + 1;
+        if (prioridade < (element.prioridade + 1)) {
+          auxTempo = element.tempo - 1;
+          break;
+        }
+      }
+      tempo = auxTempo;
+    }
+    return tempo;
   }
 }

@@ -74,7 +74,7 @@ class Tarefa {
   final bool diaSemana;
   final bool habilitado;
   final TarefaAcao acao;
-  final int tempo;
+  int tempo;
 
   Tarefa({
     required this.id,
