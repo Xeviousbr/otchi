@@ -6,7 +6,10 @@ import '../models/tarefa.dart';
 class API {
   static CollectionReference<Map<String, dynamic>> _tarefasCollection() {
     final userId = FirebaseAuth.instance.currentUser!.uid;
-    return FirebaseFirestore.instance.collection('users').doc(userId).collection('tarefas');
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('tarefas');
   }
 
   static Future<void> cadastra(Tarefa tarefa) async {
@@ -34,7 +37,26 @@ class API {
         )
         .orderBy('prioridade')
         .orderBy('tempo', descending: true);
-    return referencia.snapshots().map((event) => event.docs.map((doc) => doc.data()));
+    return referencia
+        .snapshots()
+        .map((event) => event.docs.map((doc) => doc.data()));
+  }
+
+  static Stream<Iterable<Tarefa>> consTempo() {
+    final referencia = _tarefasCollection()
+        .withConverter<Tarefa>(
+          fromFirestore: (snapshots, _) => Tarefa.fromJson(
+            {
+              ...snapshots.data()!,
+              'id': snapshots.id,
+            },
+          ),
+          toFirestore: (tarefa, _) => tarefa.toJson(),
+        )
+        .orderBy('tempo', descending: true);
+    return referencia
+        .snapshots()
+        .map((event) => event.docs.map((doc) => doc.data()));
   }
 
   static Future deleta(String id) async {
@@ -43,7 +65,10 @@ class API {
 
   static Future<void> acaoTarefa(Tarefa tarefa, bool iniciou) {
     final tempoAtual = Timestamp.now();
-    final diferenca = tempoAtual.toDate().toLocal().difference(tarefa.acao.atualizadaEm.toDate().toLocal());
+    final diferenca = tempoAtual
+        .toDate()
+        .toLocal()
+        .difference(tarefa.acao.atualizadaEm.toDate().toLocal());
     tarefa = tarefa.copyWith(
       acao: TarefaAcao(
         emAndamento: iniciou,

@@ -52,6 +52,18 @@ class HomePage extends StatelessWidget {
   }
 
   Stream<Iterable<Tarefa>> ListaHome() {
-    return API.listaTarefas();
+    // Filtro pelo horário
+    // Filtro pelo dia
+
+    // Consulta ordenada pela prioridade
+    Stream<Iterable<Tarefa>> consPrioridade = API.listaTarefas();
+
+    // Consulta ordenada pelo tempo
+    Stream<Iterable<Tarefa>> consTempo = API.consTempo();
+
+    // Loop principal
+    // Loop secundário
+    // Montagem do resultado
+    return consPrioridade;
   }
 }
