@@ -52,63 +52,21 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Stream<Iterable<Tarefa>> ListaHome() {
-    // Filtro pelo horário, falta implantar
-    // Filtro pelo dia, falta implantar
+Stream<Iterable<Tarefa>> ListaHome() {
+    return API.listaTarefas();
+    // Filtro pelo horário
+    // Filtro pelo dia
 
-    // Esta consulta popula a lista como estava antes
+    // Consulta ordenada pela prioridade
     Stream<Iterable<Tarefa>> consPrioridade = API.listaTarefas();
 
-    /* Esta desabilitado, porque apesar de dar certo em termos de sintaxe ao ser executao da erro
-    
-    // Para poder fazer um Loop a princípio pelo que sei, precisa ser assim
-    // final Iterable<Tarefa> consPrioridadeX = API.listaTarefas().first as Iterable<Tarefa>;
-    Iterable<Tarefa> consPrioridadeX =
-        API.listaTarefas().first as Iterable<Tarefa>;
-
-    // Consulta ordenada pelo tempo, já esta pronta, só não tenho como usar ainda
-    // Stream<Iterable<Tarefa>> consTempo = API.consTempo();
-
-    List<Tarefa> tarefa = [];
+    // Consulta ordenada pelo tempo
+    Stream<Iterable<Tarefa>> consTempo = API.consTempo();
 
     // Loop principal
-    for (Tarefa element in consPrioridadeX) {
-      // Loop secundário, vai ter ainda
-      // Montagem do resultado
-      Tarefa tar = Tarefa(
-        id: "1",
-        nome: '',
-        prioridade: 1,
-        diaSemana: false,
-        sabado: false,
-        domingo: false,
-        habilitado: true,
-        acao: TarefaAcao(
-          emAndamento: false,
-          atualizadaEm: Timestamp.now(),
-        ),
-        tempo: 0,
-      );
-      tarefa.add(tar);
-    }
-
-    // Transformar para Future<Stream<Iterable<Tarefa>>>
-
-    // TarefaAcao ta =
-    //     TarefaAcao(atualizadaEm: Timestamp.now(), emAndamento: false);
-    // Tarefa Y = Tarefa(
-    //     acao: ta,
-    //     diaSemana: true,
-    //     domingo: true,
-    //     habilitado: true,
-    //     id: '1',
-    //     nome: 'Teste',
-    //     prioridade: 1,
-    //     sabado: true,
-    //     tempo: 123);
-    // var set = X.toSet(Y);
-    // return X; */
-
+    // Loop secundário
+    // Montagem do resultado
     return consPrioridade;
   }
+  
 }
