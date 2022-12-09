@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:ot/pages/home/tarefa_item_component.dart';
@@ -52,18 +53,62 @@ class HomePage extends StatelessWidget {
   }
 
   Stream<Iterable<Tarefa>> ListaHome() {
-    // Filtro pelo horário
-    // Filtro pelo dia
+    // Filtro pelo horário, falta implantar
+    // Filtro pelo dia, falta implantar
 
-    // Consulta ordenada pela prioridade
+    // Esta consulta popula a lista como estava antes
     Stream<Iterable<Tarefa>> consPrioridade = API.listaTarefas();
 
-    // Consulta ordenada pelo tempo
-    Stream<Iterable<Tarefa>> consTempo = API.consTempo();
+    /* Esta desabilitado, porque apesar de dar certo em termos de sintaxe ao ser executao da erro
+    
+    // Para poder fazer um Loop a princípio pelo que sei, precisa ser assim
+    // final Iterable<Tarefa> consPrioridadeX = API.listaTarefas().first as Iterable<Tarefa>;
+    Iterable<Tarefa> consPrioridadeX =
+        API.listaTarefas().first as Iterable<Tarefa>;
+
+    // Consulta ordenada pelo tempo, já esta pronta, só não tenho como usar ainda
+    // Stream<Iterable<Tarefa>> consTempo = API.consTempo();
+
+    List<Tarefa> tarefa = [];
 
     // Loop principal
-    // Loop secundário
-    // Montagem do resultado
+    for (Tarefa element in consPrioridadeX) {
+      // Loop secundário, vai ter ainda
+      // Montagem do resultado
+      Tarefa tar = Tarefa(
+        id: "1",
+        nome: '',
+        prioridade: 1,
+        diaSemana: false,
+        sabado: false,
+        domingo: false,
+        habilitado: true,
+        acao: TarefaAcao(
+          emAndamento: false,
+          atualizadaEm: Timestamp.now(),
+        ),
+        tempo: 0,
+      );
+      tarefa.add(tar);
+    }
+
+    // Transformar para Future<Stream<Iterable<Tarefa>>>
+
+    // TarefaAcao ta =
+    //     TarefaAcao(atualizadaEm: Timestamp.now(), emAndamento: false);
+    // Tarefa Y = Tarefa(
+    //     acao: ta,
+    //     diaSemana: true,
+    //     domingo: true,
+    //     habilitado: true,
+    //     id: '1',
+    //     nome: 'Teste',
+    //     prioridade: 1,
+    //     sabado: true,
+    //     tempo: 123);
+    // var set = X.toSet(Y);
+    // return X; */
+
     return consPrioridade;
   }
 }
