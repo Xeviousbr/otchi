@@ -87,23 +87,23 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         const Text('Prioridade'),
-                        // DropdownButton<int>(
-                        //   hint: const Text('Escolha a prioridade'),
-                        //   value: _tarefaAtual.prioridade,
-                        //   dropdownColor: const Color(0xffE5D9B6),
-                        //   style: theme.textTheme.bodyMedium,
-                        //   onChanged: (int? newValue) {
-                        //     setState(() {
-                        //       _tarefaAtual = _tarefaAtual.copyWith(prioridade: newValue ?? 0);
-                        //     });
-                        //   },
-                        //   items: _prioridades.map((location) {
-                        //     return DropdownMenuItem<int>(
-                        //       value: location,
-                        //       child: Text('$location'),
-                        //     );
-                        //   }).toList(),
-                        // ),
+                         DropdownButton<int>(
+                           hint: const Text('Escolha a prioridade'),
+                           value: _tarefaAtual.prioridade,
+                           dropdownColor: const Color(0xffE5D9B6),
+                           style: theme.textTheme.bodyMedium,
+                           onChanged: (int? newValue) {
+                             setState(() {
+                               _tarefaAtual = _tarefaAtual.copyWith(prioridade: newValue ?? 0);
+                             });
+                           },
+                           items: _prioridades.map((location) {
+                             return DropdownMenuItem<int>(
+                               value: location,
+                               child: Text('$location'),
+                             );
+                           }).toList(),
+                         ),
                         ElevatedButton(
                           onPressed: () {
                             selectTime(context);
