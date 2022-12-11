@@ -33,7 +33,7 @@ class API {
           toFirestore: (tarefa, _) => tarefa.toJson(),
         )
         .orderBy('tempo')
-        .orderBy('prioridade', descending: true)
+        .orderBy('prioridade')
         .snapshots()
         .map((event) => event.docs.map((doc) => doc.data()));
   }
