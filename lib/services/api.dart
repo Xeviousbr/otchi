@@ -33,9 +33,9 @@ class API {
           toFirestore: (tarefa, _) => tarefa.toJson(),
         )
         .orderBy('tempo')
-        .orderBy('prioridade')
         .snapshots()
-        .map((event) => event.docs.map((doc) => doc.data()));
+        .map((event) => event.docs.map((doc) => doc.data()))
+        .map((items) => items.toList()..sort((a, b) => a.prioridade.compareTo(b.prioridade)));
   }
 
   Stream<Iterable<Tarefa>> ListaHome() {
