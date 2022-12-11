@@ -131,8 +131,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                           value: _tarefaAtual.diaSemana,
                           onChanged: (bool? value) {
                             setState(() {
-                              _tarefaAtual =
-                                  _tarefaAtual.copyWith(diaSemana: value);
+                              _tarefaAtual = _tarefaAtual.copyWith(diaSemana: value);
                             });
                           },
                         ),
@@ -144,8 +143,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                           value: _tarefaAtual.sabado,
                           onChanged: (bool? value) {
                             setState(() {
-                              _tarefaAtual =
-                                  _tarefaAtual.copyWith(sabado: value);
+                              _tarefaAtual = _tarefaAtual.copyWith(sabado: value);
                             });
                           },
                         ),
@@ -157,8 +155,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                           value: _tarefaAtual.domingo,
                           onChanged: (bool? value) {
                             setState(() {
-                              _tarefaAtual =
-                                  _tarefaAtual.copyWith(domingo: value);
+                              _tarefaAtual = _tarefaAtual.copyWith(domingo: value);
                             });
                           },
                         ),
@@ -187,8 +184,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                 child: Text(
                   'Cancelar',
                   textDirection: TextDirection.ltr,
-                  style:
-                      theme.textTheme.bodyLarge?.copyWith(color: Colors.black),
+                  style: theme.textTheme.bodyLarge?.copyWith(color: Colors.black),
                 ),
               ),
               const SizedBox(height: 16),
@@ -200,8 +196,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                 child: Text(
                   'Deletar',
                   textDirection: TextDirection.ltr,
-                  style:
-                      theme.textTheme.bodyLarge?.copyWith(color: Colors.black),
+                  style: theme.textTheme.bodyLarge?.copyWith(color: Colors.black),
                 ),
               )
             ],
