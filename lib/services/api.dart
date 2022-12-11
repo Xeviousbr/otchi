@@ -22,30 +22,20 @@ class API {
   }
 
   static Stream<Iterable<Tarefa>> listaTarefas() {
-    final referencia = _tarefasCollection().withConverter<Tarefa>(
-      fromFirestore: (snapshots, _) => Tarefa.fromJson(
-        {
-          ...snapshots.data()!,
-          'id': snapshots.id,
-        },
-      ),
-      toFirestore: (tarefa, _) => tarefa.toJson(),
-    )
-      ..orderBy('prioridade')
-      ..orderBy('tempo', descending: true).snapshots().map((event) => event.docs.map((doc) => doc.data())).map(
-        (tarefas) {
-          if (tarefas.isEmpty) return tarefas;
-          // faz teu algoritmo aqui e retorna
-          // vou colocar um exemplo
-
-          final List<Tarefa> listaOrdenada = [];
-          for (var i = 0; i < tarefas.length; i++) {
-            final tarefaAtual = tarefas.elementAt(i);
-            listaOrdenada.add(tarefaAtual);
-          }
-          return listaOrdenada;
-        },
-      );
+    return _tarefasCollection()
+        .withConverter<Tarefa>(
+          fromFirestore: (snapshots, _) => Tarefa.fromJson(
+            {
+              ...snapshots.data()!,
+              'id': snapshots.id,
+            },
+          ),
+          toFirestore: (tarefa, _) => tarefa.toJson(),
+        )
+        .orderBy('tempo')
+        .orderBy('prioridade', descending: true)
+        .snapshots()
+        .map((event) => event.docs.map((doc) => doc.data()));
   }
 
   Stream<Iterable<Tarefa>> ListaHome() {
