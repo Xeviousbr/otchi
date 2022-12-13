@@ -46,14 +46,27 @@ class API {
 
   static Future<void> acaoTarefa(Tarefa tarefa, bool iniciou) {
     final tempoAtual = Timestamp.now();
-    final diferenca = tempoAtual.toDate().toLocal().difference(tarefa.acao.atualizadaEm.toDate().toLocal());
-    tarefa = tarefa.copyWith(
-      acao: TarefaAcao(
-        emAndamento: iniciou,
-        atualizadaEm: tempoAtual,
-      ),
-      tempo: tarefa.tempo + (diferenca.inSeconds),
-    );
+    if (iniciou == false) {
+      final diferenca = tempoAtual
+          .toDate()
+          .toLocal()
+          .difference(tarefa.acao.atualizadaEm.toDate().toLocal());
+      tarefa = tarefa.copyWith(
+        acao: TarefaAcao(
+          emAndamento: iniciou,
+          atualizadaEm: tempoAtual,
+        ),
+        tempo: tarefa.tempo + (diferenca.inSeconds),
+      );
+    } else {
+      tarefa = tarefa.copyWith(
+        acao: TarefaAcao(
+          emAndamento: iniciou,
+          atualizadaEm: tempoAtual,
+        ),
+      );
+    }
     return _tarefasCollection().doc(tarefa.id).set(tarefa.toJson());
   }
+  
 }
