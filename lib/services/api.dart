@@ -35,51 +35,9 @@ class API {
         .orderBy('tempo')
         .snapshots()
         .map((event) => event.docs.map((doc) => doc.data()))
-        .map((items) => items.toList()..sort((a, b) => a.prioridade.compareTo(b.prioridade)));
-  }
-
-  Stream<Iterable<Tarefa>> ListaHome() {
-    // Filtro pelo horário, falta implantar
-    // Filtro pelo dia, falta implantar
-
-    // Esta consulta popula a lista como estava antes
-    Stream<Iterable<Tarefa>> consPrioridade = API.listaTarefas();
-
-    /* Esta desabilitado, porque apesar de dar certo em termos de sintaxe ao ser executao da erro
-    
-    // Para poder fazer um Loop a princípio pelo que sei, precisa ser assim
-    Iterable<Tarefa> consPrioridadeX =
-        API.listaTarefas().first as Iterable<Tarefa>;
-
-    // Consulta ordenada pelo tempo, já esta pronta, só não tenho como usar ainda
-    // Stream<Iterable<Tarefa>> consTempo = API.consTempo();
-
-    List<Tarefa> tarefa = [];
-
-    // Loop principal
-    for (Tarefa element in consPrioridadeX) {
-      // Loop secundário, vai ter ainda
-      // Montagem do resultado
-      Tarefa tar = Tarefa(
-        id: "1",
-        nome: '',
-        prioridade: 1,
-        diaSemana: false,
-        sabado: false,
-        domingo: false,
-        habilitado: true,
-        acao: TarefaAcao(
-          emAndamento: false,
-          atualizadaEm: Timestamp.now(),
-        ),
-        tempo: 0,
-      );
-      tarefa.add(tar);
-    } */
-
-    // Transformar para Future<Stream<Iterable<Tarefa>>>
-
-    return consPrioridade;
+        .map((items) => items.toList()
+          ..sort((a, b) => (a.tempo * (1 + ((a.prioridade - 1) * 1.1)))
+              .compareTo(b.tempo * (1 + ((b.prioridade - 1) * 1.1)))));
   }
 
   static Future deleta(String id) async {
