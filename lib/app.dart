@@ -19,6 +19,7 @@ class App extends StatelessWidget {
       title: 'OT - Organizador de Tarefas',
       theme: theme(),
       routes: {
+        '/home_page': (_) => const HomePage(),
         '/cadastrar_tarefa': (_) => const CadastrarTarefa(),
         '/editar_tarefa': (context) {
           final tarefa = (ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?)?['tarefa'] as Tarefa?;
