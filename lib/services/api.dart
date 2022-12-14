@@ -36,8 +36,8 @@ class API {
         .snapshots()
         .map((event) => event.docs.map((doc) => doc.data()))
         .map((items) => items.toList()
-          ..sort((a, b) => (a.tempo * (1 + ((a.prioridade - 1) * 1.1)))
-              .compareTo(b.tempo * (1 + ((b.prioridade - 1) * 1.1)))));
+          ..sort((a, b) => (a.tempo * (1 + ((a.prioridade - 1) * 1.09)))
+              .compareTo(b.tempo * (1 + ((b.prioridade - 1) * 1.09)))));
   }
 
   static Future deleta(String id) async {
