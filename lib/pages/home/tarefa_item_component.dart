@@ -89,8 +89,7 @@ class _TarefaItemComponentState extends State<TarefaItemComponent> with TickerPr
                   onTap: () async {
                     await API.acaoTarefa(widget.tarefa, !_isPlay);
                     if (_isPlay) {
-                      _controller.reverse();
-                      _isPlay = false;
+                      Navigator.of(context).pushNamed('/home_page');
                     } else {
                       _controller.forward();
                       _isPlay = true;
