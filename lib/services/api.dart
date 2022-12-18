@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -37,8 +38,8 @@ class API {
         .map((event) => event.docs.map((doc) => doc.data()))
         .map((items) => items.where((item) => (item.habilitado == true)))
         .map((items) => items.toList()
-          ..sort((a, b) => (a.tempo * (1 + ((a.prioridade - 1) * 1.07)))
-              .compareTo(b.tempo * (1 + ((b.prioridade - 1) * 1.07)))));
+         ..sort((a, b) => (a.tempo * (((pow(1.1, a.prioridade)) - 1.1) + 1))
+           .compareTo(b.tempo * (((pow(1.1, b.prioridade)) - 1.1) + 1)))); 
   }
 
   static Future deleta(String id) async {
