@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -7,7 +8,10 @@ import '../models/tarefa.dart';
 class API {
   static CollectionReference<Map<String, dynamic>> _tarefasCollection() {
     final userId = FirebaseAuth.instance.currentUser!.uid;
-    return FirebaseFirestore.instance.collection('users').doc(userId).collection('tarefas');
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('tarefas');
   }
 
   static Future<void> cadastra(Tarefa tarefa) async {
@@ -33,13 +37,15 @@ class API {
           ),
           toFirestore: (tarefa, _) => tarefa.toJson(),
         )
-        .orderBy('tempo')
         .snapshots()
         .map((event) => event.docs.map((doc) => doc.data()))
+        .map((items) => items.where((item) => (FunDiaSem(item.diaSemana))))
+        .map((items) => items.where((item) => (FunSab(item.sabado))))
+        .map((items) => items.where((item) => (FunDom(item.domingo))))
         .map((items) => items.where((item) => (item.habilitado == true)))
         .map((items) => items.toList()
-         ..sort((a, b) => (a.tempo * (((pow(1.1, a.prioridade)) - 1.1) + 1))
-           .compareTo(b.tempo * (((pow(1.1, b.prioridade)) - 1.1) + 1)))); 
+          ..sort((a, b) => (a.tempo * (((pow(1.09, a.prioridade)) - 1.08) + 1))
+              .compareTo(b.tempo * (((pow(1.09, b.prioridade)) - 1.08) + 1))));
   }
 
   static Future deleta(String id) async {
@@ -53,6 +59,10 @@ class API {
           .toDate()
           .toLocal()
           .difference(tarefa.acao.atualizadaEm.toDate().toLocal());
+      print("Tempo adicionado na tarefa " +
+          tarefa.nome +
+          " = " +
+          diferenca.inSeconds.toString());
       tarefa = tarefa.copyWith(
         acao: TarefaAcao(
           emAndamento: iniciou,
@@ -70,5 +80,28 @@ class API {
     }
     return _tarefasCollection().doc(tarefa.id).set(tarefa.toJson());
   }
-  
+
+  static int dia = 0;
+  static bool FunDiaSem(bool diasem) {
+    var now = new DateTime.now();
+    int dia = DateTime.now().weekday;
+    if ((dia > 1) && (dia < 7)) {
+      return diasem;
+    }
+    return false;
+  }
+
+  static bool FunSab(bool sabado) {
+    if (dia == 7) {
+      return sabado;
+    }
+    return true;
+  }
+
+  static bool FunDom(bool domingo) {
+    if (dia == 1) {
+      return domingo;
+    }
+    return true;
+  }
 }
