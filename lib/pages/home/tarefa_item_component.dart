@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ot/models/tarefa.dart';
 import 'package:ot/services/api.dart';
@@ -11,7 +12,8 @@ class TarefaItemComponent extends StatefulWidget {
   State<TarefaItemComponent> createState() => _TarefaItemComponentState();
 }
 
-class _TarefaItemComponentState extends State<TarefaItemComponent> with TickerProviderStateMixin {
+class _TarefaItemComponentState extends State<TarefaItemComponent>
+    with TickerProviderStateMixin {
   late AnimationController _controller;
   late Tarefa _tarefaAtual;
   bool _isPlay = false;
@@ -20,7 +22,8 @@ class _TarefaItemComponentState extends State<TarefaItemComponent> with TickerPr
   @override
   void initState() {
     _tarefaAtual = widget.tarefa;
-    _controller = AnimationController(duration: const Duration(seconds: 1), vsync: this);
+    _controller =
+        AnimationController(duration: const Duration(seconds: 1), vsync: this);
     if (widget.tarefa.acao.emAndamento) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         _controller.forward();
@@ -38,11 +41,10 @@ class _TarefaItemComponentState extends State<TarefaItemComponent> with TickerPr
       widget.tarefa.sabado ? 'Sabados' : null,
       widget.tarefa.domingo ? 'Domingos' : null,
     ].whereType<String>();
-
     return Container(
       padding: const EdgeInsets.only(top: 8, left: 8, right: 4, bottom: 4),
       width: 165,
-      color: Colors.amber[100],
+      color: Colors.amber[funCor(widget.tarefa.acao.atualizadaEm)],
       margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -59,10 +61,12 @@ class _TarefaItemComponentState extends State<TarefaItemComponent> with TickerPr
                         initialValue: _tarefaAtual.nome,
                         style: theme.textTheme.bodyMedium,
                         maxLines: null,
-                        decoration: const InputDecoration(border: InputBorder.none),
+                        decoration:
+                            const InputDecoration(border: InputBorder.none),
                         onChanged: (newValue) {
                           setState(() {
-                            _tarefaAtual = _tarefaAtual.copyWith(nome: newValue);
+                            _tarefaAtual =
+                                _tarefaAtual.copyWith(nome: newValue);
                           });
                         },
                       )
@@ -76,7 +80,9 @@ class _TarefaItemComponentState extends State<TarefaItemComponent> with TickerPr
                     _isEditing = !_isEditing;
                   });
                 },
-                icon: _isEditing ? const Icon(Icons.close, size: 16) : const Icon(Icons.edit, size: 16),
+                icon: _isEditing
+                    ? const Icon(Icons.close, size: 16)
+                    : const Icon(Icons.edit, size: 16),
               ),
             ],
           ),
@@ -199,7 +205,10 @@ class _TarefaItemComponentState extends State<TarefaItemComponent> with TickerPr
     );
   }
 
-  Widget _buildCheckBox({required String label, required ValueChanged<bool?> onChanged, required bool value}) {
+  Widget _buildCheckBox(
+      {required String label,
+      required ValueChanged<bool?> onChanged,
+      required bool value}) {
     return Column(
       children: [
         Checkbox(value: value, onChanged: onChanged),
@@ -216,5 +225,17 @@ class _TarefaItemComponentState extends State<TarefaItemComponent> with TickerPr
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  int funCor(Timestamp atualizadaEm) {
+    final int miliSegundos = atualizadaEm.seconds;
+    final DateTime data =
+        DateTime.fromMillisecondsSinceEpoch(miliSegundos * 1000);
+    DateTime tempoAtual = DateTime.now().add(const Duration(days: -1));
+    if ((data.compareTo(tempoAtual)) > 0) {
+      return 50;
+    } else {
+      return 100;
+    }
   }
 }
