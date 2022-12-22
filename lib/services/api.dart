@@ -39,13 +39,10 @@ class API {
         )
         .snapshots()
         .map((event) => event.docs.map((doc) => doc.data()))
-        .map((items) => items.where((item) => (FunDiaSem(item.diaSemana))))
-        .map((items) => items.where((item) => (FunSab(item.sabado))))
-        .map((items) => items.where((item) => (FunDom(item.domingo))))
-        .map((items) => items.where((item) => (item.habilitado == true)))
+        .map((items) => items.where((item) => (FunMostra(item))))
         .map((items) => items.toList()
-          ..sort((a, b) => (a.tempo * (((pow(1.09, a.prioridade)) - 1.08) + 1))
-              .compareTo(b.tempo * (((pow(1.09, b.prioridade)) - 1.08) + 1))));
+          ..sort((a, b) => (a.tempo * (((pow(1.08, a.prioridade)) - 1.08) + 1))
+              .compareTo(b.tempo * (((pow(1.08, b.prioridade)) - 1.08) + 1))));
   }
 
   static Future deleta(String id) async {
@@ -81,27 +78,21 @@ class API {
     return _tarefasCollection().doc(tarefa.id).set(tarefa.toJson());
   }
 
-  static int dia = 0;
-  static bool FunDiaSem(bool diasem) {
-    var now = new DateTime.now();
-    int dia = DateTime.now().weekday;
-    if ((dia > 1) && (dia < 7)) {
-      return diasem;
+  static bool FunMostra(Tarefa item) {
+    if (item.habilitado == false) {
+      return false;
+    } else {
+      var now = new DateTime.now();
+      int dia = DateTime.now().weekday;
+      if ((dia > 1) && (dia < 7)) {
+        return item.diaSemana;
+      } else {
+        if (dia == 1) {
+          return item.domingo;
+        } else {
+          return item.sabado;
+        }
+      }
     }
-    return false;
-  }
-
-  static bool FunSab(bool sabado) {
-    if (dia == 7) {
-      return sabado;
-    }
-    return true;
-  }
-
-  static bool FunDom(bool domingo) {
-    if (dia == 1) {
-      return domingo;
-    }
-    return true;
   }
 }
