@@ -87,7 +87,7 @@ class API {
       if ((dia > 1) && (dia < 7)) {
         return item.diaSemana;
       } else {
-        if (dia == 1) {
+        if (dia == 7) {
           return item.domingo;
         } else {
           return item.sabado;
