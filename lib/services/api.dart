@@ -83,16 +83,20 @@ class API {
       return false;
     } else {
       var now = new DateTime.now();
-      int dia = DateTime.now().weekday;
-      if ((dia > 1) && (dia < 7)) {
-        return item.diaSemana;
-      } else {
-        if (dia == 7) {
-          return item.domingo;
-        } else {
-          return item.sabado;
-        }
+      int dia = now.weekday;
+      bool ret = false;
+      switch (dia) {
+        case 5:
+          ret = item.sabado;
+          break;
+        case 6:
+          ret = item.domingo;
+          break;
+        default:
+          ret = item.diaSemana;
       }
+      return ret;
     }
   }
+  
 }
