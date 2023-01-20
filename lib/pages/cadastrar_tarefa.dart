@@ -109,7 +109,17 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                             selectTime(context);
                           },
                           child: Text(
-                            'Definir Horário Limite',
+                            'Horário Inicial',
+                            textDirection: TextDirection.ltr,
+                            style: theme.textTheme.bodyLarge,
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            selectTime(context);
+                          },
+                          child: Text(
+                            'Horário Final',
                             textDirection: TextDirection.ltr,
                             style: theme.textTheme.bodyLarge,
                           ),
