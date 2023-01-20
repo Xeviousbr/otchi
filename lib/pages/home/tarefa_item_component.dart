@@ -231,7 +231,7 @@ class _TarefaItemComponentState extends State<TarefaItemComponent>
     final int miliSegundos = atualizadaEm.seconds;
     final DateTime data =
         DateTime.fromMillisecondsSinceEpoch(miliSegundos * 1000);
-    DateTime tempoAtual = DateTime.now().add(const Duration(hours: -14));
+    DateTime tempoAtual = DateTime.now().add(const Duration(hours: -13));
     if ((data.compareTo(tempoAtual)) > 0) {
       return 50;
     } else {
