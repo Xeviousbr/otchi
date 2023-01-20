@@ -86,10 +86,10 @@ class API {
       int dia = now.weekday;
       bool ret = false;
       switch (dia) {
-        case 5:
+        case 6:
           ret = item.sabado;
           break;
-        case 6:
+        case 7:
           ret = item.domingo;
           break;
         default:
