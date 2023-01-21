@@ -18,6 +18,9 @@ class CadastrarTarefa extends StatefulWidget {
 class _CadastrarTarefaState extends State<CadastrarTarefa> {
   late List<int> _prioridades;
   late Tarefa _tarefaAtual;
+  late TimeOfDay picked;
+  final TimeOfDay _time = TimeOfDay.now();
+  String horario = "";
 
   @override
   void initState() {
@@ -87,23 +90,25 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         const Text('Prioridade'),
-                         DropdownButton<int>(
-                           hint: const Text('Escolha a prioridade'),
-                           value: _tarefaAtual.prioridade,
-                           dropdownColor: const Color(0xffE5D9B6),
-                           style: theme.textTheme.bodyMedium,
-                           onChanged: (int? newValue) {
-                             setState(() {
-                               _tarefaAtual = _tarefaAtual.copyWith(prioridade: newValue ?? 0);
-                             });
-                           },
-                           items: _prioridades.map((location) {
-                             return DropdownMenuItem<int>(
-                               value: location,
-                               child: Text('$location'),
-                             );
-                           }).toList(),
-                         ),
+                        DropdownButton<int>(
+                          hint: const Text('Escolha a prioridade'),
+                          value: _tarefaAtual.prioridade,
+                          dropdownColor: const Color(0xffE5D9B6),
+                          style: theme.textTheme.bodyMedium,
+                          onChanged: (int? newValue) {
+                            setState(() {
+                              _tarefaAtual = _tarefaAtual.copyWith(
+                                  prioridade: newValue ?? 0);
+                            });
+                          },
+                          items: _prioridades.map((location) {
+                            return DropdownMenuItem<int>(
+                              value: location,
+                              child: Text('$location'),
+                            );
+                          }).toList(),
+                        ),
+                        //
                         ElevatedButton(
                           onPressed: () {
                             selectTime(context);
@@ -124,6 +129,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                             style: theme.textTheme.bodyLarge,
                           ),
                         ),
+                        //
                       ],
                     ),
                   ),
@@ -141,7 +147,8 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                           value: _tarefaAtual.diaSemana,
                           onChanged: (bool? value) {
                             setState(() {
-                              _tarefaAtual = _tarefaAtual.copyWith(diaSemana: value);
+                              _tarefaAtual =
+                                  _tarefaAtual.copyWith(diaSemana: value);
                             });
                           },
                         ),
@@ -153,7 +160,8 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                           value: _tarefaAtual.sabado,
                           onChanged: (bool? value) {
                             setState(() {
-                              _tarefaAtual = _tarefaAtual.copyWith(sabado: value);
+                              _tarefaAtual =
+                                  _tarefaAtual.copyWith(sabado: value);
                             });
                           },
                         ),
@@ -165,7 +173,8 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                           value: _tarefaAtual.domingo,
                           onChanged: (bool? value) {
                             setState(() {
-                              _tarefaAtual = _tarefaAtual.copyWith(domingo: value);
+                              _tarefaAtual =
+                                  _tarefaAtual.copyWith(domingo: value);
                             });
                           },
                         ),
@@ -194,7 +203,8 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                 child: Text(
                   'Cancelar',
                   textDirection: TextDirection.ltr,
-                  style: theme.textTheme.bodyLarge?.copyWith(color: Colors.black),
+                  style:
+                      theme.textTheme.bodyLarge?.copyWith(color: Colors.black),
                 ),
               ),
               const SizedBox(height: 16),
@@ -206,7 +216,8 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                 child: Text(
                   'Deletar',
                   textDirection: TextDirection.ltr,
-                  style: theme.textTheme.bodyLarge?.copyWith(color: Colors.black),
+                  style:
+                      theme.textTheme.bodyLarge?.copyWith(color: Colors.black),
                 ),
               )
             ],
@@ -217,23 +228,34 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
   }
 
   Future<void> selectTime(BuildContext context) async {
-    // picked = (await showTimePicker(
-    //   context: context,
-    //   initialTime: _time,
-    // ))!;
+    picked = (await showTimePicker(
+      context: context,
+      initialTime: _time,
+    ))!;
 
-    // horario = '${picked.hour} : ${picked.minute}';
+    horario = '${picked.hour} : ${picked.minute}';
     // ignore: todo
     //TODO: VER DATETIME
   }
 
   Future<void> enviaDados() async {
-    if (widget.tarefa == null) {
-      await API.cadastra(_tarefaAtual);
-    } else {
-      await API.edita(_tarefaAtual);
+    int dias = 0;
+    if (_tarefaAtual.diaSemana) {
+      dias = 31;
     }
-    Navigator.of(context).pop();
+    if (_tarefaAtual.sabado) {
+      dias += 32;
+    }
+    if (_tarefaAtual.domingo) {
+      dias += 64;
+    }
+    print(dias);
+    // if (widget.tarefa == null) {
+    //   await API.cadastra(_tarefaAtual);
+    // } else {
+    //   await API.edita(_tarefaAtual);
+    // }
+    // Navigator.of(context).pop();
   }
 
   Future<int> calculaTempo(int prioridade) async {
