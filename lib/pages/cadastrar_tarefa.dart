@@ -18,9 +18,16 @@ class CadastrarTarefa extends StatefulWidget {
 class _CadastrarTarefaState extends State<CadastrarTarefa> {
   late List<int> _prioridades;
   late Tarefa _tarefaAtual;
-  late TimeOfDay picked;
-  final TimeOfDay _time = TimeOfDay.now();
-  String horario = "";
+  late TimeOfDay pickedI;
+  final TimeOfDay _timeI = TimeOfDay.now();
+  String horarioI = "";
+  late TimeOfDay pickedF;
+  final TimeOfDay _timeF = TimeOfDay.now();
+  String horarioF = "";
+  String sHrIn = "Horário Inicial";
+  String sHrFn = "Horário Final";
+  late TimeOfDay _selectedTimeI;
+  late TimeOfDay _selectedTimeF;
 
   @override
   void initState() {
@@ -111,20 +118,20 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                         //
                         ElevatedButton(
                           onPressed: () {
-                            selectTime(context);
+                            selectTimeI(context);
                           },
                           child: Text(
-                            'Horário Inicial',
+                            sHrIn,
                             textDirection: TextDirection.ltr,
                             style: theme.textTheme.bodyLarge,
                           ),
                         ),
                         ElevatedButton(
                           onPressed: () {
-                            selectTime(context);
+                            selectTimeF(context);
                           },
                           child: Text(
-                            'Horário Final',
+                            sHrFn,
                             textDirection: TextDirection.ltr,
                             style: theme.textTheme.bodyLarge,
                           ),
@@ -227,13 +234,35 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
     );
   }
 
-  Future<void> selectTime(BuildContext context) async {
-    picked = (await showTimePicker(
+  Future<void> selectTimeI(BuildContext context) async {
+    pickedI = (await showTimePicker(
       context: context,
-      initialTime: _time,
+      initialTime: _timeI,
     ))!;
+    if (pickedI != null) {
+      setState(() {
+        _selectedTimeI = pickedI;
+        sHrIn = "Hora Inicial: " + _selectedTimeI.format(context);
+      });
+    }
+    horarioI = '${pickedI.hour} : ${pickedI.minute}';
+    // ignore: todo
+    //TODO: VER DATETIME
+  }
 
-    horario = '${picked.hour} : ${picked.minute}';
+  Future<void> selectTimeF(BuildContext context) async {
+    pickedF = (await showTimePicker(
+      context: context,
+      initialTime: _timeF,
+    ))!;
+    if (pickedF != null) {
+      setState(() {
+        _selectedTimeF = pickedF;
+        sHrFn = "Hora Inicial: " + _selectedTimeF.format(context);
+      });
+    }
+
+    horarioF = '${pickedF.hour} : ${pickedF.minute}';
     // ignore: todo
     //TODO: VER DATETIME
   }
