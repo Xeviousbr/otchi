@@ -16,18 +16,18 @@ class CadastrarTarefa extends StatefulWidget {
 }
 
 class _CadastrarTarefaState extends State<CadastrarTarefa> {
-  late List<int> _prioridades;
-  late Tarefa _tarefaAtual;
   late TimeOfDay pickedI;
-  final TimeOfDay _timeI = TimeOfDay.now();
-  String horarioI = "";
   late TimeOfDay pickedF;
-  final TimeOfDay _timeF = TimeOfDay.now();
+  late TimeOfDay _selectedTimeI;
+  late TimeOfDay _selectedTimeF;
+  late TimeOfDay _timeF = TimeOfDay.now();
+  late TimeOfDay _timeI = TimeOfDay.now();
+  String horarioI = "";
   String horarioF = "";
   String sHrIn = "Horário Inicial";
   String sHrFn = "Horário Final";
-  late TimeOfDay _selectedTimeI;
-  late TimeOfDay _selectedTimeF;
+  late List<int> _prioridades;
+  late Tarefa _tarefaAtual;
 
   @override
   void initState() {
@@ -242,6 +242,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
     if (pickedI != null) {
       setState(() {
         _selectedTimeI = pickedI;
+        _timeI = pickedI;
         sHrIn = "Hora Inicial: " + _selectedTimeI.format(context);
       });
     }
@@ -258,6 +259,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
     if (pickedF != null) {
       setState(() {
         _selectedTimeF = pickedF;
+        _timeF = pickedF;
         sHrFn = "Hora Inicial: " + _selectedTimeF.format(context);
       });
     }
