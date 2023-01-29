@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 enum DiasHabilitado { seg, ter, qua, qui, sex, sab, dom }
 
@@ -74,6 +75,8 @@ class Tarefa {
   final bool diaSemana;
   final bool habilitado;
   final TarefaAcao acao;
+  final TimeOfDay? hrIn;
+  final TimeOfDay? hrFn;
   int tempo;
 
   Tarefa({
@@ -86,11 +89,16 @@ class Tarefa {
     required this.diaSemana,
     required this.acao,
     required this.tempo,
+    required this.hrIn,
+    required this.hrFn,
   });
 
   factory Tarefa.fromJson(Map<String, dynamic> data) {
-    final dias = (data['diasSemanaHabilitado'] as List<dynamic>?)?.whereType<int>() ?? [];
-    final diaSemana = dias.map((e) => e - 1).map(DiasHabilitado.values.elementAt);
+    final dias =
+        (data['diasSemanaHabilitado'] as List<dynamic>?)?.whereType<int>() ??
+            [];
+    final diaSemana =
+        dias.map((e) => e - 1).map(DiasHabilitado.values.elementAt);
     return Tarefa(
       id: data['id'],
       nome: data['nome'],
@@ -101,6 +109,8 @@ class Tarefa {
       domingo: diaSemana.contains(DiasHabilitado.dom),
       diaSemana: diaSemana.where(diasSemana.contains).isNotEmpty,
       acao: TarefaAcao.fromJson(data['acao']),
+      hrIn: data['hrIn'],
+      hrFn: data['hrFn'],
     );
   }
 
@@ -117,6 +127,8 @@ class Tarefa {
         if (diaSemana) ...[1, 2, 3, 4, 5],
       ],
       'acao': acao.toJson(),
+      'hrIn': hrIn,
+      'hrFn': hrFn,
     };
   }
 
@@ -131,6 +143,8 @@ class Tarefa {
     bool? sabado,
     bool? domingo,
     bool? diaSemana,
+    TimeOfDay? hrIn,
+    TimeOfDay? hrFn,
   }) {
     return Tarefa(
       id: id ?? this.id,
@@ -142,6 +156,8 @@ class Tarefa {
       diaSemana: diaSemana ?? this.diaSemana,
       acao: acao ?? this.acao,
       tempo: tempo ?? this.tempo,
+      hrIn: hrIn ?? this.hrIn,
+      hrFn: hrFn ?? this.hrFn,
     );
   }
 }
