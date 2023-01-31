@@ -48,6 +48,8 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
             atualizadaEm: Timestamp.now(),
           ),
           tempo: 0,
+          hrIn: TimeOfDay.fromDateTime(DateTime.fromMillisecondsSinceEpoch(0)),
+          hrFn: TimeOfDay.fromDateTime(DateTime.fromMillisecondsSinceEpoch(0)),
         );
   }
 
@@ -244,6 +246,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
         _selectedTimeI = pickedI;
         _timeI = pickedI;
         sHrIn = "Hora Inicial: " + _selectedTimeI.format(context);
+        _tarefaAtual = _tarefaAtual.copyWith(hrIn: pickedI);
       });
     }
     horarioI = '${pickedI.hour} : ${pickedI.minute}';
@@ -261,6 +264,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
         _selectedTimeF = pickedF;
         _timeF = pickedF;
         sHrFn = "Hora Inicial: " + _selectedTimeF.format(context);
+        _tarefaAtual = _tarefaAtual.copyWith(hrFn: pickedF);
       });
     }
 
@@ -280,13 +284,13 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
     if (_tarefaAtual.domingo) {
       dias += 64;
     }
-    print(dias);
-    // if (widget.tarefa == null) {
-    //   await API.cadastra(_tarefaAtual);
-    // } else {
-    //   await API.edita(_tarefaAtual);
-    // }
-    // Navigator.of(context).pop();
+    // print(_tarefaAtual.nome
+    if (widget.tarefa == null) {
+      await API.cadastra(_tarefaAtual);
+    } else {
+      await API.edita(_tarefaAtual);
+    }
+    Navigator.of(context).pop();
   }
 
   Future<int> calculaTempo(int prioridade) async {
