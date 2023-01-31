@@ -29,7 +29,8 @@ class HomePage extends StatelessWidget {
         stream: API.listaTarefas(),
         initialData: const [],
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+          if (snapshot.connectionState == ConnectionState.waiting ||
+              snapshot.data == null) {
             return const Center(
               child: CircularProgressIndicator(),
             );
