@@ -93,6 +93,7 @@ class Tarefa {
     required this.hrFn,
   });
 
+  // Trecho responsável por tratar os dados obtidos
   factory Tarefa.fromJson(Map<String, dynamic> data) {
     final dias =
         (data['diasSemanaHabilitado'] as List<dynamic>?)?.whereType<int>() ??
@@ -109,11 +110,32 @@ class Tarefa {
       domingo: diaSemana.contains(DiasHabilitado.dom),
       diaSemana: diaSemana.where(diasSemana.contains).isNotEmpty,
       acao: TarefaAcao.fromJson(data['acao']),
-      hrIn: data['hrIn'],
-      hrFn: data['hrFn'],
+      hrIn: data['hrIn'] != null
+          ? TimeOfDay.fromDateTime(
+              DateTime.utc(0, 0, 0, 0, data['hrIn'] ~/ 60, data['hrIn'] % 60))
+          : null,
+      hrFn: data['hrFn'] != null
+          ? TimeOfDay.fromDateTime(
+              DateTime.utc(0, 0, 0, 0, data['hrFn'] ~/ 60, data['hrFn'] % 60))
+          : null,
     );
   }
 
+  // hrIn: TimeOfDay.fromDateTime(DateTime.utc(0, 1, 1, 0, 0, 0)),
+  // hrFn: TimeOfDay.fromDateTime(DateTime.utc(0, 1, 1, 0, 0, 0)),
+
+  /*
+  hrIn: data['hrIn'] != null
+      ? TimeOfDay.fromDateTime(
+          DateTime.utc(0, 1, 1, 0, data['hrIn'] ~/ 60, data['hrIn'] % 60))
+      : null,
+  hrFn: data['hrFn'] != null
+      ? TimeOfDay.fromDateTime(
+          DateTime.utc(0, 1, 1, 0, data['hrFn'] ~/ 60, data['hrFn'] % 60))
+      : null,
+  */
+
+  // Trecho responsável pela preparação dos dados para serem gravados
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -127,10 +149,12 @@ class Tarefa {
         if (diaSemana) ...[1, 2, 3, 4, 5],
       ],
       'acao': acao.toJson(),
-      'hrIn': hrIn,
-      'hrFn': hrFn,
+      'hrIn': hrIn != null ? ConvIntTmp(hrIn) : null,
+      'hrFn': hrFn != null ? ConvIntTmp(hrFn) : null,
     };
   }
+
+  // 'hrFn': hrFn != null ? (hrFn!.hour * 60) + hrFn!.minute : null,
 
   Tarefa copyWith({
     String? id,
@@ -160,4 +184,12 @@ class Tarefa {
       hrFn: hrFn ?? this.hrFn,
     );
   }
+}
+
+int ConvIntTmp(TimeOfDay? hr) {
+  int vTemp = (hr!.hour * 60) + hr!.minute;
+  if (vTemp == 1260) {
+    vTemp = 0;
+  }
+  return vTemp;
 }
