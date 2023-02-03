@@ -75,8 +75,8 @@ class Tarefa {
   final bool diaSemana;
   final bool habilitado;
   final TarefaAcao acao;
-  final TimeOfDay? hrIn;
-  final TimeOfDay? hrFn;
+  final int? hrIn;
+  final int? hrFn;
   int tempo;
 
   Tarefa({
@@ -110,30 +110,10 @@ class Tarefa {
       domingo: diaSemana.contains(DiasHabilitado.dom),
       diaSemana: diaSemana.where(diasSemana.contains).isNotEmpty,
       acao: TarefaAcao.fromJson(data['acao']),
-      hrIn: data['hrIn'] != null
-          ? TimeOfDay.fromDateTime(
-              DateTime.utc(0, 0, 0, 0, data['hrIn'] ~/ 60, data['hrIn'] % 60))
-          : null,
-      hrFn: data['hrFn'] != null
-          ? TimeOfDay.fromDateTime(
-              DateTime.utc(0, 0, 0, 0, data['hrFn'] ~/ 60, data['hrFn'] % 60))
-          : null,
+      hrIn: data['hrIn'],
+      hrFn: data['hrFn'],
     );
   }
-
-  // hrIn: TimeOfDay.fromDateTime(DateTime.utc(0, 1, 1, 0, 0, 0)),
-  // hrFn: TimeOfDay.fromDateTime(DateTime.utc(0, 1, 1, 0, 0, 0)),
-
-  /*
-  hrIn: data['hrIn'] != null
-      ? TimeOfDay.fromDateTime(
-          DateTime.utc(0, 1, 1, 0, data['hrIn'] ~/ 60, data['hrIn'] % 60))
-      : null,
-  hrFn: data['hrFn'] != null
-      ? TimeOfDay.fromDateTime(
-          DateTime.utc(0, 1, 1, 0, data['hrFn'] ~/ 60, data['hrFn'] % 60))
-      : null,
-  */
 
   // Trecho responsável pela preparação dos dados para serem gravados
   Map<String, dynamic> toJson() {
@@ -149,12 +129,12 @@ class Tarefa {
         if (diaSemana) ...[1, 2, 3, 4, 5],
       ],
       'acao': acao.toJson(),
-      'hrIn': hrIn != null ? ConvIntTmp(hrIn) : null,
-      'hrFn': hrFn != null ? ConvIntTmp(hrFn) : null,
+      'hrIn': hrIn,
+      'hrFn': hrFn,
     };
   }
 
-  // 'hrFn': hrFn != null ? (hrFn!.hour * 60) + hrFn!.minute : null,
+  // 'hrFn': hrFn != null ? ConvIntTmp(hrFn) : null,
 
   Tarefa copyWith({
     String? id,
@@ -167,8 +147,8 @@ class Tarefa {
     bool? sabado,
     bool? domingo,
     bool? diaSemana,
-    TimeOfDay? hrIn,
-    TimeOfDay? hrFn,
+    int? hrIn,
+    int? hrFn,
   }) {
     return Tarefa(
       id: id ?? this.id,
