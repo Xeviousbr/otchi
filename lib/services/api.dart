@@ -1,8 +1,7 @@
 import 'dart:math';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:flutter/material.dart';
 import '../models/tarefa.dart';
 
 class API {
@@ -56,10 +55,6 @@ class API {
           .toDate()
           .toLocal()
           .difference(tarefa.acao.atualizadaEm.toDate().toLocal());
-      print("Tempo adicionado na tarefa " +
-          tarefa.nome +
-          " = " +
-          diferenca.inSeconds.toString());
       tarefa = tarefa.copyWith(
         acao: TarefaAcao(
           emAndamento: iniciou,
@@ -78,11 +73,12 @@ class API {
     return _tarefasCollection().doc(tarefa.id).set(tarefa.toJson());
   }
 
+  // ignore: non_constant_identifier_names
   static bool FunMostra(Tarefa item) {
     if (item.habilitado == false) {
       return false;
     } else {
-      var now = new DateTime.now();
+      var now = DateTime.now();
       int dia = now.weekday;
       bool ret = false;
       switch (dia) {
@@ -95,8 +91,22 @@ class API {
         default:
           ret = item.diaSemana;
       }
+      if (ret) {
+        TimeOfDay tdH = TimeOfDay(hour: now.hour, minute: now.minute);
+        if (item.hrIn != null) {
+          int ti = item.hrIn as int;
+          TimeOfDay tdI = TimeOfDay(hour: ti ~/ 60, minute: ti % 60);
+          ret = ret && tdI.hour < tdH.hour ||
+              (tdI.hour == tdH.hour && tdI.minute <= tdH.minute);
+        }
+        if (item.hrFn != null) {
+          int tf = item.hrFn as int;
+          TimeOfDay tdF = TimeOfDay(hour: tf ~/ 60, minute: tf % 60);
+          ret = ret && tdF.hour > tdH.hour ||
+              (tdF.hour == tdH.hour && tdF.minute >= tdH.minute);
+        }
+      }
       return ret;
     }
   }
-  
 }
