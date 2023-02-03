@@ -48,8 +48,8 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
             atualizadaEm: Timestamp.now(),
           ),
           tempo: 0,
-          hrIn: TimeOfDay.fromDateTime(DateTime.fromMillisecondsSinceEpoch(0)),
-          hrFn: TimeOfDay.fromDateTime(DateTime.fromMillisecondsSinceEpoch(0)),
+          hrIn: 0,
+          hrFn: 0,
         );
   }
 
@@ -246,7 +246,8 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
         _selectedTimeI = pickedI;
         _timeI = pickedI;
         sHrIn = "Hora Inicial: " + _selectedTimeI.format(context);
-        _tarefaAtual = _tarefaAtual.copyWith(hrIn: pickedI);
+        int vI = pickedI.hour * 60 + pickedI.minute;
+        _tarefaAtual = _tarefaAtual.copyWith(hrIn: vI);
       });
     }
     horarioI = '${pickedI.hour} : ${pickedI.minute}';
@@ -264,7 +265,8 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
         _selectedTimeF = pickedF;
         _timeF = pickedF;
         sHrFn = "Hora Inicial: " + _selectedTimeF.format(context);
-        _tarefaAtual = _tarefaAtual.copyWith(hrFn: pickedF);
+        int vF = pickedI.hour * 60 + pickedI.minute;
+        _tarefaAtual = _tarefaAtual.copyWith(hrFn: vF);
       });
     }
 
