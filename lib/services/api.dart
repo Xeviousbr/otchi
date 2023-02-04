@@ -92,18 +92,14 @@ class API {
           ret = item.diaSemana;
       }
       if (ret) {
-        TimeOfDay tdH = TimeOfDay(hour: now.hour, minute: now.minute);
-        if (item.hrIn != null) {
+        int tH = now.hour * 60 + now.minute;
+        if (item.hrIn != null) if (item.hrIn! > 0) {
           int ti = item.hrIn as int;
-          TimeOfDay tdI = TimeOfDay(hour: ti ~/ 60, minute: ti % 60);
-          ret = ret && tdI.hour < tdH.hour ||
-              (tdI.hour == tdH.hour && tdI.minute <= tdH.minute);
+          if (ti > tH) ret = false;
         }
-        if (item.hrFn != null) {
+        if (item.hrFn != null) if (item.hrFn! > 0) {
           int tf = item.hrFn as int;
-          TimeOfDay tdF = TimeOfDay(hour: tf ~/ 60, minute: tf % 60);
-          ret = ret && tdF.hour > tdH.hour ||
-              (tdF.hour == tdH.hour && tdF.minute >= tdH.minute);
+          if (tf < tH) ret = false;
         }
       }
       return ret;
