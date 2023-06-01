@@ -22,7 +22,8 @@ class App extends StatelessWidget {
         '/home_page': (_) => const HomePage(),
         '/cadastrar_tarefa': (_) => const CadastrarTarefa(),
         '/editar_tarefa': (context) {
-          final tarefa = (ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?)?['tarefa'] as Tarefa?;
+          final tarefa = (ModalRoute.of(context)?.settings.arguments
+              as Map<String, dynamic>?)?['tarefa'] as Tarefa?;
           return CadastrarTarefa(tarefa: tarefa);
         },
         '/cadastro_user': (_) => const RegisterPage(),
