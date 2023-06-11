@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:ot/pages/home/tarefa_item_component.dart';
@@ -14,7 +13,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      drawer: DrawerPage(),
+      drawer: const DrawerPage(),
       appBar: AppBar(
         title: Text('OT - Organizador de Tarefas',
             style: theme.textTheme.titleLarge),

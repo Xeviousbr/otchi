@@ -1,9 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:meta/meta.dart';
-import 'package:ot/pages/login/login_bloc.dart';
 import 'package:ot/services/auth_service.dart';
 
 part 'logout_state.dart';

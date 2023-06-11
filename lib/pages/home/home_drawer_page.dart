@@ -27,7 +27,7 @@ class _DrawerPageState extends State<DrawerPage> {
                       const Spacer(),
                       ElevatedButton(
                         onPressed: () {
-                        bloc.add(TryToLogoutEvent());
+                        bloc.add(const TryToLogoutEvent());
                       },
                       child: state is LogoutLoadingState
                           ? const CircularProgressIndicator(

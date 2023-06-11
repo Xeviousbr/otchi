@@ -241,15 +241,13 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
       context: context,
       initialTime: _timeI,
     ))!;
-    if (pickedI != null) {
-      setState(() {
-        _selectedTimeI = pickedI;
-        _timeI = pickedI;
-        sHrIn = "Hora Inicial: " + _selectedTimeI.format(context);
-        int vI = pickedI.hour * 60 + pickedI.minute;
-        _tarefaAtual = _tarefaAtual.copyWith(hrIn: vI);
-      });
-    }
+    setState(() {
+      _selectedTimeI = pickedI;
+      _timeI = pickedI;
+      sHrIn = "Hora Inicial: ${_selectedTimeI.format(context)}";
+      int vI = pickedI.hour * 60 + pickedI.minute;
+      _tarefaAtual = _tarefaAtual.copyWith(hrIn: vI);
+    });
     horarioI = '${pickedI.hour} : ${pickedI.minute}';
     // ignore: todo
     //TODO: VER DATETIME
@@ -260,15 +258,13 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
       context: context,
       initialTime: _timeF,
     ))!;
-    if (pickedF != null) {
-      setState(() {
-        _selectedTimeF = pickedF;
-        _timeF = pickedF;
-        sHrFn = "Hora Inicial: " + _selectedTimeF.format(context);
-        int vF = pickedI.hour * 60 + pickedI.minute;
-        _tarefaAtual = _tarefaAtual.copyWith(hrFn: vF);
-      });
-    }
+    setState(() {
+      _selectedTimeF = pickedF;
+      _timeF = pickedF;
+      sHrFn = "Hora Inicial: ${_selectedTimeF.format(context)}";
+      int vF = pickedI.hour * 60 + pickedI.minute;
+      _tarefaAtual = _tarefaAtual.copyWith(hrFn: vF);
+    });
 
     horarioF = '${pickedF.hour} : ${pickedF.minute}';
     // ignore: todo
@@ -298,7 +294,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
   Future<int> calculaTempo(int prioridade) async {
     final tarefas = await API.listaTarefas().first;
     int tempo = 1000;
-    if (!tarefas.isEmpty) {
+    if (tarefas.isNotEmpty) {
       int auxTempo = 1001;
       for (Tarefa element in tarefas) {
         auxTempo = element.tempo + 1;
