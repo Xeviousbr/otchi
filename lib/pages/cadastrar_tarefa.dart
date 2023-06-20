@@ -5,14 +5,21 @@ import '../models/tarefa.dart';
 import '../services/api.dart';
 
 class CadastrarTarefa extends StatefulWidget {
-  const CadastrarTarefa({
-    super.key,
-    this.tarefa,
-  });
   final Tarefa? tarefa;
+  final ValueNotifier<bool>? shouldStopTimer;
+  final ValueNotifier<bool>? isDataSaved;
+
+  CadastrarTarefa({
+    Key? key,
+    this.tarefa,
+    ValueNotifier<bool>? shouldStopTimer,
+    ValueNotifier<bool>? isDataSaved,
+  })  : shouldStopTimer = shouldStopTimer ?? ValueNotifier<bool>(false),
+        isDataSaved = isDataSaved ?? ValueNotifier<bool>(false),
+        super(key: key);
 
   @override
-  State<CadastrarTarefa> createState() => _CadastrarTarefaState();
+  _CadastrarTarefaState createState() => _CadastrarTarefaState();
 }
 
 class _CadastrarTarefaState extends State<CadastrarTarefa> {
@@ -208,6 +215,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
               OutlinedButton(
                 onPressed: () {
                   Navigator.pop(context);
+                  widget.shouldStopTimer?.value = true;
                 },
                 child: Text(
                   'Cancelar',
@@ -288,6 +296,8 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
     } else {
       await API.edita(_tarefaAtual);
     }
+    widget.isDataSaved?.value = true;
+    widget.shouldStopTimer?.value = true;
     Navigator.of(context).pop();
   }
 

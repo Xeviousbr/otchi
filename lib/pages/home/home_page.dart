@@ -1,13 +1,24 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:ot/pages/home/tarefa_item_component.dart';
 
 import '../../models/tarefa.dart';
 import '../../services/api.dart';
+import '../cadastrar_tarefa.dart';
 import 'home_drawer_page.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final ValueNotifier<bool> shouldStopTimer = ValueNotifier<bool>(false);
+  final ValueNotifier<bool> isDataSaved = ValueNotifier<bool>(false);
+  List<Tarefa> tarefas = [];
 
   @override
   Widget build(BuildContext context) {
@@ -21,27 +32,49 @@ class HomePage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
-          Navigator.of(context).pushNamed('/cadastrar_tarefa');
+          shouldStopTimer.value = false;
+          isDataSaved.value = false;
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => CadastrarTarefa(
+              shouldStopTimer: shouldStopTimer,
+              isDataSaved: isDataSaved,
+            ),
+          ));
+
+          Timer.periodic(const Duration(milliseconds: 100), (Timer timer) {
+            if (shouldStopTimer.value) {
+              timer.cancel();
+              if (isDataSaved.value) {
+                setState(() {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Dados salvos com sucesso!'),
+                    ),
+                  );
+                });
+              }
+            }
+          });
         },
       ),
       body: StreamBuilder<Iterable<Tarefa>>(
         stream: API.listaTarefas(),
-        initialData: const [],
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting ||
-              snapshot.data == null) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
           if (snapshot.hasError) {
             print(snapshot.error.toString());
-            // return Text(snapshot.error.toString());
+          }
+          if (snapshot.hasData) {
+            tarefas = snapshot.data!.toList();
           }
           return SingleChildScrollView(
             child: Center(
               child: Wrap(
-                children: snapshot.data!
+                children: tarefas
                     .map((tarefa) => TarefaItemComponent(tarefa: tarefa))
                     .toList(),
               ),
