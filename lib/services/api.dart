@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import '../models/tarefa.dart';
 
 class API {
@@ -93,13 +92,17 @@ class API {
       }
       if (ret) {
         int tH = now.hour * 60 + now.minute;
-        if (item.hrIn != null) if (item.hrIn! > 0) {
-          int ti = item.hrIn as int;
-          if (ti > tH) ret = false;
+        if (item.hrIn != null) {
+          if (item.hrIn! > 0) {
+            int ti = item.hrIn as int;
+            if (ti > tH) ret = false;
+          }
         }
-        if (item.hrFn != null) if (item.hrFn! > 0) {
-          int tf = item.hrFn as int;
-          if (tf < tH) ret = false;
+        if (item.hrFn != null) {
+          if (item.hrFn! > 0) {
+            int tf = item.hrFn as int;
+            if (tf < tH) ret = false;
+          }
         }
       }
       return ret;

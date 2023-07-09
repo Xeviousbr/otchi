@@ -12,6 +12,7 @@ class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _HomePageState createState() => _HomePageState();
 }
 
@@ -47,7 +48,7 @@ class _HomePageState extends State<HomePage> {
               if (isDataSaved.value) {
                 setState(() {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
+                    const SnackBar(
                       content: Text('Dados salvos com sucesso!'),
                     ),
                   );
@@ -66,6 +67,7 @@ class _HomePageState extends State<HomePage> {
             );
           }
           if (snapshot.hasError) {
+            // ignore: avoid_print
             print(snapshot.error.toString());
           }
           if (snapshot.hasData) {

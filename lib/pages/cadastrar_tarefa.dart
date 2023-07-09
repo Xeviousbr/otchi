@@ -19,6 +19,7 @@ class CadastrarTarefa extends StatefulWidget {
         super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _CadastrarTarefaState createState() => _CadastrarTarefaState();
 }
 
@@ -280,16 +281,9 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
   }
 
   Future<void> enviaDados() async {
-    int dias = 0;
-    if (_tarefaAtual.diaSemana) {
-      dias = 31;
-    }
-    if (_tarefaAtual.sabado) {
-      dias += 32;
-    }
-    if (_tarefaAtual.domingo) {
-      dias += 64;
-    }
+    if (_tarefaAtual.diaSemana) {}
+    if (_tarefaAtual.sabado) {}
+    if (_tarefaAtual.domingo) {}
     // print(_tarefaAtual.nome
     if (widget.tarefa == null) {
       await API.cadastra(_tarefaAtual);
@@ -298,7 +292,9 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
     }
     widget.isDataSaved?.value = true;
     widget.shouldStopTimer?.value = true;
-    Navigator.of(context).pop();
+    if (mounted) {
+      Navigator.of(context).pop();
+    }
   }
 
   Future<int> calculaTempo(int prioridade) async {

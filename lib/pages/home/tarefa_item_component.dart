@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ot/models/tarefa.dart';
 import 'package:ot/services/api.dart';
+// ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
 
 class TarefaItemComponent extends StatefulWidget {
@@ -95,7 +96,9 @@ class _TarefaItemComponentState extends State<TarefaItemComponent>
                   onTap: () async {
                     await API.acaoTarefa(widget.tarefa, !_isPlay);
                     if (_isPlay) {
-                      Navigator.of(context).pushNamed('/home_page');
+                      if (mounted) {
+                        Navigator.of(context).pushNamed('/home_page');
+                      }
                     } else {
                       _controller.forward();
                       _isPlay = true;

@@ -166,7 +166,7 @@ class Tarefa {
   }
 }
 
-int ConvIntTmp(TimeOfDay? hr) {
+int convIntTmp(TimeOfDay? hr) {
   int vTemp = (hr!.hour * 60) + hr.minute;
   if (vTemp == 1260) {
     vTemp = 0;
