@@ -18,15 +18,39 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'OT - Organizador de Tarefas',
       theme: theme(),
-      routes: {
-        '/home_page': (_) => const HomePage(),
-        '/cadastrar_tarefa': (_) => CadastrarTarefa(), // Remova o 'const' aqui
-        '/editar_tarefa': (context) {
-          final tarefa = (ModalRoute.of(context)?.settings.arguments
-              as Map<String, dynamic>?)?['tarefa'] as Tarefa?;
-          return CadastrarTarefa(tarefa: tarefa);
-        },
-        '/cadastro_user': (_) => const RegisterPage(),
+      onGenerateRoute: (settings) {
+        return MaterialPageRoute(
+          builder: (context) => Scaffold(
+            body: StreamBuilder<bool>(
+              stream: AuthService.estaLogado(),
+              builder: (context, snapshot) {
+                if (snapshot.data == null) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (!snapshot.data!) {
+                  return const LoginPage();
+                }
+                if (settings.name == '/home_page') return const HomePage();
+                if (settings.name == '/cadastrar_tarefa') {
+                  return CadastrarTarefa();
+                } // Remova o 'const' aqui
+                if (settings.name == '/editar_tarefa') {
+                  final tarefa = (ModalRoute.of(context)?.settings.arguments
+                      as Map<String, dynamic>?)?['tarefa'] as Tarefa?;
+                  return CadastrarTarefa(tarefa: tarefa);
+                }
+                if (settings.name == '/cadastro_user') {
+                  return const RegisterPage();
+                }
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+            ),
+          ),
+        );
       },
       home: StreamBuilder<bool>(
         stream: AuthService.estaLogado(),
