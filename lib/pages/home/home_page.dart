@@ -21,6 +21,12 @@ class _HomePageState extends State<HomePage> {
   final ValueNotifier<bool> isDataSaved = ValueNotifier<bool>(false);
   List<Tarefa> tarefas = [];
 
+  void removeTarefa(String id) {
+    setState(() {
+      tarefas.removeWhere((tarefa) => tarefa.id == id);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -77,7 +83,10 @@ class _HomePageState extends State<HomePage> {
             child: Center(
               child: Wrap(
                 children: tarefas
-                    .map((tarefa) => TarefaItemComponent(tarefa: tarefa))
+                    .map((tarefa) => TarefaItemComponent(
+                          tarefa: tarefa,
+                          onRemove: removeTarefa,
+                        ))
                     .toList(),
               ),
             ),

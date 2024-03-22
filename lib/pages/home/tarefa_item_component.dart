@@ -6,8 +6,11 @@ import 'package:ot/services/api.dart';
 import 'package:collection/collection.dart';
 
 class TarefaItemComponent extends StatefulWidget {
-  const TarefaItemComponent({Key? key, required this.tarefa}) : super(key: key);
+  const TarefaItemComponent(
+      {Key? key, required this.tarefa, required this.onRemove})
+      : super(key: key);
   final Tarefa tarefa;
+  final Function(String) onRemove;
 
   @override
   State<TarefaItemComponent> createState() => _TarefaItemComponentState();
@@ -159,9 +162,7 @@ class _TarefaItemComponentState extends State<TarefaItemComponent>
                       icon: const Icon(Icons.delete),
                       onPressed: () async {
                         await API.deleta(_tarefaAtual.id);
-                        setState(() {
-                          _isEditing = false;
-                        });
+                        widget.onRemove(_tarefaAtual.id);
                       },
                     ),
                   ],
