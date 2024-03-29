@@ -67,7 +67,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Cadastrar a tarefa",
+          _tarefaAtual.nome.isNotEmpty ? "Editar Tarefa" : "Cadastrar Tarefa",
           style: theme.textTheme.titleLarge,
         ),
       ),
