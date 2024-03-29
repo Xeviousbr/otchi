@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ot/models/tarefa.dart';
+import 'package:ot/pages/cadastrar_tarefa.dart';
 import 'package:ot/services/api.dart';
 // ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
@@ -156,6 +157,15 @@ class _TarefaItemComponentState extends State<TarefaItemComponent>
                         setState(() {
                           _isEditing = false;
                         });
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.edit),
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) =>
+                              CadastrarTarefa(tarefa: _tarefaAtual),
+                        ));
                       },
                     ),
                     IconButton(
