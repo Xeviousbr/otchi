@@ -19,7 +19,6 @@ class CadastrarTarefa extends StatefulWidget {
         super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _CadastrarTarefaState createState() => _CadastrarTarefaState();
 }
 
@@ -64,7 +63,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final _formKey = GlobalKey<FormState>(); // Chave para o Form
+    final _formKey = GlobalKey<FormState>();
 
     return Scaffold(
       appBar: AppBar(
@@ -85,8 +84,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                   initialValue: _tarefaAtual.nome,
                   autofocus: true,
                   decoration: InputDecoration(
-                    hintText:
-                        'Informe o nome da tarefa', // Placeholder ao invés de label
+                    hintText: 'Informe o nome da tarefa',
                     border: const OutlineInputBorder(),
                   ),
                   validator: (value) {
@@ -135,8 +133,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                                   ?.copyWith(color: Colors.white),
                             ),
                             style: ElevatedButton.styleFrom(
-                              primary: Color(
-                                  0xFF4CAF50), // Esta é a cor verde que você quer usar
+                              primary: Color(0xFF4CAF50),
                             ),
                           ),
                           ElevatedButton(
@@ -147,8 +144,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                                   ?.copyWith(color: Colors.white),
                             ),
                             style: ElevatedButton.styleFrom(
-                              primary: Color(
-                                  0xFF4CAF50), // Esta é a cor verde que você quer usar
+                              primary: Color(0xFF4CAF50),
                             ),
                           ),
                         ],
@@ -206,8 +202,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                       style: theme.textTheme.bodyLarge
                           ?.copyWith(color: Colors.white)),
                   style: ElevatedButton.styleFrom(
-                    primary: Color(
-                        0xFF4CAF50), // Esta é a cor verde que você quer usar
+                    primary: Color(0xFF4CAF50),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -220,8 +215,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                       style: theme.textTheme.bodyLarge
                           ?.copyWith(color: Colors.black)),
                   style: OutlinedButton.styleFrom(
-                    side: BorderSide(
-                        color: Color(0xFF4CAF50)), // Borda verde, se necessário
+                    side: BorderSide(color: Color(0xFF4CAF50)),
                   ),
                 ),
                 if (_tarefaAtual.id.isNotEmpty)
@@ -234,9 +228,7 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
                         style: theme.textTheme.bodyLarge
                             ?.copyWith(color: Colors.black)),
                     style: OutlinedButton.styleFrom(
-                      side: BorderSide(
-                          color:
-                              Color(0xFF4CAF50)), // Borda verde, se necessário
+                      side: BorderSide(color: Color(0xFF4CAF50)),
                     ),
                   ),
               ],
@@ -260,8 +252,6 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
       _tarefaAtual = _tarefaAtual.copyWith(hrIn: vI);
     });
     horarioI = '${pickedI.hour} : ${pickedI.minute}';
-    // ignore: todo
-    //TODO: VER DATETIME
   }
 
   Future<void> selectTimeF(BuildContext context) async {
@@ -276,17 +266,13 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
       int vF = pickedI.hour * 60 + pickedI.minute;
       _tarefaAtual = _tarefaAtual.copyWith(hrFn: vF);
     });
-
     horarioF = '${pickedF.hour} : ${pickedF.minute}';
-    // ignore: todo
-    //TODO: VER DATETIME
   }
 
   Future<void> enviaDados() async {
     if (_tarefaAtual.diaSemana) {}
     if (_tarefaAtual.sabado) {}
     if (_tarefaAtual.domingo) {}
-    // print(_tarefaAtual.nome
     if (widget.tarefa == null) {
       await API.cadastra(_tarefaAtual);
     } else {
