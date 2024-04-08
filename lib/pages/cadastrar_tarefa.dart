@@ -64,6 +64,8 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final _formKey = GlobalKey<FormState>(); // Chave para o Form
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -73,172 +75,172 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextFormField(
-                initialValue: _tarefaAtual.nome,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Informe o nome da tarefa';
-                  }
-                  return value;
-                },
-                decoration: InputDecoration(
-                  labelStyle: theme.textTheme.bodyMedium,
-                  border: const OutlineInputBorder(),
-                  hintText: 'Informe o nome da tarefa',
+        child: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                TextFormField(
+                  initialValue: _tarefaAtual.nome,
+                  autofocus: true,
+                  decoration: InputDecoration(
+                    hintText:
+                        'Informe o nome da tarefa', // Placeholder ao invés de label
+                    border: const OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Informe o nome da tarefa';
+                    }
+                    return null;
+                  },
+                  onChanged: (newValue) {
+                    setState(() {
+                      _tarefaAtual = _tarefaAtual.copyWith(nome: newValue);
+                    });
+                  },
                 ),
-                autofocus: true,
-                onChanged: (newValue) {
-                  setState(() {
-                    _tarefaAtual = _tarefaAtual.copyWith(nome: newValue);
-                  });
-                },
-              ),
-              const SizedBox(height: 20),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const Text('Prioridade'),
-                        DropdownButton<int>(
-                          hint: const Text('Escolha a prioridade'),
-                          value: _tarefaAtual.prioridade,
-                          dropdownColor: const Color(0xffE5D9B6),
-                          style: theme.textTheme.bodyMedium,
-                          onChanged: (int? newValue) {
-                            setState(() {
-                              _tarefaAtual = _tarefaAtual.copyWith(
-                                  prioridade: newValue ?? 0);
-                            });
-                          },
-                          items: _prioridades.map((location) {
-                            return DropdownMenuItem<int>(
-                              value: location,
-                              child: Text('$location'),
-                            );
-                          }).toList(),
-                        ),
-                        //
-                        ElevatedButton(
-                          onPressed: () {
-                            selectTimeI(context);
-                          },
-                          child: Text(
-                            sHrIn,
-                            textDirection: TextDirection.ltr,
-                            style: theme.textTheme.bodyLarge,
+                const SizedBox(height: 20),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text('Prioridade', style: theme.textTheme.bodyMedium),
+                          DropdownButton<int>(
+                            value: _tarefaAtual.prioridade,
+                            dropdownColor: const Color(0xffE5D9B6),
+                            style: theme.textTheme.bodyMedium,
+                            onChanged: (int? newValue) {
+                              setState(() {
+                                _tarefaAtual = _tarefaAtual.copyWith(
+                                    prioridade: newValue ?? 0);
+                              });
+                            },
+                            items: _prioridades.map((int value) {
+                              return DropdownMenuItem<int>(
+                                value: value,
+                                child: Text(value.toString()),
+                              );
+                            }).toList(),
                           ),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            selectTimeF(context);
-                          },
-                          child: Text(
-                            sHrFn,
-                            textDirection: TextDirection.ltr,
-                            style: theme.textTheme.bodyLarge,
+                          ElevatedButton(
+                            onPressed: () => selectTimeI(context),
+                            child: Text(
+                              sHrIn,
+                              style: theme.textTheme.bodyLarge
+                                  ?.copyWith(color: Colors.white),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(
+                                  0xFF4CAF50), // Esta é a cor verde que você quer usar
+                            ),
                           ),
-                        ),
-                        //
-                      ],
+                          ElevatedButton(
+                            onPressed: () => selectTimeF(context),
+                            child: Text(
+                              sHrFn,
+                              style: theme.textTheme.bodyLarge
+                                  ?.copyWith(color: Colors.white),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(
+                                  0xFF4CAF50), // Esta é a cor verde que você quer usar
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          CheckboxListTile(
+                            title: Text('Dias de semana',
+                                style: theme.textTheme.bodyMedium),
+                            value: _tarefaAtual.diaSemana,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                _tarefaAtual =
+                                    _tarefaAtual.copyWith(diaSemana: value);
+                              });
+                            },
+                          ),
+                          CheckboxListTile(
+                            title: Text('Sábados',
+                                style: theme.textTheme.bodyMedium),
+                            value: _tarefaAtual.sabado,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                _tarefaAtual =
+                                    _tarefaAtual.copyWith(sabado: value);
+                              });
+                            },
+                          ),
+                          CheckboxListTile(
+                            title: Text('Domingos',
+                                style: theme.textTheme.bodyMedium),
+                            value: _tarefaAtual.domingo,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                _tarefaAtual =
+                                    _tarefaAtual.copyWith(domingo: value);
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      enviaDados();
+                    }
+                  },
+                  child: Text('Salvar',
+                      style: theme.textTheme.bodyLarge
+                          ?.copyWith(color: Colors.white)),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(
+                        0xFF4CAF50), // Esta é a cor verde que você quer usar
+                  ),
+                ),
+                const SizedBox(height: 16),
+                OutlinedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    widget.shouldStopTimer?.value = true;
+                  },
+                  child: Text('Cancelar',
+                      style: theme.textTheme.bodyLarge
+                          ?.copyWith(color: Colors.black)),
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(
+                        color: Color(0xFF4CAF50)), // Borda verde, se necessário
+                  ),
+                ),
+                if (_tarefaAtual.id.isNotEmpty)
+                  OutlinedButton(
+                    onPressed: () {
+                      API.deleta(_tarefaAtual.id);
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Deletar',
+                        style: theme.textTheme.bodyLarge
+                            ?.copyWith(color: Colors.black)),
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(
+                          color:
+                              Color(0xFF4CAF50)), // Borda verde, se necessário
                     ),
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        CheckboxListTile(
-                          title: Text(
-                            'Dias de semana',
-                            style: theme.textTheme.bodyMedium,
-                          ),
-                          value: _tarefaAtual.diaSemana,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              _tarefaAtual =
-                                  _tarefaAtual.copyWith(diaSemana: value);
-                            });
-                          },
-                        ),
-                        CheckboxListTile(
-                          title: Text(
-                            'Sábados',
-                            style: theme.textTheme.bodyMedium,
-                          ),
-                          value: _tarefaAtual.sabado,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              _tarefaAtual =
-                                  _tarefaAtual.copyWith(sabado: value);
-                            });
-                          },
-                        ),
-                        CheckboxListTile(
-                          title: Text(
-                            'Domingos',
-                            style: theme.textTheme.bodyMedium,
-                          ),
-                          value: _tarefaAtual.domingo,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              _tarefaAtual =
-                                  _tarefaAtual.copyWith(domingo: value);
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  int tempo = await calculaTempo(_tarefaAtual.prioridade);
-                  _tarefaAtual.tempo = tempo;
-                  enviaDados();
-                },
-                child: Text(
-                  'Salvar',
-                  textDirection: TextDirection.ltr,
-                  style: theme.textTheme.bodyLarge,
-                ),
-              ),
-              const SizedBox(height: 16),
-              OutlinedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  widget.shouldStopTimer?.value = true;
-                },
-                child: Text(
-                  'Cancelar',
-                  textDirection: TextDirection.ltr,
-                  style:
-                      theme.textTheme.bodyLarge?.copyWith(color: Colors.black),
-                ),
-              ),
-              const SizedBox(height: 16),
-              OutlinedButton(
-                onPressed: () {
-                  API.deleta(_tarefaAtual.id);
-                  Navigator.of(context).pop();
-                },
-                child: Text(
-                  'Deletar',
-                  textDirection: TextDirection.ltr,
-                  style:
-                      theme.textTheme.bodyLarge?.copyWith(color: Colors.black),
-                ),
-              )
-            ],
+              ],
+            ),
           ),
         ),
       ),
