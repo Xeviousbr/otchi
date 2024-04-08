@@ -47,9 +47,9 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
           id: const Uuid().v1(),
           nome: '',
           prioridade: 1,
-          diaSemana: false,
-          sabado: false,
-          domingo: false,
+          diaSemana: true,
+          sabado: true,
+          domingo: true,
           habilitado: true,
           acao: TarefaAcao(
             emAndamento: false,
