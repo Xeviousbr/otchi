@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import '../models/tarefa.dart';
 import '../services/api.dart';
+import 'dart:math';
 
 class CadastrarTarefa extends StatefulWidget {
   final Tarefa? tarefa;
@@ -19,10 +20,10 @@ class CadastrarTarefa extends StatefulWidget {
         super(key: key);
 
   @override
-  _CadastrarTarefaState createState() => _CadastrarTarefaState();
+  CadastrarTarefaState createState() => CadastrarTarefaState();
 }
 
-class _CadastrarTarefaState extends State<CadastrarTarefa> {
+class CadastrarTarefaState extends State<CadastrarTarefa> {
   late TimeOfDay pickedI;
   late TimeOfDay pickedF;
   late TimeOfDay _selectedTimeI;
@@ -38,7 +39,8 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
 
   @override
   void initState() {
-    _prioridades = List<int>.generate(10, (index) => index + 1);
+    // _prioridades = List<int>.generate(10, (index) => index + 1);
+    _carregarPrioridades();
 
     super.initState();
     _tarefaAtual = widget.tarefa ??
@@ -300,5 +302,16 @@ class _CadastrarTarefaState extends State<CadastrarTarefa> {
       tempo = auxTempo;
     }
     return tempo;
+  }
+
+  void _carregarPrioridades() async {
+    final tarefas = await API.listaTarefas().first;
+    final int maxPrioridadeExistente = tarefas.isNotEmpty
+        ? tarefas.map((tarefa) => tarefa.prioridade).reduce(max)
+        : 0;
+    final int maxPrioridade = max(10, maxPrioridadeExistente + 1);
+    setState(() {
+      _prioridades = List<int>.generate(maxPrioridade, (index) => index + 1);
+    });
   }
 }
